@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046811852767",
+    "project_id": "transformers-builders",
+    "storage_bucket": "transformers-builders.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046811852767:android:fe3ed48da5be081ddb8e6a",
+        "android_client_info": {
+          "package_name": "com.example.transformers_builders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMkQctn4pIeaxMRLwXQI7OIi3b62fV9Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
