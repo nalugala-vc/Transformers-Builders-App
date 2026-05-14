@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../presentation/screens/home_screen.dart';
+import '../../presentation/screens/responsive_sizes_screen.dart';
 
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
@@ -11,6 +12,11 @@ final GoRouter appRouter = GoRouter(
       path: '/',
       name: 'home',
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/sizes',
+      name: 'responsiveSizes',
+      builder: (context, state) => const ResponsiveSizesScreen(),
     ),
   ],
   errorBuilder: (context, state) => const _NotFoundScreen(),
