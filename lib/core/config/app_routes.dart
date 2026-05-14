@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
+/// First route after app start — must match [GoRouter.initialLocation].
+const String appInitialLocation = '/splash';
+
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: appInitialLocation,
   routes: [
     GoRoute(
-      path: '/',
+      path: appInitialLocation,
+      name: 'splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/home',
       name: 'home',
       builder: (context, state) => const HomeScreen(),
     ),

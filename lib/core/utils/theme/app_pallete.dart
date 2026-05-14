@@ -22,6 +22,7 @@ class AppPallete {
   static const Color border = Color(0xFFE5E7EB);       // Card borders, dividers
   static const Color cardBg = Color(0xFFF9FAFB);       // Member card background
   static const Color scaffoldBg = Color(0xFFF3F4F6);   // Page background (light grey behind cards)
+  static const Color splashLightBlue = Color(0xFFE0F2FE); // Splash scaffold (soft sky blue)
   static const Color inputFill = Color(0xFFF3F4F6);    // Input field fills (email/password boxes)
 
   // Progress bar fills

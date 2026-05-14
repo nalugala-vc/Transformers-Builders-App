@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'core/config/app_routes.dart';
+import 'features/auth/presentation/screens/splash_screen.dart';
+
+/// First screen shown after startup (see [appInitialLocation] in [appRouter]).
+typedef AppLaunchScreen = SplashScreen;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Transformers Church',
         debugShowCheckedModeBanner: false,
+        // Entry UI: [SplashScreen] at [appInitialLocation].
         routerConfig: appRouter,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
