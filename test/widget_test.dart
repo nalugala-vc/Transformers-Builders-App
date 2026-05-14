@@ -9,15 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:transformers_builders/core/config/app_route_paths.dart';
 import 'package:transformers_builders/core/config/app_routes.dart';
+import 'package:transformers_builders/features/auth/presentation/screens/splash_screen.dart';
 import 'package:transformers_builders/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: MyApp()));
+    await tester.pump();
+
+    await tester.pump(SplashScreen.displayDuration + const Duration(milliseconds: 50));
     await tester.pumpAndSettle();
 
-    appRouter.go('/home');
+    appRouter.go(AppRoutePaths.home);
     await tester.pumpAndSettle();
 
     expect(find.text('0'), findsOneWidget);

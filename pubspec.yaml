@@ -43,6 +43,8 @@ dependencies:
   flutter_slidable: ^4.0.3
   heroicons: ^0.11.0
   flutter_otp_text_field: ^1.5.1+1
+  firebase_auth: ^6.5.1
+  google_sign_in: ^7.2.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +70,7 @@ flutter:
 
   assets:
     - assets/splashscreen.png
+    - assets/tc-logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

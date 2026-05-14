@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'app_route_paths.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
 /// First route after app start — must match [GoRouter.initialLocation].
-const String appInitialLocation = '/splash';
+const String appInitialLocation = AppRoutePaths.splash;
 
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
   initialLocation: appInitialLocation,
   routes: [
     GoRoute(
-      path: appInitialLocation,
+      path: AppRoutePaths.splash,
       name: 'splash',
       builder: (context, state) => const SplashScreen(),
     ),
     GoRoute(
-      path: '/home',
+      path: AppRoutePaths.login,
+      name: 'login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.register,
+      name: 'register',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.home,
       name: 'home',
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
-      path: '/sizes',
+      path: AppRoutePaths.sizes,
       name: 'responsiveSizes',
       builder: (context, state) => const ResponsiveSizesScreen(),
     ),

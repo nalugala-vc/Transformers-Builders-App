@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'core/config/app_routes.dart';
+import 'core/utils/theme/app_pallete.dart';
 import 'features/auth/presentation/screens/splash_screen.dart';
 
 /// First screen shown after startup (see [appInitialLocation] in [appRouter]).
@@ -26,12 +27,25 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Transformers Church',
         debugShowCheckedModeBanner: false,
-        // Entry UI: [SplashScreen] at [appInitialLocation].
+        // Entry: [SplashScreen] at [appInitialLocation], then login (see [SplashScreen.displayDuration]).
         routerConfig: appRouter,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          textTheme: GoogleFonts.poppinsTextTheme(),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppPallete.tcBlue,
+            brightness: Brightness.light,
+          ),
+          scaffoldBackgroundColor: AppPallete.scaffoldBg,
+          textTheme: GoogleFonts.dmSansTextTheme(),
           useMaterial3: true,
+          checkboxTheme: CheckboxThemeData(
+            fillColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return AppPallete.tcBlue;
+              }
+              return AppPallete.tcWhite;
+            }),
+            checkColor: WidgetStateProperty.all(AppPallete.tcWhite),
+          ),
         ),
       ),
     );

@@ -3,4 +3,5 @@ abstract final class AuthAssets {
   AuthAssets._();
 
   static const String splash = 'assets/splashscreen.png';
+  static const String tcLogo = 'assets/tc-logo.png';
 }
