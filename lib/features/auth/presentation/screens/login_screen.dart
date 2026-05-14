@@ -130,11 +130,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: vm.isLoading || _googleLoading
+                          ? null
+                          : () {
+                              final e = _email.text.trim();
+                              final path = e.isEmpty
+                                  ? AppRoutePaths.forgotPassword
+                                  : '${AppRoutePaths.forgotPassword}?email=${Uri.encodeComponent(e)}';
+                              context.push(path);
+                            },
                       child: Text(
                         'Forgot password?',
                         style: GoogleFonts.dmSans(
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w700,
                           color: AppPallete.tcBlue,
                           fontSize: 14,
                         ),
@@ -176,7 +184,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: Text(
                           'Create account',
                           style: GoogleFonts.dmSans(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
                             color: AppPallete.tcBlue,
                             fontSize: 15,
                           ),

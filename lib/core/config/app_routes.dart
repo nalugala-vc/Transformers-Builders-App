@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_route_paths.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/home_screen.dart';
@@ -29,6 +31,22 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.register,
       name: 'register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.forgotPassword,
+      name: 'forgotPassword',
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'];
+        return ForgotPasswordScreen(initialEmail: email);
+      },
+    ),
+    GoRoute(
+      path: AppRoutePaths.otpVerification,
+      name: 'otpVerification',
+      builder: (context, state) {
+        final to = state.uri.queryParameters['to'];
+        return OtpVerificationScreen(destination: to);
+      },
     ),
     GoRoute(
       path: AppRoutePaths.home,

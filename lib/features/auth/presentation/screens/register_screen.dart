@@ -109,21 +109,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     return Scaffold(
       backgroundColor: AppPallete.tcWhite,
-      appBar: AppBar(
-        backgroundColor: AppPallete.tcWhite,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: AppPallete.textPrimary),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutePaths.login);
-            }
-          },
-        ),
-      ),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
@@ -242,7 +227,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: Text(
                           'Sign in',
                           style: GoogleFonts.dmSans(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
                             color: AppPallete.tcBlue,
                             fontSize: 15,
                           ),
