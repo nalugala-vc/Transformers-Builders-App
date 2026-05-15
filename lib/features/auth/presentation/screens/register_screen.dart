@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/navigation/auth_navigation.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../../data/repositories/google_auth_repository.dart';
@@ -76,12 +77,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
       if (!mounted) return;
       if (verified == true) {
-        context.go(AppRoutePaths.home);
+        await navigateToRoleHome(context, ref);
       }
       return;
     }
     if (result.success && result.goHome) {
-      context.go(AppRoutePaths.home);
+      await navigateToRoleHome(context, ref);
     }
   }
 
@@ -98,7 +99,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     try {
       await ref.read(googleAuthRepositoryProvider).signInWithGoogle();
       if (!mounted) return;
-      context.go(AppRoutePaths.home);
+      await navigateToRoleHome(context, ref);
     } on GoogleSignInUnavailableException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/navigation/auth_navigation.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../../data/repositories/google_auth_repository.dart';
@@ -41,7 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final vm = ref.read(loginViewModelProvider);
     final ok = await vm.submit(_email.text.trim(), _password.text);
     if (!mounted) return;
-    if (ok) context.go(AppRoutePaths.home);
+    if (ok) await navigateToRoleHome(context, ref);
   }
 
   Future<void> _onGoogleSignIn() async {
@@ -49,7 +50,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       await ref.read(googleAuthRepositoryProvider).signInWithGoogle();
       if (!mounted) return;
-      context.go(AppRoutePaths.home);
+      await navigateToRoleHome(context, ref);
     } on GoogleSignInUnavailableException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

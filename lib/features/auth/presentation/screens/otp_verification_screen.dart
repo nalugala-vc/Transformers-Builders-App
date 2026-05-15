@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/navigation/auth_navigation.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
@@ -115,7 +116,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
       if (context.canPop()) {
         context.pop(true);
       } else {
-        context.go(AppRoutePaths.home);
+        await navigateToRoleHome(context, ref);
       }
       return;
     }

@@ -8,6 +8,10 @@ abstract final class AppRoutePaths {
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
   static const String otpVerification = '/otp';
+  /// Legacy counter demo — prefer [memberHome] after sign-in.
   static const String home = '/home';
+
+  static const String memberHome = '/member';
+  static const String adminHome = '/admin';
   static const String sizes = '/sizes';
 }

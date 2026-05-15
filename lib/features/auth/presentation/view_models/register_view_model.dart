@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/user_profile_repository.dart';
 import '../models/otp_route_extra.dart';
 import '../providers/auth_providers.dart';
+import '../providers/user_profile_providers.dart';
 import '../utils/phone_display.dart';
 
 final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
@@ -31,9 +33,10 @@ final class RegisterSubmitResult {
 }
 
 class RegisterViewModel extends ChangeNotifier {
-  RegisterViewModel(this._auth);
+  RegisterViewModel(this._auth, this._profiles);
 
   final AuthRepository _auth;
+  final UserProfileRepository _profiles;
 
   String? fullNameError;
   String? emailError;
@@ -161,6 +164,23 @@ class RegisterViewModel extends ChangeNotifier {
         // Email templates may be off in dev; continue with phone verification.
       }
 
+      try {
+        await _profiles.createMemberProfile(
+          uid: createdUser.uid,
+          email: email.trim(),
+          fullName: fullName,
+          phoneE164: e164Phone,
+        );
+      } catch (e) {
+        await _auth.deleteCurrentUserAndSignOut();
+        passwordError = 'Could not save your account. Try again.';
+        if (kDebugMode) {
+          debugPrint('createMemberProfile failed: $e');
+        }
+        notifyListeners();
+        return RegisterSubmitResult.failure();
+      }
+
       final start = await _auth.startPhoneVerification(phoneNumber: e164Phone);
       if (start.kind == PhoneVerificationKind.autoLinked) {
         await _auth.reloadCurrentUser();
@@ -231,5 +251,8 @@ class RegisterViewModel extends ChangeNotifier {
 }
 
 final registerViewModelProvider = ChangeNotifierProvider.autoDispose<RegisterViewModel>(
-  (ref) => RegisterViewModel(ref.read(authRepositoryProvider)),
+  (ref) => RegisterViewModel(
+    ref.read(authRepositoryProvider),
+    ref.read(userProfileRepositoryProvider),
+  ),
 );

@@ -8,7 +8,9 @@ import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../presentation/screens/admin_home_screen.dart';
 import '../../presentation/screens/home_screen.dart';
+import '../../presentation/screens/member_home_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
 /// First route after app start — must match [GoRouter.initialLocation].
@@ -57,6 +59,16 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.home,
       name: 'home',
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.memberHome,
+      name: 'memberHome',
+      builder: (context, state) => const MemberHomeScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.adminHome,
+      name: 'adminHome',
+      builder: (context, state) => const AdminHomeScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.sizes,
