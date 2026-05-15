@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,12 +7,13 @@ import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
+import '../view_models/forgot_password_view_model.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_text_field.dart';
 
 /// Request a password reset email for the account tied to [initialEmail] (optional).
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({
     super.key,
     this.initialEmail,
@@ -21,13 +22,11 @@ class ForgotPasswordScreen extends StatefulWidget {
   final String? initialEmail;
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final _email = TextEditingController();
-  String? _emailError;
-  bool _loading = false;
 
   @override
   void initState() {
@@ -44,29 +43,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  bool _validateEmail() {
-    final raw = _email.text.trim();
-    if (raw.isEmpty) {
-      setState(() => _emailError = 'Enter your email address.');
-      return false;
-    }
-    final ok = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(raw);
-    if (!ok) {
-      setState(() => _emailError = 'Enter a valid email address.');
-      return false;
-    }
-    setState(() => _emailError = null);
-    return true;
-  }
-
   Future<void> _onSendLink() async {
     FocusScope.of(context).unfocus();
-    if (!_validateEmail()) return;
-
-    setState(() => _loading = true);
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text.trim());
-      if (!mounted) return;
+    final vm = ref.read(forgotPasswordViewModelProvider);
+    final ok = await vm.submit(_email.text);
+    if (!mounted) return;
+    if (ok) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -76,24 +58,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
       );
       context.pop();
-    } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _loading = false;
-        _emailError = e.message ?? 'Could not send reset email. Try again.';
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _loading = false;
-        _emailError = 'Something went wrong. Please try again.';
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     const maxContentWidth = 420.0;
+    final vm = ref.watch(forgotPasswordViewModelProvider);
 
     return Scaffold(
       backgroundColor: AppPallete.tcWhite,
@@ -127,7 +98,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     controller: _email,
                     label: 'Email',
                     hint: 'you@example.com',
-                    errorText: _emailError,
+                    errorText: vm.emailError,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
                     autocorrect: false,
@@ -136,12 +107,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(height: context.scaled.h24),
                   AuthPrimaryButton(
                     label: 'Send reset link',
-                    isLoading: _loading,
+                    isLoading: vm.isLoading,
                     onPressed: _onSendLink,
                   ),
                   SizedBox(height: context.scaled.h16),
                   TextButton(
-                    onPressed: _loading
+                    onPressed: vm.isLoading
                         ? null
                         : () {
                             if (context.canPop()) {

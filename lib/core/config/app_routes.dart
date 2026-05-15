@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_route_paths.dart';
+import '../../features/auth/presentation/models/otp_route_extra.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
@@ -44,6 +45,10 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.otpVerification,
       name: 'otpVerification',
       builder: (context, state) {
+        final ex = state.extra;
+        if (ex is OtpRouteExtra) {
+          return OtpVerificationScreen(extra: ex);
+        }
         final to = state.uri.queryParameters['to'];
         return OtpVerificationScreen(destination: to);
       },

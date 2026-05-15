@@ -8,7 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
-import '../../data/google_auth_repository.dart';
+import '../../data/repositories/google_auth_repository.dart';
 import '../auth_assets.dart';
 import '../providers/google_auth_provider.dart';
 import '../view_models/login_view_model.dart';

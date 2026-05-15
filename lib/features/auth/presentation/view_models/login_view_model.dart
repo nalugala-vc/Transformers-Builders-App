@@ -1,9 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/legacy.dart';
+
+import '../../data/repositories/auth_repository.dart';
+import '../providers/auth_providers.dart';
 
 final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
 class LoginViewModel extends ChangeNotifier {
+  LoginViewModel(this._auth);
+
+  final AuthRepository _auth;
+
   String? emailError;
   String? passwordError;
   bool isLoading = false;
@@ -14,7 +22,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Validates [email] and [plainPassword]. Returns true when both are valid.
   bool validate(String email, String plainPassword) {
     clearErrors();
     var valid = true;
@@ -45,16 +52,44 @@ class LoginViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      await Future<void>.delayed(const Duration(milliseconds: 600));
-      // TODO: wire Firebase Auth / API
+      await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: plainPassword,
+      );
       return true;
+    } on FirebaseAuthException catch (e) {
+      _mapLoginFirebaseError(e);
+      return false;
+    } catch (_) {
+      passwordError = 'Something went wrong. Try again.';
+      notifyListeners();
+      return false;
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
+
+  void _mapLoginFirebaseError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'invalid-email':
+        emailError = 'Enter a valid email';
+        break;
+      case 'user-disabled':
+        passwordError = 'This account has been disabled.';
+        break;
+      case 'user-not-found':
+      case 'wrong-password':
+      case 'invalid-credential':
+        passwordError = 'Wrong email or password';
+        break;
+      default:
+        passwordError = e.message ?? 'Sign-in failed';
+    }
+    notifyListeners();
+  }
 }
 
-final loginViewModelProvider = ChangeNotifierProvider.autoDispose(
-  (ref) => LoginViewModel(),
+final loginViewModelProvider = ChangeNotifierProvider.autoDispose<LoginViewModel>(
+  (ref) => LoginViewModel(ref.read(authRepositoryProvider)),
 );

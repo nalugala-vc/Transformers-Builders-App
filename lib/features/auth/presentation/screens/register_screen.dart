@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
-import '../../data/google_auth_repository.dart';
+import '../../data/repositories/google_auth_repository.dart';
 import '../auth_assets.dart';
 import '../providers/google_auth_provider.dart';
 import '../view_models/register_view_model.dart';
@@ -58,16 +58,39 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _onCreateAccount() async {
     final vm = ref.read(registerViewModelProvider);
-    final ok = await vm.submit(
+    final e164 = _buildE164Phone();
+    final result = await vm.submit(
       fullName: _fullName.text,
       email: _email.text.trim(),
+      e164Phone: e164,
       nationalPhoneDigits: _phone.text,
       plainPassword: _password.text,
       confirmPassword: _confirmPassword.text,
       agreeToTerms: _agreeToTerms,
     );
     if (!mounted) return;
-    if (ok) context.go(AppRoutePaths.home);
+    if (result.success && result.otp != null) {
+      final verified = await context.push<bool>(
+        AppRoutePaths.otpVerification,
+        extra: result.otp,
+      );
+      if (!mounted) return;
+      if (verified == true) {
+        context.go(AppRoutePaths.home);
+      }
+      return;
+    }
+    if (result.success && result.goHome) {
+      context.go(AppRoutePaths.home);
+    }
+  }
+
+  /// National digits + [CountryCode.dialCode] → E.164 for Firebase Phone Auth.
+  String _buildE164Phone() {
+    var d = _phone.text.replaceAll(RegExp(r'\D'), '');
+    if (d.startsWith('0')) d = d.substring(1);
+    final dial = (_countryCode.dialCode ?? '').replaceAll(RegExp(r'\D'), '');
+    return '+$dial$d';
   }
 
   Future<void> _onGoogleSignUp() async {

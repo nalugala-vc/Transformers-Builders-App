@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,36 +9,42 @@ import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
+import '../models/otp_route_extra.dart';
+import '../view_models/otp_view_model.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_primary_button.dart';
 
-/// One-time code entry. Open with
-/// `context.push('${AppRoutePaths.otpVerification}?to=${Uri.encodeComponent(emailOrPhone)}')`.
-class OtpVerificationScreen extends StatefulWidget {
+/// Phone SMS verification after registration ([extra]) or legacy query-only [destination].
+class OtpVerificationScreen extends ConsumerStatefulWidget {
   const OtpVerificationScreen({
     super.key,
+    this.extra,
     this.destination,
   });
 
-  /// Where the code was sent (email or phone). Prefer passing via route query `to`.
+  /// Firebase phone verification session (from registration).
+  final OtpRouteExtra? extra;
+
+  /// Optional display hint when [extra] is null (e.g. deep link `?to=`).
   final String? destination;
 
   @override
-  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+  ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
-class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
+class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   static const int _codeLength = 6;
 
   List<TextEditingController?>? _otpControllers;
   bool _otpListenersBound = false;
-  bool _loading = false;
   int _resendSeconds = 60;
   bool _otpFieldKey = false;
 
   String get _destinationLabel {
+    final extra = widget.extra;
+    if (extra != null) return extra.maskedDestination;
     final raw = widget.destination?.trim();
-    if (raw == null || raw.isEmpty) return 'your phone or email';
+    if (raw == null || raw.isEmpty) return 'your phone';
     return _maskDestination(raw);
   }
 
@@ -90,16 +97,32 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   Future<void> _submitCode(String code) async {
-    if (code.length != _codeLength) return;
-    setState(() => _loading = true);
-    // Replace with Firebase / backend verification.
-    await Future<void>.delayed(const Duration(milliseconds: 600));
+    final extra = widget.extra;
+    if (extra == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Open this screen from Create account to verify your phone.'),
+        ),
+      );
+      return;
+    }
+
+    final vm = ref.read(otpViewModelProvider(extra));
+    final ok = await vm.verifySms(code);
     if (!mounted) return;
-    setState(() => _loading = false);
-    if (context.canPop()) {
-      context.pop(code);
-    } else {
-      context.go(AppRoutePaths.home);
+    if (ok) {
+      if (context.canPop()) {
+        context.pop(true);
+      } else {
+        context.go(AppRoutePaths.home);
+      }
+      return;
+    }
+    if (vm.verifyError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(vm.verifyError!)),
+      );
     }
   }
 
@@ -114,8 +137,21 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     _submitCode(code);
   }
 
-  void _onResend() {
+  Future<void> _onResend() async {
     if (_resendSeconds > 0) return;
+    final extra = widget.extra;
+    if (extra == null) return;
+
+    final vm = ref.read(otpViewModelProvider(extra));
+    final ok = await vm.resendSms();
+    if (!mounted) return;
+    if (!ok && vm.resendError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(vm.resendError!)),
+      );
+      return;
+    }
+
     _detachOtpListeners();
     _otpControllers = null;
     setState(() {
@@ -132,7 +168,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   Widget build(BuildContext context) {
     const maxContentWidth = 420.0;
     final fieldWidth = context.layoutSizeClass == AppLayoutSizeClass.compact ? 46.0 : 52.0;
+    final extra = widget.extra;
+    final vm = extra != null ? ref.watch(otpViewModelProvider(extra)) : null;
     final otpComplete = _currentOtp.length == _codeLength;
+    final busy = vm?.isLoading == true || vm?.isResending == true;
 
     return Scaffold(
       backgroundColor: AppPallete.tcWhite,
@@ -178,12 +217,23 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     subtitle:
                         'Enter the $_codeLength-digit code we sent to $_destinationLabel.',
                   ),
+                  if (extra == null) ...[
+                    SizedBox(height: context.scaled.h12),
+                    Text(
+                      'This step is used after you create an account so we can confirm your phone number.',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 14,
+                        color: AppPallete.textSecondary,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
                   SizedBox(height: context.scaled.h28),
                   KeyedSubtree(
                     key: ValueKey(_otpFieldKey),
                     child: OtpTextField(
                       numberOfFields: _codeLength,
-                      autoFocus: true,
+                      autoFocus: extra != null,
                       showFieldAsBox: true,
                       filled: true,
                       fillColor: AppPallete.inputFill,
@@ -209,14 +259,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         _otpControllers = controllers;
                         _bindOtpListenersIfReady(controllers);
                       },
-                      onSubmit: _submitCode,
+                      onSubmit: extra != null ? _submitCode : (_) {},
                     ),
                   ),
                   SizedBox(height: context.scaled.h24),
                   AuthPrimaryButton(
                     label: 'Verify',
-                    isLoading: _loading,
-                    onPressed: otpComplete && !_loading ? _onVerifyPressed : null,
+                    isLoading: vm?.isLoading == true,
+                    onPressed: extra != null && otpComplete && !busy ? _onVerifyPressed : null,
                   ),
                   SizedBox(height: context.scaled.h20),
                   Row(
@@ -231,7 +281,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: _resendSeconds > 0 ? null : _onResend,
+                        onPressed: extra == null || _resendSeconds > 0 || vm?.isResending == true
+                            ? null
+                            : _onResend,
                         child: Text(
                           _resendSeconds > 0 ? 'Resend in ${_resendSeconds}s' : 'Resend',
                           style: GoogleFonts.dmSans(
