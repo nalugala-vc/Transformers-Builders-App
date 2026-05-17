@@ -13,16 +13,11 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/admin_home_screen.dart';
 import '../../presentation/screens/home_screen.dart';
-import '../../presentation/screens/member_home_screen.dart';
+import '../../features/member/presentation/screens/member_shell_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
-/// Set to `false` when you are done polishing the OTP screen UI.
-const bool kOpenOtpOnLaunch = true;
-
 /// First route after app start — must match [GoRouter.initialLocation].
-const String appInitialLocation = kOpenOtpOnLaunch
-    ? AppRoutePaths.otpVerification
-    : AppRoutePaths.splash;
+const String appInitialLocation = AppRoutePaths.splash;
 
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
@@ -74,8 +69,7 @@ final GoRouter appRouter = GoRouter(
             ? fromExtra
             : ProviderScope.containerOf(context).read(
                 pendingRegistrationOtpProvider,
-              ) ??
-                (kOpenOtpOnLaunch ? OtpRouteExtra.preview : null);
+              );
         if (ex != null) {
           return OtpVerificationScreen(extra: ex);
         }
@@ -91,7 +85,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutePaths.memberHome,
       name: 'memberHome',
-      builder: (context, state) => const MemberHomeScreen(),
+      builder: (context, state) => const MemberShellScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.adminHome,
