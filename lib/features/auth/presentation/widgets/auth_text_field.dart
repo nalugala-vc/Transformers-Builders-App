@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/utils/theme/app_pallete.dart';
 
-class AuthTextField extends StatelessWidget {
+class AuthTextField extends StatefulWidget {
   const AuthTextField({
     super.key,
     required this.controller,
@@ -28,24 +28,47 @@ class AuthTextField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
 
   @override
+  State<AuthTextField> createState() => _AuthTextFieldState();
+}
+
+class _AuthTextFieldState extends State<AuthTextField> {
+  late bool _obscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscured = widget.obscureText;
+  }
+
+  @override
+  void didUpdateWidget(AuthTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!oldWidget.obscureText && widget.obscureText) {
+      _obscured = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isPassword = widget.obscureText;
+
     return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      autocorrect: autocorrect,
-      enableSuggestions: !obscureText,
-      onSubmitted: onSubmitted,
+      controller: widget.controller,
+      obscureText: isPassword && _obscured,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      autocorrect: widget.autocorrect,
+      enableSuggestions: !isPassword,
+      onSubmitted: widget.onSubmitted,
       style: GoogleFonts.dmSans(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: AppPallete.textPrimary,
       ),
       decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        errorText: errorText,
+        labelText: widget.label,
+        hintText: widget.hint,
+        errorText: widget.errorText,
         labelStyle: GoogleFonts.dmSans(
           color: AppPallete.textSecondary,
           fontWeight: FontWeight.w400,
@@ -82,6 +105,16 @@ class AuthTextField extends StatelessWidget {
           borderSide: const BorderSide(color: AppPallete.errorRed),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        suffixIcon: isPassword
+            ? IconButton(
+                onPressed: () => setState(() => _obscured = !_obscured),
+                icon: Icon(
+                  _obscured ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                  color: AppPallete.textMuted,
+                ),
+                tooltip: _obscured ? 'Show password' : 'Hide password',
+              )
+            : null,
       ),
     );
   }

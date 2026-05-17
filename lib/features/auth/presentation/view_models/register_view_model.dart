@@ -4,10 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/config/app_routes.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../models/otp_route_extra.dart';
 import '../providers/auth_providers.dart';
+import '../providers/registration_flow_providers.dart';
 import '../providers/user_profile_providers.dart';
 import '../utils/phone_display.dart';
 
@@ -34,11 +37,20 @@ final class RegisterSubmitResult {
       const RegisterSubmitResult._(success: true, goHome: true);
 }
 
+typedef OnRegistrationOtpReady = void Function(OtpRouteExtra otp);
+
 class RegisterViewModel extends ChangeNotifier {
-  RegisterViewModel(this._auth, this._profiles);
+  RegisterViewModel(
+    this._auth,
+    this._profiles, {
+    OnRegistrationOtpReady? onOtpReady,
+  }) : _onOtpReady = onOtpReady;
 
   final AuthRepository _auth;
   final UserProfileRepository _profiles;
+  final OnRegistrationOtpReady? _onOtpReady;
+
+  bool _disposed = false;
 
   String? fullNameError;
   String? emailError;
@@ -47,6 +59,18 @@ class RegisterViewModel extends ChangeNotifier {
   String? confirmPasswordError;
   String? termsError;
   bool isLoading = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (_disposed) return;
+    super.notifyListeners();
+  }
 
   void clearErrors() {
     fullNameError = null;
@@ -205,14 +229,14 @@ class RegisterViewModel extends ChangeNotifier {
           throw StateError('Missing verification id from Firebase.');
         }
         final masked = maskE164ForDisplay(e164Phone);
-        return RegisterSubmitResult.needsOtp(
-          OtpRouteExtra(
-            verificationId: vid,
-            e164Phone: e164Phone,
-            forceResendingToken: start.forceResendingToken,
-            maskedDestination: masked,
-          ),
+        final otpExtra = OtpRouteExtra(
+          verificationId: vid,
+          e164Phone: e164Phone,
+          forceResendingToken: start.forceResendingToken,
+          maskedDestination: masked,
         );
+        _onOtpReady?.call(otpExtra);
+        return RegisterSubmitResult.needsOtp(otpExtra);
       }
 
       if (kDebugMode) {
@@ -279,9 +303,13 @@ class RegisterViewModel extends ChangeNotifier {
   }
 }
 
-final registerViewModelProvider = ChangeNotifierProvider.autoDispose<RegisterViewModel>(
+final registerViewModelProvider = ChangeNotifierProvider<RegisterViewModel>(
   (ref) => RegisterViewModel(
     ref.read(authRepositoryProvider),
     ref.read(userProfileRepositoryProvider),
+    onOtpReady: (otp) {
+      ref.read(pendingRegistrationOtpProvider.notifier).state = otp;
+      appRouter.go(AppRoutePaths.otpVerification, extra: otp);
+    },
   ),
 );

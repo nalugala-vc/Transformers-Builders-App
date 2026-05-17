@@ -71,14 +71,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     );
     if (!mounted) return;
     if (result.success && result.otp != null) {
-      final verified = await context.push<bool>(
-        AppRoutePaths.otpVerification,
-        extra: result.otp,
-      );
-      if (!mounted) return;
-      if (verified == true) {
-        await navigateToRoleHome(context, ref);
-      }
       return;
     }
     if (result.success && result.goHome) {

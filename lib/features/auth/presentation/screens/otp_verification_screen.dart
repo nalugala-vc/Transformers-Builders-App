@@ -11,6 +11,7 @@ import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
 import '../models/otp_route_extra.dart';
+import '../providers/registration_flow_providers.dart';
 import '../view_models/otp_view_model.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_primary_button.dart';
@@ -113,11 +114,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     final ok = await vm.verifySms(code);
     if (!mounted) return;
     if (ok) {
-      if (context.canPop()) {
-        context.pop(true);
-      } else {
-        await navigateToRoleHome(context, ref);
-      }
+      ref.read(pendingRegistrationOtpProvider.notifier).state = null;
+      await navigateToRoleHome(context, ref);
       return;
     }
     if (vm.verifyError != null) {
@@ -168,7 +166,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     const maxContentWidth = 420.0;
-    final fieldWidth = context.layoutSizeClass == AppLayoutSizeClass.compact ? 46.0 : 52.0;
+    const otpFieldGap = 6.0;
+    const otpFieldHeight = 58.0;
     final extra = widget.extra;
     final vm = extra != null ? ref.watch(otpViewModelProvider(extra)) : null;
     final otpComplete = _currentOtp.length == _codeLength;
@@ -183,11 +182,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded, color: AppPallete.textPrimary),
           onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutePaths.login);
-            }
+            ref.read(pendingRegistrationOtpProvider.notifier).state = null;
+            context.go(AppRoutePaths.login);
           },
         ),
       ),
@@ -208,7 +204,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                   Center(
                     child: Image.asset(
                       AuthAssets.messageIcon,
-                      height: context.scaled.h80,
+                      height: context.scaled.h(112),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -230,38 +226,58 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                     ),
                   ],
                   SizedBox(height: context.scaled.h28),
-                  KeyedSubtree(
-                    key: ValueKey(_otpFieldKey),
-                    child: OtpTextField(
-                      numberOfFields: _codeLength,
-                      autoFocus: extra != null,
-                      showFieldAsBox: true,
-                      filled: true,
-                      fillColor: AppPallete.inputFill,
-                      borderWidth: 1.5,
-                      borderRadius: BorderRadius.circular(12),
-                      fieldWidth: fieldWidth,
-                      fieldHeight: 52,
-                      margin: const EdgeInsets.only(right: 8),
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      keyboardType: TextInputType.number,
-                      cursorColor: AppPallete.tcBlue,
-                      enabledBorderColor: AppPallete.border,
-                      borderColor: AppPallete.border,
-                      focusedBorderColor: AppPallete.tcBlue,
-                      disabledBorderColor: AppPallete.border,
-                      textStyle: GoogleFonts.dmSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: AppPallete.textPrimary,
-                      ),
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      handleControllers: (controllers) {
-                        _otpControllers = controllers;
-                        _bindOtpListenersIfReady(controllers);
-                      },
-                      onSubmit: extra != null ? _submitCode : (_) {},
-                    ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final fieldWidth = ((constraints.maxWidth -
+                                  otpFieldGap * _codeLength) /
+                              _codeLength)
+                          .clamp(50.0, 58.0);
+                      final rowWidth =
+                          fieldWidth * _codeLength + otpFieldGap * _codeLength;
+
+                      return Center(
+                        child: SizedBox(
+                          width: rowWidth,
+                          child: KeyedSubtree(
+                            key: ValueKey(_otpFieldKey),
+                            child: OtpTextField(
+                              numberOfFields: _codeLength,
+                              autoFocus: extra != null,
+                              showFieldAsBox: true,
+                              filled: true,
+                              fillColor: AppPallete.inputFill,
+                              borderWidth: 1.5,
+                              borderRadius: BorderRadius.circular(12),
+                              fieldWidth: fieldWidth,
+                              fieldHeight: otpFieldHeight,
+                              margin: const EdgeInsets.only(right: otpFieldGap),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              keyboardType: TextInputType.number,
+                              cursorColor: AppPallete.tcBlue,
+                              enabledBorderColor: AppPallete.border,
+                              borderColor: AppPallete.border,
+                              focusedBorderColor: AppPallete.tcBlue,
+                              disabledBorderColor: AppPallete.border,
+                              contentPadding: EdgeInsets.zero,
+                              textStyle: GoogleFonts.dmSans(
+                                fontSize: 24,
+                                height: 1.0,
+                                fontWeight: FontWeight.w600,
+                                color: AppPallete.textPrimary,
+                              ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              handleControllers: (controllers) {
+                                _otpControllers = controllers;
+                                _bindOtpListenersIfReady(controllers);
+                              },
+                              onSubmit: extra != null ? _submitCode : (_) {},
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(height: context.scaled.h24),
                   AuthPrimaryButton(

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>1046811852767-i4agr9kdkgnn3ge2von28qri20ueu9rg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1046811852767-i4agr9kdkgnn3ge2von28qri20ueu9rg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1046811852767-iqjmerihsgae3g0v3evk1lm0u7radsvr.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDZRZzpmrAD32nyG-hGO9MOY_VBHTej0Sk</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.transformersBuilders</string>
+	<string>com.transformersbuilders.app</string>
 	<key>PROJECT_ID</key>
 	<string>transformers-builders</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1046811852767:ios:1570941bfe7f77a0db8e6a</string>
+	<string>1:1046811852767:ios:32d9b80ee8bac2a8db8e6a</string>
 </dict>
 </plist>

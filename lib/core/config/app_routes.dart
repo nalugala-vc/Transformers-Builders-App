@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/providers/registration_flow_providers.dart';
+import '../navigation/firebase_auth_deep_link.dart';
 import 'app_route_paths.dart';
 import '../../features/auth/presentation/models/otp_route_extra.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
@@ -13,12 +16,31 @@ import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/member_home_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
+/// Set to `false` when you are done polishing the OTP screen UI.
+const bool kOpenOtpOnLaunch = true;
+
 /// First route after app start — must match [GoRouter.initialLocation].
-const String appInitialLocation = AppRoutePaths.splash;
+const String appInitialLocation = kOpenOtpOnLaunch
+    ? AppRoutePaths.otpVerification
+    : AppRoutePaths.splash;
 
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
   initialLocation: appInitialLocation,
+  onEnter: (context, current, next, router) async {
+    if (isFirebaseAuthRecaptchaCallback(next.uri)) {
+      final pending = ProviderScope.containerOf(context).read(
+        pendingRegistrationOtpProvider,
+      );
+      if (pending != null) {
+        return Block.then(
+          () => router.go(AppRoutePaths.otpVerification, extra: pending),
+        );
+      }
+      return const Block.stop();
+    }
+    return const Allow();
+  },
   routes: [
     GoRoute(
       path: AppRoutePaths.splash,
@@ -47,8 +69,14 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.otpVerification,
       name: 'otpVerification',
       builder: (context, state) {
-        final ex = state.extra;
-        if (ex is OtpRouteExtra) {
+        final fromExtra = state.extra;
+        final ex = fromExtra is OtpRouteExtra
+            ? fromExtra
+            : ProviderScope.containerOf(context).read(
+                pendingRegistrationOtpProvider,
+              ) ??
+                (kOpenOtpOnLaunch ? OtpRouteExtra.preview : null);
+        if (ex != null) {
           return OtpVerificationScreen(extra: ex);
         }
         final to = state.uri.queryParameters['to'];

@@ -16,6 +16,13 @@ final class OtpRouteExtra {
   final int? forceResendingToken;
   final String maskedDestination;
 
+  /// Sample data when opening the OTP screen on launch for UI work ([kDebugMode] only).
+  static const preview = OtpRouteExtra(
+    verificationId: 'preview-verification-id',
+    e164Phone: '+254759890740',
+    maskedDestination: '+254 ••• ••90',
+  );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

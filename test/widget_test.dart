@@ -17,8 +17,9 @@ import 'package:transformers_builders/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: MyApp()));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
+    appRouter.go(AppRoutePaths.splash);
     await tester.pump(SplashScreen.displayDuration + const Duration(milliseconds: 50));
     await tester.pumpAndSettle();
 
