@@ -72,6 +72,11 @@ class LoginViewModel extends ChangeNotifier {
 
   void _mapLoginFirebaseError(FirebaseAuthException e) {
     switch (e.code) {
+      case 'channel-error':
+        passwordError =
+            'Connection lost to sign-in services. Fully stop the app and run again '
+            '(avoid Hot Restart before signing in).';
+        break;
       case 'invalid-email':
         emailError = 'Enter a valid email';
         break;

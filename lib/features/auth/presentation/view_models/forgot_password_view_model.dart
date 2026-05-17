@@ -50,6 +50,12 @@ class ForgotPasswordViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
+      if (e.code == 'channel-error') {
+        emailError =
+            'Connection lost. Stop the app completely and run again (avoid Hot Restart).';
+        notifyListeners();
+        return false;
+      }
       // Avoid account enumeration for missing users / network quirks.
       return true;
     } catch (_) {

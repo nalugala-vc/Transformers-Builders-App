@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -151,7 +153,11 @@ class RegisterViewModel extends ChangeNotifier {
 
       try {
         await _auth.updateDisplayName(createdUser, fullName);
-      } catch (e) {
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint('[Register] updateDisplayName failed: $e');
+          debugPrint('$st');
+        }
         await _auth.deleteCurrentUserAndSignOut();
         passwordError = 'Could not save your profile. Try again.';
         notifyListeners();
@@ -160,7 +166,11 @@ class RegisterViewModel extends ChangeNotifier {
 
       try {
         await _auth.sendEmailVerification(createdUser);
-      } catch (_) {
+      } catch (e, st) {
+        if (kDebugMode) {
+          debugPrint('[Register] sendEmailVerification failed (non-fatal): $e');
+          debugPrint('$st');
+        }
         // Email templates may be off in dev; continue with phone verification.
       }
 
@@ -171,11 +181,14 @@ class RegisterViewModel extends ChangeNotifier {
           fullName: fullName,
           phoneE164: e164Phone,
         );
-      } catch (e) {
+      } catch (e, st) {
         await _auth.deleteCurrentUserAndSignOut();
-        passwordError = 'Could not save your account. Try again.';
+        passwordError = e is TimeoutException
+            ? e.message ?? 'Could not reach the server. Check your connection and try again.'
+            : 'Could not save your account. Try again.';
         if (kDebugMode) {
-          debugPrint('createMemberProfile failed: $e');
+          debugPrint('[Register] createMemberProfile failed: $e');
+          debugPrint('$st');
         }
         notifyListeners();
         return RegisterSubmitResult.failure();
@@ -202,15 +215,25 @@ class RegisterViewModel extends ChangeNotifier {
         );
       }
 
+      if (kDebugMode) {
+        debugPrint(
+          '[Register] Unexpected phone verification result kind=${start.kind}',
+        );
+      }
       return RegisterSubmitResult.failure();
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e, st) {
+      if (kDebugMode) {
+        debugPrint('[Register] FirebaseAuthException: ${e.code} ${e.message}');
+        debugPrint('$st');
+      }
       _mapRegisterFirebaseError(e);
       await _cleanupFailedRegistration(createdUser);
       return RegisterSubmitResult.failure();
-    } catch (e) {
+    } catch (e, st) {
       phoneError ??= 'Could not send verification SMS. Check the number and try again.';
       if (kDebugMode) {
-        debugPrint('Register submit error: $e');
+        debugPrint('[Register] submit error: $e');
+        debugPrint('$st');
       }
       notifyListeners();
       await _cleanupFailedRegistration(createdUser);
@@ -228,6 +251,12 @@ class RegisterViewModel extends ChangeNotifier {
 
   void _mapRegisterFirebaseError(FirebaseAuthException e) {
     switch (e.code) {
+      case 'channel-error':
+        // Hot restart / isolate mismatch — native Firebase Auth channel is gone.
+        passwordError =
+            'Connection lost to sign-in services. Fully stop the app and run again '
+            '(do not use Hot Restart when signing up).';
+        break;
       case 'email-already-in-use':
         emailError = 'This email is already registered';
         break;

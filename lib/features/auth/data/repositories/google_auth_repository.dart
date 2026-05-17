@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../firebase_auth_logger.dart';
+
 /// Google OAuth via [GoogleSignIn.instance.authenticate], then Firebase session
 /// with [GoogleAuthProvider.credential] (Google’s ID token endpoint).
 ///
@@ -21,6 +23,7 @@ class GoogleAuthRepository {
     try {
       await GoogleSignIn.instance.initialize();
       _initOk = true;
+      logFirebaseAuth('GoogleSignIn.initialize', 'success');
     } on PlatformException catch (e, st) {
       _initOk = false;
       if (kDebugMode) {
@@ -39,20 +42,36 @@ class GoogleAuthRepository {
   Future<void> signInWithGoogle() async {
     await _ensureGoogleSignInReady();
     try {
+      logFirebaseAuth('GoogleSignIn.authenticate', 'start');
       final account = await GoogleSignIn.instance.authenticate(
         scopeHint: const ['email', 'profile'],
       );
+      logFirebaseAuth(
+        'GoogleSignIn.authenticate',
+        'displayName=${account.displayName}, email=${account.email}',
+      );
       final idToken = account.authentication.idToken;
       if (idToken == null) {
+        logFirebaseAuth('GoogleSignIn.authenticate', 'error=noIdToken');
         throw StateError('Google Sign-In did not return an ID token.');
       }
-      await FirebaseAuth.instance.signInWithCredential(
+      logFirebaseAuth(
+        'signInWithCredential (Google)',
+        'idTokenLength=${idToken.length}',
+      );
+      final userCred = await FirebaseAuth.instance.signInWithCredential(
         GoogleAuthProvider.credential(idToken: idToken),
       );
+      logUserCredential('signInWithGoogle', userCred);
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) {
+        logFirebaseAuth('GoogleSignIn.authenticate', 'canceled');
         return;
       }
+      logFirebaseAuth(
+        'GoogleSignIn.authenticate',
+        'GoogleSignInException code=${e.code} description=${e.description}',
+      );
       rethrow;
     }
   }
