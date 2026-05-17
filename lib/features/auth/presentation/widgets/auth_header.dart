@@ -23,7 +23,7 @@ class AuthHeader extends StatelessWidget {
           style: GoogleFonts.dmSans(
             fontSize: 28,
             fontWeight: FontWeight.w700,
-            color: AppPallete.tcBlueDark,
+            color: AppPallete.tcBlueBright,
             height: 1.2,
           ),
         ),

@@ -144,7 +144,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         'Forgot password?',
                         style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w700,
-                          color: AppPallete.tcBlue,
+                          color: AppPallete.tcBlueBright,
                           fontSize: 14,
                         ),
                       ),
@@ -186,7 +186,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           'Create account',
                           style: GoogleFonts.dmSans(
                             fontWeight: FontWeight.w700,
-                            color: AppPallete.tcBlue,
+                            color: AppPallete.tcBlueBright,
                             fontSize: 15,
                           ),
                         ),

@@ -125,7 +125,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                       'Back to sign in',
                       style: GoogleFonts.dmSans(
                         fontWeight: FontWeight.w600,
-                        color: AppPallete.tcBlue,
+                        color: AppPallete.tcBlueBright,
                         fontSize: 15,
                       ),
                     ),

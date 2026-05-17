@@ -55,7 +55,7 @@ Future<void> showActivityDetailSheet(
               style: GoogleFonts.dmSans(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: AppPallete.tcBlue,
+                color: AppPallete.tcBlueBright,
               ),
             ),
             const SizedBox(height: 20),
@@ -75,7 +75,7 @@ Future<void> showActivityDetailSheet(
               child: FilledButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: FilledButton.styleFrom(
-                  backgroundColor: AppPallete.tcBlueLight,
+                  backgroundColor: AppPallete.tcBlueBright,
                   foregroundColor: AppPallete.tcWhite,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),

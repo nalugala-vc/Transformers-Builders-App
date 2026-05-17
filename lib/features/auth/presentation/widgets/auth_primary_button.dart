@@ -23,9 +23,9 @@ class AuthPrimaryButton extends StatelessWidget {
       child: FilledButton(
         onPressed: isLoading ? null : onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: AppPallete.tcBlue,
+          backgroundColor: AppPallete.tcBlueBright,
           foregroundColor: AppPallete.tcWhite,
-          disabledBackgroundColor: AppPallete.tcBlue.withValues(alpha: 0.45),
+          disabledBackgroundColor: AppPallete.tcBlueBright.withValues(alpha: 0.45),
           disabledForegroundColor: AppPallete.tcWhite.withValues(alpha: 0.85),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,

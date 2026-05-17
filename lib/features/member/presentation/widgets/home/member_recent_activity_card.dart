@@ -46,7 +46,7 @@ class MemberRecentActivityCard extends StatelessWidget {
                   style: GoogleFonts.dmSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: AppPallete.tcBlue,
+                    color: AppPallete.tcBlueBright,
                   ),
                 ),
               ],
@@ -84,13 +84,13 @@ class MemberRecentActivityCard extends StatelessWidget {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF2D5BE3).withValues(alpha: 0.08),
+                                  color: AppPallete.tcBlueBright.withValues(alpha: 0.08),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(
                                   Icons.payments_outlined,
                                   size: 20,
-                                  color: Color(0xFF2D5BE3),
+                                  color: AppPallete.tcBlueBright,
                                 ),
                               ),
                               const SizedBox(width: 14),

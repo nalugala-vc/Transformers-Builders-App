@@ -253,10 +253,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                               margin: const EdgeInsets.only(right: otpFieldGap),
                               mainAxisAlignment: MainAxisAlignment.start,
                               keyboardType: TextInputType.number,
-                              cursorColor: AppPallete.tcBlue,
+                              cursorColor: AppPallete.tcBlueBright,
                               enabledBorderColor: AppPallete.border,
                               borderColor: AppPallete.border,
-                              focusedBorderColor: AppPallete.tcBlue,
+                              focusedBorderColor: AppPallete.tcBlueBright,
                               disabledBorderColor: AppPallete.border,
                               contentPadding: EdgeInsets.zero,
                               textStyle: GoogleFonts.dmSans(
@@ -306,7 +306,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                           style: GoogleFonts.dmSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: _resendSeconds > 0 ? AppPallete.textMuted : AppPallete.tcBlue,
+                            color: _resendSeconds > 0 ? AppPallete.textMuted : AppPallete.tcBlueBright,
                           ),
                         ),
                       ),

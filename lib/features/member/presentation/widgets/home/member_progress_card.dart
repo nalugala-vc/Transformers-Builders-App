@@ -27,7 +27,7 @@ class MemberProgressCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF2D5BE3), Color(0xFF1A3BAA)],
+          colors: [AppPallete.tcBlueBright, AppPallete.tcBlueBrightDark],
         ),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -159,10 +159,10 @@ class MemberSetGoalCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppPallete.tcBlue.withValues(alpha: 0.08),
+              color: AppPallete.tcBlueBright.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(Icons.flag_rounded, color: AppPallete.tcBlue, size: 24),
+            child: const Icon(Icons.flag_rounded, color: AppPallete.tcBlueBright, size: 24),
           ),
           const SizedBox(height: 16),
           Text(
@@ -189,7 +189,7 @@ class MemberSetGoalCard extends StatelessWidget {
             child: FilledButton(
               onPressed: onSetGoal,
               style: FilledButton.styleFrom(
-                backgroundColor: AppPallete.tcBlue,
+                backgroundColor: AppPallete.tcBlueBright,
                 foregroundColor: AppPallete.tcWhite,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 elevation: 0,
@@ -232,7 +232,7 @@ class _CardButton extends StatelessWidget {
               ? AppPallete.tcWhite
               : Colors.white.withValues(alpha: 0.12),
           disabledBackgroundColor: Colors.white.withValues(alpha: 0.07),
-          foregroundColor: isPrimary ? AppPallete.tcBlue : AppPallete.tcWhite,
+          foregroundColor: isPrimary ? AppPallete.tcBlueBright : AppPallete.tcWhite,
           disabledForegroundColor: Colors.white.withValues(alpha: 0.4),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,

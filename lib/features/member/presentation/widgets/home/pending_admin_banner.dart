@@ -21,10 +21,10 @@ class PendingAdminBanner extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: AppPallete.tcBlue.withValues(alpha: 0.12),
+              color: AppPallete.tcBlueBright.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.schedule_rounded, color: AppPallete.tcBlue, size: 16),
+            child: const Icon(Icons.schedule_rounded, color: AppPallete.tcBlueBright, size: 16),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -33,7 +33,7 @@ class PendingAdminBanner extends StatelessWidget {
               style: GoogleFonts.dmSans(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
-                color: AppPallete.tcBlue,
+                color: AppPallete.tcBlueBright,
               ),
             ),
           ),
@@ -42,7 +42,7 @@ class PendingAdminBanner extends StatelessWidget {
             child: Icon(
               Icons.close_rounded,
               size: 18,
-              color: AppPallete.tcBlue.withValues(alpha: 0.5),
+              color: AppPallete.tcBlueBright.withValues(alpha: 0.5),
             ),
           ),
         ],

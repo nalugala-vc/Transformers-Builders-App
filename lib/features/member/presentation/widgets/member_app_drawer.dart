@@ -55,7 +55,7 @@ class MemberAppDrawer extends StatelessWidget {
                 style: GoogleFonts.dmSans(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: AppPallete.tcBlue,
+                  color: AppPallete.tcBlueBright,
                 ),
               ),
             ),
@@ -66,7 +66,7 @@ class MemberAppDrawer extends StatelessWidget {
                 children: [
                   for (final item in _items)
                     ListTile(
-                      leading: Icon(item.icon, color: AppPallete.tcBlueLight, size: 22),
+                      leading: Icon(item.icon, color: AppPallete.tcBlueBright, size: 22),
                       title: Text(
                         item.label,
                         style: GoogleFonts.dmSans(

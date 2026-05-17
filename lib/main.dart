@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         routerConfig: appRouter,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: AppPallete.tcBlue,
+            seedColor: AppPallete.tcBlueBright,
             brightness: Brightness.light,
           ),
           scaffoldBackgroundColor: AppPallete.scaffoldBg,
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           checkboxTheme: CheckboxThemeData(
             fillColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.selected)) {
-                return AppPallete.tcBlue;
+                return AppPallete.tcBlueBright;
               }
               return AppPallete.tcWhite;
             }),

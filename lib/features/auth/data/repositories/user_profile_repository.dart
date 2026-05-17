@@ -60,6 +60,15 @@ class UserProfileRepository {
     );
   }
 
+  Future<void> updateFullName(String uid, String fullName) async {
+    logAuthFirestore('updateFullName', 'uid=$uid');
+    await _users.doc(uid).update({
+      'fullName': fullName.trim(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+    logAuthFirestore('updateFullName', 'uid=$uid success');
+  }
+
   Future<void> updatePhone(String uid, String phoneE164) async {
     logAuthFirestore('updatePhone', 'uid=$uid');
     await _users.doc(uid).update({

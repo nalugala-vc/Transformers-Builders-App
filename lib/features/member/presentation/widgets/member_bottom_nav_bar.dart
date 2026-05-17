@@ -44,14 +44,14 @@ class MemberBottomNavBar extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 7),
                           decoration: BoxDecoration(
                             color: selected
-                                ? AppPallete.tcBlue.withValues(alpha: 0.1)
+                                ? AppPallete.tcBlueBright.withValues(alpha: 0.1)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
                             selected ? _filledIconFor(tab) : _iconFor(tab),
                             size: 22,
-                            color: selected ? AppPallete.tcBlue : AppPallete.textMuted,
+                            color: selected ? AppPallete.tcBlueBright : AppPallete.textMuted,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -60,7 +60,7 @@ class MemberBottomNavBar extends StatelessWidget {
                           style: GoogleFonts.dmSans(
                             fontSize: 11,
                             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                            color: selected ? AppPallete.tcBlue : AppPallete.textMuted,
+                            color: selected ? AppPallete.tcBlueBright : AppPallete.textMuted,
                           ),
                         ),
                       ],

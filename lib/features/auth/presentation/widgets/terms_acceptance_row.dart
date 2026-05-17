@@ -61,7 +61,7 @@ class _TermsAcceptanceRowState extends State<TermsAcceptanceRow> {
                   style: GoogleFonts.dmSans(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: AppPallete.tcBlueDark,
+                    color: AppPallete.tcBlueBright,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -113,7 +113,7 @@ class _TermsAcceptanceRowState extends State<TermsAcceptanceRow> {
                         style: GoogleFonts.dmSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: AppPallete.tcBlue,
+                          color: AppPallete.tcBlueBright,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: _termsTap,
@@ -124,7 +124,7 @@ class _TermsAcceptanceRowState extends State<TermsAcceptanceRow> {
                         style: GoogleFonts.dmSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: AppPallete.tcBlue,
+                          color: AppPallete.tcBlueBright,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: _privacyTap,

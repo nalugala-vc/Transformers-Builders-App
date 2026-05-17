@@ -4,6 +4,9 @@ class AppPallete {
   // Brand — sampled from the Transformers' Chapel logo & UI mockups
   static const Color tcBlue = Color(0xFF1E3A8A);       // Primary deep blue (splash, headers, sidebar)
   static const Color tcBlueDark = Color(0xFF0F2A6B);   // Darker blue for gradients & pressed states
+  /// Lighter royal blue for member UI buttons, links, and icons.
+  static const Color tcBlueBright = Color(0xFF2D5BE3);
+  static const Color tcBlueBrightDark = Color(0xFF1A3BAA);
   static const Color tcBlueLight = Color(0xFF6366F1);  // Indigo/violet accent (titles like "Admin Login", "Set Your Contribution Target")
   static const Color tcRed = Color(0xFFDC2626);        // Primary red CTA (Login, Pay Now, Set Target, Contribute)
   static const Color tcRedDark = Color(0xFFB91C1C);    // Red pressed/hover state

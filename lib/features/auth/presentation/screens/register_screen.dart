@@ -244,7 +244,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           'Sign in',
                           style: GoogleFonts.dmSans(
                             fontWeight: FontWeight.w700,
-                            color: AppPallete.tcBlue,
+                            color: AppPallete.tcBlueBright,
                             fontSize: 15,
                           ),
                         ),
