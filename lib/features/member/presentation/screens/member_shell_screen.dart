@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/config/app_route_paths.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../providers/member_shell_providers.dart';
 import '../widgets/member_app_drawer.dart';
@@ -22,6 +24,10 @@ class _MemberShellScreenState extends ConsumerState<MemberShellScreen> {
   void _openDrawer() => _scaffoldKey.currentState?.openDrawer();
 
   void _onDrawerPlaceholder(String label) {
+    if (label == 'Notifications') {
+      context.push(AppRoutePaths.memberNotifications);
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$label coming soon')),
     );

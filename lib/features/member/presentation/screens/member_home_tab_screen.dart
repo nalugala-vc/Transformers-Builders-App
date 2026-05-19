@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../providers/member_home_provider.dart';
+import '../providers/member_notifications_provider.dart';
 import '../providers/member_shell_providers.dart';
 import '../widgets/home/activity_detail_sheet.dart';
 import '../widgets/home/member_greeting_bar.dart';
@@ -24,6 +27,7 @@ class MemberHomeTabScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(memberHomeUiProvider);
     final bannerDismissed = ref.watch(pendingAdminBannerDismissedProvider);
+    final unreadCount = ref.watch(memberUnreadNotificationsCountProvider);
 
     return ColoredBox(
       color: AppPallete.scaffoldBg,
@@ -43,13 +47,10 @@ class MemberHomeTabScreen extends ConsumerWidget {
                 ),
               MemberGreetingBar(
                 firstName: state.firstName,
-                unreadNotificationCount: state.unreadNotificationCount,
+                unreadNotificationCount: unreadCount,
                 onMenuTap: onOpenDrawer,
-                onNotificationsTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Notifications coming soon')),
-                  );
-                },
+                onNotificationsTap: () =>
+                    context.push(AppRoutePaths.memberNotifications),
               ),
               Expanded(
                 child: SingleChildScrollView(

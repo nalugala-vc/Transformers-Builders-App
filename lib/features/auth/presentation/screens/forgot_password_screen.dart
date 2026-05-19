@@ -49,15 +49,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final ok = await vm.submit(_email.text);
     if (!mounted) return;
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'If an account exists for that email, you will receive reset instructions shortly.',
-            style: GoogleFonts.dmSans(fontWeight: FontWeight.w400),
-          ),
-        ),
+      final email = _email.text.trim();
+      if (!context.mounted) return;
+      context.push(
+        '${AppRoutePaths.resetPassword}?email=${Uri.encodeComponent(email)}',
       );
-      context.pop();
     }
   }
 
@@ -91,7 +87,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   const AuthHeader(
                     title: 'Forgot password?',
                     subtitle:
-                        'Enter the email for your account. We will send you a link to reset your password.',
+                        'Enter your account email. We will send a reset link and code you can use in the app.',
                   ),
                   SizedBox(height: context.scaled.h28),
                   AuthTextField(

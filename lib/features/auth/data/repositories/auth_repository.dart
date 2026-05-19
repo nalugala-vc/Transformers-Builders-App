@@ -83,6 +83,33 @@ class AuthRepository {
     }
   }
 
+  /// Returns the email address associated with a password-reset [code].
+  Future<String> verifyPasswordResetCode(String code) async {
+    logFirebaseAuth('verifyPasswordResetCode', 'codeLength=${code.length}');
+    try {
+      final email = await _auth.verifyPasswordResetCode(code.trim());
+      logFirebaseAuth('verifyPasswordResetCode', 'success email=$email');
+      return email;
+    } on FirebaseAuthException catch (e, st) {
+      logFirebaseAuthException('verifyPasswordResetCode', e);
+      Error.throwWithStackTrace(e, st);
+    }
+  }
+
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) async {
+    logFirebaseAuth('confirmPasswordReset', 'codeLength=${code.length}');
+    try {
+      await _auth.confirmPasswordReset(code: code.trim(), newPassword: newPassword);
+      logFirebaseAuth('confirmPasswordReset', 'success');
+    } on FirebaseAuthException catch (e, st) {
+      logFirebaseAuthException('confirmPasswordReset', e);
+      Error.throwWithStackTrace(e, st);
+    }
+  }
+
   Future<void> updateDisplayName(User user, String displayName) async {
     logFirebaseAuth('updateDisplayName', 'uid=${user.uid}, displayName=$displayName');
     try {

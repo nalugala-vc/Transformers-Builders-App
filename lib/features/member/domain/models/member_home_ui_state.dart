@@ -8,7 +8,6 @@ class MemberHomeUiState {
     required this.targetKes,
     this.goalAdjustedOn,
     required this.showPendingAdminBanner,
-    required this.unreadNotificationCount,
     required this.recentActivities,
   });
 
@@ -18,7 +17,6 @@ class MemberHomeUiState {
   final int targetKes;
   final DateTime? goalAdjustedOn;
   final bool showPendingAdminBanner;
-  final int unreadNotificationCount;
   final List<ContributionActivity> recentActivities;
 
   double get progressFraction {

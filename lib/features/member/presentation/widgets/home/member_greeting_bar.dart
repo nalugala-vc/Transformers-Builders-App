@@ -110,45 +110,56 @@ class _NotificationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
+    return SizedBox(
+      width: 48,
+      height: 48,
       child: Stack(
         clipBehavior: Clip.none,
+        alignment: Alignment.center,
         children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: AppPallete.scaffoldBg,
+          Material(
+            color: AppPallete.scaffoldBg,
+            borderRadius: BorderRadius.circular(14),
+            child: InkWell(
+              onTap: onTap,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppPallete.border),
-            ),
-            child: const Icon(
-              Icons.notifications_outlined,
-              color: AppPallete.textPrimary,
-              size: 22,
+              child: Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppPallete.border),
+                ),
+                child: const Icon(
+                  Icons.notifications_outlined,
+                  color: AppPallete.textPrimary,
+                  size: 22,
+                ),
+              ),
             ),
           ),
           if (count > 0)
             Positioned(
-              right: -3,
-              top: -3,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppPallete.tcRed,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: AppPallete.tcWhite, width: 1.5),
-                ),
-                constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
-                child: Text(
-                  count > 9 ? '9+' : '$count',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.dmSans(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
-                    color: AppPallete.tcWhite,
-                    height: 1.1,
+              right: 0,
+              top: 0,
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppPallete.tcRed,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppPallete.tcWhite, width: 1.5),
+                  ),
+                  constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                  child: Text(
+                    count > 9 ? '9+' : '$count',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                      color: AppPallete.tcWhite,
+                      height: 1.1,
+                    ),
                   ),
                 ),
               ),

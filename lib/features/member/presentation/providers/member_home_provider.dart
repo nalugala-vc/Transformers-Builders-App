@@ -30,7 +30,6 @@ final memberHomeUiProvider = FutureProvider<MemberHomeUiState>((ref) async {
     targetKes: 5000,
     goalAdjustedOn: DateTime(2026, 1, 12),
     showPendingAdminBanner: showPendingAdmin,
-    unreadNotificationCount: 2,
     recentActivities: MemberHomeUiState.sampleActivities,
   );
 });

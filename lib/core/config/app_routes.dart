@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/providers/registration_flow_providers.dart';
+import '../navigation/firebase_auth_action_link.dart';
 import '../navigation/firebase_auth_deep_link.dart';
 import 'app_route_paths.dart';
 import '../../features/auth/presentation/models/otp_route_extra.dart';
@@ -10,17 +11,22 @@ import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/admin_home_screen.dart';
 import '../../presentation/screens/home_screen.dart';
+import '../../features/member/presentation/screens/member_notifications_screen.dart';
 import '../../features/member/presentation/screens/member_shell_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
 
 /// First route after app start — must match [GoRouter.initialLocation].
 const String appInitialLocation = AppRoutePaths.splash;
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 /// Central place for all app routes.
 final GoRouter appRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: appInitialLocation,
   onEnter: (context, current, next, router) async {
     if (isFirebaseAuthRecaptchaCallback(next.uri)) {
@@ -34,6 +40,16 @@ final GoRouter appRouter = GoRouter(
       }
       return const Block.stop();
     }
+
+    final resetCode = passwordResetCodeFromUri(next.uri);
+    if (resetCode != null) {
+      return Block.then(
+        () => router.go(
+          '${AppRoutePaths.resetPassword}?code=${Uri.encodeComponent(resetCode)}',
+        ),
+      );
+    }
+
     return const Allow();
   },
   routes: [
@@ -58,6 +74,18 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final email = state.uri.queryParameters['email'];
         return ForgotPasswordScreen(initialEmail: email);
+      },
+    ),
+    GoRoute(
+      path: AppRoutePaths.resetPassword,
+      name: 'resetPassword',
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'];
+        final code = state.uri.queryParameters['code'];
+        return ResetPasswordScreen(
+          initialEmail: email,
+          initialCode: code,
+        );
       },
     ),
     GoRoute(
@@ -86,6 +114,14 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.memberHome,
       name: 'memberHome',
       builder: (context, state) => const MemberShellScreen(),
+      routes: [
+        GoRoute(
+          path: 'notifications',
+          name: 'memberNotifications',
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const MemberNotificationsScreen(),
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutePaths.adminHome,
