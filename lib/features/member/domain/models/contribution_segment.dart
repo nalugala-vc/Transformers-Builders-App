@@ -40,4 +40,6 @@ class ChurchProgressSnapshot {
   final List<ContributionSegment> segments;
   final String summaryTitle;
   final String summarySubtitle;
+
+  bool get hasContributions => totalKes > 0;
 }

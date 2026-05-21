@@ -26,6 +26,7 @@ class ProgressOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasMonthlyChange = totalKes > 0 || monthlyChangeKes != 0;
     final changePositive = monthlyChangeKes >= 0;
     final changeColor = changePositive ? AppPallete.successGreen : AppPallete.errorRed;
     final changePrefix = changePositive ? '+' : '';
@@ -74,23 +75,35 @@ class ProgressOverviewCard extends StatelessWidget {
                         color: AppPallete.textMuted,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: changeColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '$changePrefix${formatKes(monthlyChangeKes.abs())} '
-                        '(${monthlyChangePercent.toStringAsFixed(1)}%) this month',
-                        style: GoogleFonts.dmSans(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: changeColor,
+                    if (hasMonthlyChange) ...[
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: changeColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          '$changePrefix${formatKes(monthlyChangeKes.abs())} '
+                          '(${monthlyChangePercent.toStringAsFixed(1)}%) this month',
+                          style: GoogleFonts.dmSans(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: changeColor,
+                          ),
                         ),
                       ),
-                    ),
+                    ] else ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        'No contributions yet',
+                        style: GoogleFonts.dmSans(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: AppPallete.textMuted,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ],

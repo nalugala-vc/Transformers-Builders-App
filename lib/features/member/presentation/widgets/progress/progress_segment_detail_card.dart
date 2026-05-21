@@ -55,21 +55,22 @@ class ProgressSegmentDetailCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: AppPallete.successGreen.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '+${monthlyChangePercent.toStringAsFixed(1)}% this month',
-                  style: GoogleFonts.dmSans(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: AppPallete.successGreen,
+              if (segment.amountKes > 0 && monthlyChangePercent != 0)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: AppPallete.successGreen.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    '+${monthlyChangePercent.toStringAsFixed(1)}% this month',
+                    style: GoogleFonts.dmSans(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AppPallete.successGreen,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           if (segment.recentTitle != null) ...[
