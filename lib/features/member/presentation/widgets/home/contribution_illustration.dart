@@ -4,9 +4,9 @@ import '../../../../../core/utils/theme/app_sizes.dart';
 import '../../member_assets.dart';
 import 'illustration_rings_backdrop.dart';
 
-/// Goal asset with soft concentric blue rings behind it.
-class GoalIllustration extends StatelessWidget {
-  const GoalIllustration({super.key});
+/// Contribution asset with soft concentric blue rings behind it.
+class ContributionIllustration extends StatelessWidget {
+  const ContributionIllustration({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class GoalIllustration extends StatelessWidget {
 
     return IllustrationRingsBackdrop(
       child: Image.asset(
-        MemberAssets.goal,
+        MemberAssets.contribution,
         height: imageHeight,
         fit: BoxFit.contain,
       ),

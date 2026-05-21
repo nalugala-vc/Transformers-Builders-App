@@ -75,6 +75,7 @@ flutter:
     - assets/message.png
     - assets/password.png
     - assets/goal.png
+    - assets/contribution.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

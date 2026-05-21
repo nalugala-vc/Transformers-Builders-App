@@ -50,16 +50,15 @@ class MemberContributionRepository {
           raisedKes += activity.amountKes;
         }
       }
-    } on FirebaseException catch (e, st) {
-      if (kDebugMode) {
+    } on FirebaseException catch (e) {
+      if (kDebugMode && e.code != 'permission-denied') {
         debugPrint('[MemberContribution] contributions read failed: ${e.code} ${e.message}');
-        debugPrint('$st');
       }
-      // Missing rules, index, or empty subcollection — still show goal card from user doc.
-    } on Exception catch (e, st) {
+      // permission-denied: deploy firestore.rules for users/{uid}/contributions.
+      // Other errors: treat as empty history so home still loads.
+    } on Exception catch (e) {
       if (kDebugMode) {
         debugPrint('[MemberContribution] contributions read failed: $e');
-        debugPrint('$st');
       }
     }
 

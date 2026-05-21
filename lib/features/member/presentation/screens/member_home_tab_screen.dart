@@ -11,6 +11,7 @@ import '../providers/member_shell_providers.dart';
 import '../widgets/home/activity_detail_sheet.dart';
 import '../widgets/home/member_greeting_bar.dart';
 import '../widgets/home/member_progress_card.dart';
+import '../widgets/home/member_start_contributing_card.dart';
 import '../widgets/home/member_recent_activity_card.dart';
 import '../widgets/home/pending_admin_banner.dart';
 import '../widgets/home/set_contribution_goal_sheet.dart';
@@ -91,10 +92,20 @@ class MemberHomeTabScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (state.hasContributionGoal)
+                      if (state.hasContributionGoal && state.raisedKes > 0)
                         MemberProgressCard(
                           state: state,
                           onContribute: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Contribution page coming soon')),
+                            );
+                          },
+                          onShare: () => showShareFundraiserSheet(context),
+                        )
+                      else if (state.hasContributionGoal)
+                        MemberStartContributingCard(
+                          targetKes: state.targetKes,
+                          onStartContributing: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Contribution page coming soon')),
                             );
