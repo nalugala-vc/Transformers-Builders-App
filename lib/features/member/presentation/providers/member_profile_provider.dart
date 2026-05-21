@@ -8,6 +8,8 @@ import '../../domain/models/member_profile_ui_state.dart';
 import 'member_profile_settings_provider.dart';
 
 final memberProfileUiProvider = FutureProvider<MemberProfileUiState>((ref) async {
+  ref.keepAlive();
+
   final firebaseUser = FirebaseAuth.instance.currentUser;
   if (firebaseUser == null) {
     throw StateError('No signed-in user.');

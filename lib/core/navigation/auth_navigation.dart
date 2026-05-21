@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,8 +12,15 @@ import '../config/app_route_paths.dart';
 /// Members without a saved group are routed to [AppRoutePaths.pickGroup] first
 /// (e.g. after Google sign-in, where the registration form was skipped).
 Future<void> navigateToRoleHome(BuildContext context, WidgetRef ref) async {
+  final firebaseUser = FirebaseAuth.instance.currentUser;
+  if (firebaseUser == null) {
+    if (context.mounted) context.go(AppRoutePaths.login);
+    return;
+  }
+
   final profiles = ref.read(userProfileRepositoryProvider);
-  final user = await profiles.ensureProfileForCurrentUser();
+  final user = await profiles.getUser(firebaseUser.uid) ??
+      await profiles.ensureProfileForCurrentUser();
   if (!context.mounted) return;
 
   if (user.role == UserRole.member && !user.hasCompleteMemberGroups) {

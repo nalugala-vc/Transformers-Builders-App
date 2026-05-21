@@ -13,6 +13,7 @@ import '../widgets/home/member_greeting_bar.dart';
 import '../widgets/home/member_progress_card.dart';
 import '../widgets/home/member_recent_activity_card.dart';
 import '../widgets/home/pending_admin_banner.dart';
+import '../widgets/home/set_contribution_goal_sheet.dart';
 import '../widgets/home/share_fundraiser_sheet.dart';
 
 class MemberHomeTabScreen extends ConsumerWidget {
@@ -33,7 +34,34 @@ class MemberHomeTabScreen extends ConsumerWidget {
       color: AppPallete.scaffoldBg,
       child: homeAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, _) => const Center(child: Text('Could not load home')),
+        error: (error, _) => Center(
+          child: Padding(
+            padding: EdgeInsets.all(context.responsivePagePadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Could not load home',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  error.toString(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppPallete.textMuted,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () => ref.invalidate(memberHomeUiProvider),
+                  child: const Text('Try again'),
+                ),
+              ],
+            ),
+          ),
+        ),
         data: (state) {
           final showBanner = state.showPendingAdminBanner && !bannerDismissed;
 
@@ -75,18 +103,16 @@ class MemberHomeTabScreen extends ConsumerWidget {
                         )
                       else
                         MemberSetGoalCard(
-                          onSetGoal: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Set goal flow coming soon')),
-                            );
-                          },
+                          onSetGoal: () => showSetContributionGoalSheet(context),
                         ),
-                      const SizedBox(height: 16),
-                      MemberRecentActivityCard(
-                        activities: state.recentActivities,
-                        onActivityTap: (activity) =>
-                            showActivityDetailSheet(context, activity),
-                      ),
+                      if (state.recentActivities.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        MemberRecentActivityCard(
+                          activities: state.recentActivities,
+                          onActivityTap: (activity) =>
+                              showActivityDetailSheet(context, activity),
+                        ),
+                      ],
                     ],
                   ),
                 ),

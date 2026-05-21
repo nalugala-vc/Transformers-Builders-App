@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/utils/theme/app_pallete.dart';
+import '../../../../../core/utils/theme/app_sizes.dart';
 import '../../../domain/models/member_home_ui_state.dart';
 import '../../utils/member_formatters.dart';
+import 'goal_illustration.dart';
 
 class MemberProgressCard extends StatelessWidget {
   const MemberProgressCard({
@@ -155,16 +157,8 @@ class MemberSetGoalCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: AppPallete.tcBlueBright.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Icon(Icons.flag_rounded, color: AppPallete.tcBlueBright, size: 24),
-          ),
-          const SizedBox(height: 16),
+          const Center(child: GoalIllustration()),
+          SizedBox(height: context.scaled.h8),
           Text(
             'Set your contribution goal',
             style: GoogleFonts.dmSans(
