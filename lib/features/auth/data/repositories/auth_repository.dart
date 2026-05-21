@@ -110,6 +110,54 @@ class AuthRepository {
     }
   }
 
+  /// Whether the signed-in user has an email/password credential (not Google-only).
+  static bool hasEmailPasswordProvider(User? user) {
+    if (user == null) return false;
+    return user.providerData.any((info) => info.providerId == 'password');
+  }
+
+  /// Re-authenticates before a sensitive change (e.g. password update).
+  Future<void> reauthenticateWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: 'no-current-user',
+        message: 'You are not signed in. Please sign in and try again.',
+      );
+    }
+    logFirebaseAuth('reauthenticateWithEmailPassword', 'uid=${user.uid}');
+    try {
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: email.trim(), password: password),
+      );
+      logFirebaseAuth('reauthenticateWithEmailPassword', 'success');
+    } on FirebaseAuthException catch (e, st) {
+      logFirebaseAuthException('reauthenticateWithEmailPassword', e);
+      Error.throwWithStackTrace(e, st);
+    }
+  }
+
+  Future<void> updatePassword(String newPassword) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: 'no-current-user',
+        message: 'You are not signed in. Please sign in and try again.',
+      );
+    }
+    logFirebaseAuth('updatePassword', 'uid=${user.uid}');
+    try {
+      await user.updatePassword(newPassword);
+      logFirebaseAuth('updatePassword', 'success');
+    } on FirebaseAuthException catch (e, st) {
+      logFirebaseAuthException('updatePassword', e);
+      Error.throwWithStackTrace(e, st);
+    }
+  }
+
   Future<void> updateDisplayName(User user, String displayName) async {
     logFirebaseAuth('updateDisplayName', 'uid=${user.uid}, displayName=$displayName');
     try {

@@ -94,8 +94,8 @@ class _ProfileBody extends ConsumerWidget {
                 ProfileMenuTile(
                   icon: Icons.lock_outline_rounded,
                   title: 'Password',
-                  subtitle: '••••••••',
-                  onTap: () => _editPassword(context),
+                  subtitle: p.passwordSubtitle,
+                  onTap: () => _editPassword(context, ref, p),
                 ),
               ],
             ),
@@ -235,18 +235,35 @@ class _ProfileBody extends ConsumerWidget {
     );
   }
 
-  void _editPassword(BuildContext context) {
-    showEditTextProfileSheet(
-      context: context,
-      title: 'Change password',
-      label: 'New password',
-      initialValue: '',
-      hint: 'At least 8 characters',
-      obscureText: true,
-      onSave: (_) async {
-        return 'Password updates will be available in a future release';
-      },
-    );
+  Future<void> _editPassword(
+    BuildContext context,
+    WidgetRef ref,
+    MemberProfileUiState profile,
+  ) async {
+    final bool? success;
+    if (profile.canChangePassword) {
+      success = await showChangePasswordSheet(
+        context: context,
+        email: profile.email,
+      );
+    } else {
+      success = await showPasswordManagedExternallySheet(
+        context: context,
+        email: profile.email,
+        usesGoogleSignIn: profile.usesGoogleSignIn,
+      );
+    }
+    if (success == true && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            profile.canChangePassword
+                ? 'Password updated successfully'
+                : 'Check your email for the password link',
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _logout(BuildContext context, WidgetRef ref) async {
