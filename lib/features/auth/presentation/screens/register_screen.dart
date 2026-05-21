@@ -15,6 +15,7 @@ import '../auth_assets.dart';
 import '../providers/google_auth_provider.dart';
 import '../view_models/register_view_model.dart';
 import '../widgets/auth_google_sign_in_button.dart';
+import '../widgets/member_group_fields.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_or_divider.dart';
 import '../widgets/auth_phone_field.dart';
@@ -37,6 +38,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _confirmPassword = TextEditingController();
 
   late CountryCode _countryCode;
+  String? _demographicGroupId;
+  String? _ministryGroupId;
   bool _agreeToTerms = false;
   bool _googleLoading = false;
 
@@ -67,6 +70,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       nationalPhoneDigits: _phone.text,
       plainPassword: _password.text,
       confirmPassword: _confirmPassword.text,
+      demographicGroupId: _demographicGroupId,
+      ministryGroupId: _ministryGroupId,
       agreeToTerms: _agreeToTerms,
     );
     if (!mounted) return;
@@ -176,6 +181,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     countryCode: _countryCode,
                     onCountryChanged: (code) => setState(() => _countryCode = code),
                     errorText: vm.phoneError,
+                  ),
+                  SizedBox(height: context.scaled.h16),
+                  MemberGroupFields(
+                    demographicGroupId: _demographicGroupId,
+                    ministryGroupId: _ministryGroupId,
+                    demographicError: vm.demographicGroupError,
+                    ministryError: vm.ministryGroupError,
+                    enabled: !vm.isLoading && !_googleLoading,
+                    onDemographicChanged: (id) =>
+                        setState(() => _demographicGroupId = id),
+                    onMinistryChanged: (id) => setState(() => _ministryGroupId = id),
                   ),
                   SizedBox(height: context.scaled.h16),
                   AuthTextField(

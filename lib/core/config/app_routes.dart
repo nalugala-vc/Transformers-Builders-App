@@ -9,6 +9,7 @@ import 'app_route_paths.dart';
 import '../../features/auth/presentation/models/otp_route_extra.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/member_group_picker_screen.dart';
 import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
@@ -87,6 +88,11 @@ final GoRouter appRouter = GoRouter(
           initialCode: code,
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutePaths.pickGroup,
+      name: 'pickGroup',
+      builder: (context, state) => const MemberGroupPickerScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.otpVerification,

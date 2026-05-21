@@ -37,6 +37,8 @@ class UserProfileRepository {
     required String email,
     required String fullName,
     String? phoneE164,
+    String? demographicGroupId,
+    String? ministryGroupId,
   }) async {
     final ref = _users.doc(uid);
     await ref
@@ -44,7 +46,9 @@ class UserProfileRepository {
           'email': email.trim(),
           'fullName': fullName.trim(),
           'role': UserRole.member.name,
-          if (phoneE164 != null && phoneE164.isNotEmpty) 'phone': phoneE164,
+          if (phoneE164 case final String p when p.isNotEmpty) 'phone': p,
+          if (demographicGroupId case final String id) 'demographicGroupId': id,
+          if (ministryGroupId case final String id) 'ministryGroupId': id,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true))
@@ -76,6 +80,23 @@ class UserProfileRepository {
       'updatedAt': FieldValue.serverTimestamp(),
     });
     logAuthFirestore('updatePhone', 'uid=$uid success');
+  }
+
+  Future<void> setMemberGroups({
+    required String uid,
+    required String demographicGroupId,
+    String? ministryGroupId,
+  }) async {
+    logAuthFirestore(
+      'setMemberGroups',
+      'uid=$uid demographic=$demographicGroupId ministry=$ministryGroupId',
+    );
+    await _users.doc(uid).set({
+      'demographicGroupId': demographicGroupId,
+      if (ministryGroupId case final String id) 'ministryGroupId': id,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+    logAuthFirestore('setMemberGroups', 'uid=$uid success');
   }
 
   /// Ensures a profile exists for the signed-in Firebase user (defaults to member).

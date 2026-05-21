@@ -9,6 +9,7 @@ abstract final class AppRoutePaths {
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
   static const String otpVerification = '/otp';
+  static const String pickGroup = '/pick-group';
   /// Legacy counter demo — prefer [memberHome] after sign-in.
   static const String home = '/home';
 

@@ -7,10 +7,20 @@ import '../../features/auth/presentation/providers/user_profile_providers.dart';
 import '../config/app_route_paths.dart';
 
 /// Resolves the signed-in user's role and navigates to the correct home route.
+///
+/// Members without a saved group are routed to [AppRoutePaths.pickGroup] first
+/// (e.g. after Google sign-in, where the registration form was skipped).
 Future<void> navigateToRoleHome(BuildContext context, WidgetRef ref) async {
-  final role = await ref.read(userProfileRepositoryProvider).getRoleForCurrentUser();
+  final profiles = ref.read(userProfileRepositoryProvider);
+  final user = await profiles.ensureProfileForCurrentUser();
   if (!context.mounted) return;
-  context.go(role.homePath);
+
+  if (user.role == UserRole.member && !user.hasCompleteMemberGroups) {
+    context.go(AppRoutePaths.pickGroup);
+    return;
+  }
+
+  context.go(user.role.homePath);
 }
 
 extension UserRoleNavigation on UserRole {

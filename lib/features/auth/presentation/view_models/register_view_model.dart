@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/config/app_routes.dart';
+import '../../../member/domain/models/member_group.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../models/otp_route_extra.dart';
@@ -57,6 +58,8 @@ class RegisterViewModel extends ChangeNotifier {
   String? phoneError;
   String? passwordError;
   String? confirmPasswordError;
+  String? demographicGroupError;
+  String? ministryGroupError;
   String? termsError;
   bool isLoading = false;
 
@@ -78,6 +81,8 @@ class RegisterViewModel extends ChangeNotifier {
     phoneError = null;
     passwordError = null;
     confirmPasswordError = null;
+    demographicGroupError = null;
+    ministryGroupError = null;
     termsError = null;
     notifyListeners();
   }
@@ -88,6 +93,8 @@ class RegisterViewModel extends ChangeNotifier {
     required String nationalPhoneDigits,
     required String plainPassword,
     required String confirmPassword,
+    required String? demographicGroupId,
+    required String? ministryGroupId,
     required bool agreeToTerms,
   }) {
     clearErrors();
@@ -133,6 +140,17 @@ class RegisterViewModel extends ChangeNotifier {
       valid = false;
     }
 
+    if (MemberGroups.findDemographicById(demographicGroupId) == null) {
+      demographicGroupError = 'Select your demographic group';
+      valid = false;
+    }
+    if (ministryGroupId != null &&
+        ministryGroupId.isNotEmpty &&
+        MemberGroups.findMinistryById(ministryGroupId) == null) {
+      ministryGroupError = 'Select a valid ministry';
+      valid = false;
+    }
+
     if (!agreeToTerms) {
       termsError = 'Accept the terms and conditions to continue';
       valid = false;
@@ -149,6 +167,8 @@ class RegisterViewModel extends ChangeNotifier {
     required String nationalPhoneDigits,
     required String plainPassword,
     required String confirmPassword,
+    required String? demographicGroupId,
+    required String? ministryGroupId,
     required bool agreeToTerms,
   }) async {
     if (!validate(
@@ -157,6 +177,8 @@ class RegisterViewModel extends ChangeNotifier {
       nationalPhoneDigits: nationalPhoneDigits,
       plainPassword: plainPassword,
       confirmPassword: confirmPassword,
+      demographicGroupId: demographicGroupId,
+      ministryGroupId: ministryGroupId,
       agreeToTerms: agreeToTerms,
     )) {
       return RegisterSubmitResult.failure();
@@ -198,12 +220,24 @@ class RegisterViewModel extends ChangeNotifier {
         // Email templates may be off in dev; continue with phone verification.
       }
 
+      final demographic = MemberGroups.findDemographicById(demographicGroupId);
+      if (demographic == null) {
+        demographicGroupError = 'Select your demographic group';
+        notifyListeners();
+        await _auth.deleteCurrentUserAndSignOut();
+        return RegisterSubmitResult.failure();
+      }
+
+      final ministry = MemberGroups.findMinistryById(ministryGroupId);
+
       try {
         await _profiles.createMemberProfile(
           uid: createdUser.uid,
           email: email.trim(),
           fullName: fullName,
           phoneE164: e164Phone,
+          demographicGroupId: demographic.id,
+          ministryGroupId: ministry?.id,
         );
       } catch (e, st) {
         await _auth.deleteCurrentUserAndSignOut();
