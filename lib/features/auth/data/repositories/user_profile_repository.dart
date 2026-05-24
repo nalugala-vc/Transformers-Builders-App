@@ -64,6 +64,15 @@ class UserProfileRepository {
     );
   }
 
+  Future<void> updateEmail(String uid, String email) async {
+    logAuthFirestore('updateEmail', 'uid=$uid');
+    await _users.doc(uid).update({
+      'email': email.trim(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+    logAuthFirestore('updateEmail', 'uid=$uid success');
+  }
+
   Future<void> updateFullName(String uid, String fullName) async {
     logAuthFirestore('updateFullName', 'uid=$uid');
     await _users.doc(uid).update({
@@ -91,11 +100,16 @@ class UserProfileRepository {
       'setMemberGroups',
       'uid=$uid demographic=$demographicGroupId ministry=$ministryGroupId',
     );
-    await _users.doc(uid).set({
+    final data = <String, dynamic>{
       'demographicGroupId': demographicGroupId,
-      if (ministryGroupId case final String id) 'ministryGroupId': id,
       'updatedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+    };
+    if (ministryGroupId != null && ministryGroupId.isNotEmpty) {
+      data['ministryGroupId'] = ministryGroupId;
+    } else {
+      data['ministryGroupId'] = FieldValue.delete();
+    }
+    await _users.doc(uid).set(data, SetOptions(merge: true));
     logAuthFirestore('setMemberGroups', 'uid=$uid success');
   }
 

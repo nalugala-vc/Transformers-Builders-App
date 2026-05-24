@@ -7,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/navigation/auth_navigation.dart';
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../../data/repositories/google_auth_repository.dart';
@@ -40,7 +42,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _onLogin() async {
     final vm = ref.read(loginViewModelProvider);
-    final ok = await vm.submit(_email.text.trim(), _password.text);
+    final l10n = context.l10n;
+    final ok = await vm.submit(l10n, _email.text.trim(), _password.text);
     if (!mounted) return;
     if (ok) await navigateToRoleHome(context, ref);
   }
@@ -53,25 +56,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await navigateToRoleHome(context, ref);
     } on GoogleSignInUnavailableException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      showAppErrorToast(context, e.toString());
     } on GoogleSignInException catch (e) {
       if (!mounted) return;
       if (e.code == GoogleSignInExceptionCode.canceled) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.description ?? 'Google sign-in failed')),
-      );
+      showAppErrorToast(context, e.description ?? context.l10n.errorGoogleSignInFailed);
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Google sign-in failed')),
-      );
+      showAppErrorToast(context, e.message ?? context.l10n.errorGoogleSignInFailed);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google sign-in failed: $e')),
-      );
+      showAppErrorToast(context, context.l10n.errorGoogleSignInFailed);
     } finally {
       if (mounted) setState(() => _googleLoading = false);
     }
@@ -80,6 +75,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final vm = ref.watch(loginViewModelProvider);
+    final l10n = context.l10n;
     final maxContentWidth = 420.0;
 
     return Scaffold(
@@ -104,14 +100,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: context.scaled.h20),
-                  const AuthHeader(
-                    title: 'Welcome',
-                    subtitle: 'Sign in to continue to Transformers Chapel.',
+                  AuthHeader(
+                    title: l10n.authWelcomeBack,
+                    subtitle: l10n.authSignInSubtitle,
                   ),
                   SizedBox(height: context.scaled.h24),
                   AuthTextField(
                     controller: _email,
-                    label: 'Email',
+                    label: l10n.authEmail,
                     hint: 'you@example.com',
                     errorText: vm.emailError,
                     keyboardType: TextInputType.emailAddress,
@@ -121,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   SizedBox(height: context.scaled.h16),
                   AuthTextField(
                     controller: _password,
-                    label: 'Password',
+                    label: l10n.authPassword,
                     errorText: vm.passwordError,
                     obscureText: true,
                     textInputAction: TextInputAction.done,
@@ -141,7 +137,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               context.push(path);
                             },
                       child: Text(
-                        'Forgot password?',
+                        l10n.authForgotPassword,
                         style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w700,
                           color: AppPallete.tcBlueBright,
@@ -152,15 +148,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   SizedBox(height: context.scaled.h8),
                   AuthPrimaryButton(
-                    label: 'Sign in',
+                    label: l10n.authSignIn,
                     isLoading: vm.isLoading,
                     onPressed: _onLogin,
                   ),
                   SizedBox(height: context.scaled.h24),
-                  const AuthOrDivider(label: 'or'),
+                  AuthOrDivider(label: l10n.authOr),
                   SizedBox(height: context.scaled.h16),
                   AuthGoogleSignInButton(
-                    label: 'Sign in with Google',
+                    label: l10n.authSignInGoogle,
                     isLoading: _googleLoading,
                     onPressed: _onGoogleSignIn,
                   ),
@@ -171,7 +167,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     spacing: 4,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        l10n.authNoAccount,
                         style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w400,
                           color: AppPallete.textSecondary,
@@ -183,7 +179,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ? null
                             : () => context.push(AppRoutePaths.register),
                         child: Text(
-                          'Create account',
+                          l10n.authCreateAccount,
                           style: GoogleFonts.dmSans(
                             fontWeight: FontWeight.w700,
                             color: AppPallete.tcBlueBright,

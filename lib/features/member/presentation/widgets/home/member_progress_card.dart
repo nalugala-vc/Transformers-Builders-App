@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../../../core/utils/theme/app_sizes.dart';
 import '../../../domain/models/member_home_ui_state.dart';
@@ -21,6 +22,7 @@ class MemberProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final percent = (state.progressFraction * 100).round();
 
     return Container(
@@ -41,7 +43,7 @@ class MemberProgressCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'My Progress',
+                  l10n.myProgress,
                   style: GoogleFonts.dmSans(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -79,7 +81,7 @@ class MemberProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'raised of ${formatKes(state.targetKes)} target',
+            l10n.raisedOfTarget(formatKes(state.targetKes)),
             style: GoogleFonts.dmSans(
               fontSize: 13,
               fontWeight: FontWeight.w400,
@@ -100,7 +102,7 @@ class MemberProgressCard extends StatelessWidget {
           if (state.goalAdjustedOn != null) ...[
             const SizedBox(height: 8),
             Text(
-              'Goal adjusted on ${formatDisplayDate(state.goalAdjustedOn!)}',
+              l10n.goalAdjustedOn(formatDisplayDate(state.goalAdjustedOn!)),
               style: GoogleFonts.dmSans(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
@@ -113,7 +115,7 @@ class MemberProgressCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _CardButton(
-                  label: 'Contribute',
+                  label: l10n.contribute,
                   icon: Icons.volunteer_activism_rounded,
                   isPrimary: true,
                   onPressed: onContribute,
@@ -122,7 +124,7 @@ class MemberProgressCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _CardButton(
-                  label: 'Share',
+                  label: l10n.share,
                   icon: Icons.share_rounded,
                   isPrimary: false,
                   onPressed: onShare,
@@ -146,6 +148,7 @@ class MemberSetGoalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -160,7 +163,7 @@ class MemberSetGoalCard extends StatelessWidget {
           const Center(child: GoalIllustration()),
           SizedBox(height: context.scaled.h8),
           Text(
-            'Set your contribution goal',
+            l10n.setContributionGoalTitle,
             style: GoogleFonts.dmSans(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -169,7 +172,7 @@ class MemberSetGoalCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Choose a target amount so you can track progress and start contributing.',
+            l10n.setContributionGoalBody,
             style: GoogleFonts.dmSans(
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -189,7 +192,7 @@ class MemberSetGoalCard extends StatelessWidget {
                 elevation: 0,
               ),
               child: Text(
-                'Set contribution goal',
+                l10n.setContributionGoal,
                 style: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),

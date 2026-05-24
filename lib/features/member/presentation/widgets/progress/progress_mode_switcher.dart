@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../domain/models/progress_breakdown_mode.dart';
 
@@ -16,6 +17,7 @@ class ProgressModeSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -39,7 +41,7 @@ class ProgressModeSwitcher extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  option.label,
+                  option.label(l10n),
                   style: GoogleFonts.dmSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,

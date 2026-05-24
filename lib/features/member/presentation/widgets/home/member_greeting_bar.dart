@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 
 class MemberGreetingBar extends StatelessWidget {
@@ -20,6 +21,8 @@ class MemberGreetingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Container(
@@ -39,14 +42,14 @@ class MemberGreetingBar extends StatelessWidget {
                     color: AppPallete.textPrimary,
                     size: 24,
                   ),
-                  tooltip: 'Menu',
+                  tooltip: l10n.menu,
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome back,',
+                        l10n.welcomeBack,
                         style: GoogleFonts.dmSans(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
@@ -77,7 +80,7 @@ class MemberGreetingBar extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            'Your Contributions Matter',
+                            l10n.contributionsMatter,
                             style: GoogleFonts.dmSans(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,

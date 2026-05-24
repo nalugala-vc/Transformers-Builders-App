@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
@@ -59,13 +60,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     );
     if (!mounted) return;
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Password updated. You can sign in with your new password.',
-            style: GoogleFonts.dmSans(fontWeight: FontWeight.w400),
-          ),
-        ),
+      showAppSuccessToast(
+        context,
+        'Password updated. You can sign in with your new password.',
       );
       context.go(AppRoutePaths.login);
     }

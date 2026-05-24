@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../../../core/utils/theme/app_sizes.dart';
 import '../../../domain/models/progress_breakdown_mode.dart';
@@ -20,6 +21,7 @@ class ChurchProgressEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isDemographics = mode == ProgressBreakdownMode.demographics;
 
     return Container(
@@ -37,8 +39,8 @@ class ChurchProgressEmptyState extends StatelessWidget {
           SizedBox(height: context.scaled.h8),
           Text(
             isDemographics
-                ? 'No demographic contributions yet'
-                : 'No ministry contributions yet',
+                ? l10n.churchProgressEmptyDemographicTitle
+                : l10n.churchProgressEmptyMinistryTitle,
             textAlign: TextAlign.center,
             style: GoogleFonts.dmSans(
               fontSize: 18,
@@ -49,8 +51,8 @@ class ChurchProgressEmptyState extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             isDemographics
-                ? 'Women, Men, and Youth totals will appear here once members in those groups start contributing.'
-                : 'Ministry team totals will show here once choirs, boards, and other teams begin giving.',
+                ? l10n.churchProgressEmptyDemographicBody
+                : l10n.churchProgressEmptyMinistryBody,
             textAlign: TextAlign.center,
             style: GoogleFonts.dmSans(
               fontSize: 14,
@@ -61,13 +63,15 @@ class ChurchProgressEmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _ZeroProgressRow(
-            label: 'Total raised',
+            label: l10n.totalRaisedLabel,
             value: 'KES 0',
           ),
           const SizedBox(height: 10),
           _ZeroProgressRow(
-            label: isDemographics ? 'Groups tracked' : 'Ministries tracked',
-            value: isDemographics ? 'Women · Men · Youth' : '6 ministry teams',
+            label: isDemographics ? l10n.groupsTracked : l10n.ministriesTracked,
+            value: isDemographics
+                ? l10n.demographicsTrackedValue
+                : l10n.ministriesTrackedValue,
           ),
           SizedBox(height: context.scaled.h20),
           SizedBox(
@@ -76,7 +80,7 @@ class ChurchProgressEmptyState extends StatelessWidget {
               onPressed: onStartContributing,
               icon: const Icon(Icons.volunteer_activism_rounded, size: 20),
               label: Text(
-                'Start contributing',
+                l10n.startContributing,
                 style: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.w600),
               ),
               style: FilledButton.styleFrom(

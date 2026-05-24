@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/navigation/auth_navigation.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../auth_assets.dart';
@@ -102,10 +103,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     final extra = widget.extra;
     if (extra == null) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Open this screen from Create account to verify your phone.'),
-        ),
+      showAppInfoToast(
+        context,
+        'Open this screen from Create account to verify your phone.',
       );
       return;
     }
@@ -119,18 +119,14 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
       return;
     }
     if (vm.verifyError != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(vm.verifyError!)),
-      );
+      showAppErrorToast(context, vm.verifyError!);
     }
   }
 
   void _onVerifyPressed() {
     final code = _currentOtp;
     if (code.length != _codeLength) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter all 6 digits.')),
-      );
+      showAppInfoToast(context, 'Enter all 6 digits.');
       return;
     }
     _submitCode(code);
@@ -145,9 +141,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     final ok = await vm.resendSms();
     if (!mounted) return;
     if (!ok && vm.resendError != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(vm.resendError!)),
-      );
+      showAppErrorToast(context, vm.resendError!);
       return;
     }
 
@@ -158,9 +152,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
       _otpFieldKey = !_otpFieldKey;
     });
     _tickResend();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('A new code has been sent.')),
-    );
+    showAppSuccessToast(context, 'A new code has been sent.');
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/l10n/member_group_l10n.dart';
 import '../../../member/domain/models/member_group.dart';
 import 'auth_dropdown_field.dart';
 
@@ -28,30 +30,44 @@ class MemberGroupFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthDropdownField<MemberGroup>(
-          label: 'Demographic group',
+          label: l10n.demographicGroup,
           value: MemberGroups.findDemographicById(demographicGroupId),
           items: MemberGroups.demographics,
-          itemLabel: (g) => g.label,
-          hint: 'e.g. Women, Men, Youth',
+          itemLabel: (g) => g.localizedLabel(l10n),
+          hint: l10n.demographicHint,
           errorText: demographicError,
           enabled: enabled,
           onChanged: (g) => onDemographicChanged(g?.id),
         ),
         const SizedBox(height: 16),
         AuthDropdownField<MemberGroup>(
-          label: ministryOptional ? 'Ministry (optional)' : 'Ministry',
+          label: ministryOptional ? l10n.ministryOptional : l10n.ministry,
           value: MemberGroups.findMinistryById(ministryGroupId) ??
-              (ministryOptional ? MemberGroups.noMinistry : null),
+              (ministryOptional
+                  ? MemberGroup(
+                      id: '',
+                      label: l10n.ministryNone,
+                      category: MemberGroupCategory.ministry,
+                    )
+                  : null),
           items: [
-            if (ministryOptional) MemberGroups.noMinistry,
+            if (ministryOptional)
+              MemberGroup(
+                id: '',
+                label: l10n.ministryNone,
+                category: MemberGroupCategory.ministry,
+              ),
             ...MemberGroups.ministries,
           ],
-          itemLabel: (g) => g.label,
-          hint: ministryOptional ? null : 'e.g. Choir, Ushers',
+          itemLabel: (g) =>
+              g.id.isEmpty ? l10n.ministryNone : g.localizedLabel(l10n),
+          hint: ministryOptional ? null : l10n.demographicHint,
           errorText: ministryError,
           enabled: enabled,
           onChanged: (g) {

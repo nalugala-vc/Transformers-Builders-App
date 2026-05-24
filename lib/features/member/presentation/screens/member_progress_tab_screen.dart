@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../providers/member_home_provider.dart';
@@ -132,8 +134,6 @@ class MemberProgressTabScreen extends ConsumerWidget {
       showSetContributionGoalSheet(context);
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Contribution page coming soon')),
-    );
+    showAppInfoToast(context, context.l10n.contributionPageComingSoon);
   }
 }

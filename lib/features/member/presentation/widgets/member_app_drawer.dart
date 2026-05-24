@@ -3,18 +3,51 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 
-class MemberDrawerItem {
-  const MemberDrawerItem({
-    required this.label,
-    required this.icon,
-    this.onTap,
-  });
+enum MemberDrawerItemId {
+  dashboard,
+  contribute,
+  myProgress,
+  churchProgress,
+  editTarget,
+  contributionHistory,
+  upcomingEvents,
+  share,
+  notifications,
+  settings,
+}
 
-  final String label;
-  final IconData icon;
-  final VoidCallback? onTap;
+extension MemberDrawerItemIdX on MemberDrawerItemId {
+  String label(BuildContext context) {
+    final l10n = context.l10n;
+    return switch (this) {
+      MemberDrawerItemId.dashboard => l10n.drawerDashboard,
+      MemberDrawerItemId.contribute => l10n.drawerContribute,
+      MemberDrawerItemId.myProgress => l10n.drawerMyProgress,
+      MemberDrawerItemId.churchProgress => l10n.drawerChurchProgress,
+      MemberDrawerItemId.editTarget => l10n.drawerEditTarget,
+      MemberDrawerItemId.contributionHistory => l10n.drawerContributionHistory,
+      MemberDrawerItemId.upcomingEvents => l10n.drawerUpcomingEvents,
+      MemberDrawerItemId.share => l10n.drawerShare,
+      MemberDrawerItemId.notifications => l10n.drawerNotifications,
+      MemberDrawerItemId.settings => l10n.drawerSettings,
+    };
+  }
+
+  IconData get icon => switch (this) {
+        MemberDrawerItemId.dashboard => Icons.dashboard_rounded,
+        MemberDrawerItemId.contribute => Icons.volunteer_activism_rounded,
+        MemberDrawerItemId.myProgress => Icons.trending_up_rounded,
+        MemberDrawerItemId.churchProgress => Icons.church_rounded,
+        MemberDrawerItemId.editTarget => Icons.flag_rounded,
+        MemberDrawerItemId.contributionHistory => Icons.history_rounded,
+        MemberDrawerItemId.upcomingEvents => Icons.event_rounded,
+        MemberDrawerItemId.share => Icons.share_rounded,
+        MemberDrawerItemId.notifications => Icons.notifications_rounded,
+        MemberDrawerItemId.settings => Icons.settings_rounded,
+      };
 }
 
 class MemberAppDrawer extends StatelessWidget {
@@ -25,23 +58,14 @@ class MemberAppDrawer extends StatelessWidget {
   });
 
   final Future<void> Function() onLogout;
-  final void Function(String label)? onNavigatePlaceholder;
+  final void Function(MemberDrawerItemId item)? onNavigatePlaceholder;
 
-  static const _items = [
-    MemberDrawerItem(label: 'Dashboard', icon: Icons.dashboard_rounded),
-    MemberDrawerItem(label: 'Contribute', icon: Icons.volunteer_activism_rounded),
-    MemberDrawerItem(label: 'My Progress', icon: Icons.trending_up_rounded),
-    MemberDrawerItem(label: 'Church Progress', icon: Icons.church_rounded),
-    MemberDrawerItem(label: 'Edit Target', icon: Icons.flag_rounded),
-    MemberDrawerItem(label: 'Contribution History', icon: Icons.history_rounded),
-    MemberDrawerItem(label: 'Upcoming Events', icon: Icons.event_rounded),
-    MemberDrawerItem(label: 'Share', icon: Icons.share_rounded),
-    MemberDrawerItem(label: 'Notifications', icon: Icons.notifications_rounded),
-    MemberDrawerItem(label: 'Settings', icon: Icons.settings_rounded),
-  ];
+  static const _items = MemberDrawerItemId.values;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Drawer(
       backgroundColor: AppPallete.tcWhite,
       child: SafeArea(
@@ -51,7 +75,7 @@ class MemberAppDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
               child: Text(
-                'Transformers Chapel',
+                l10n.chapelName,
                 style: GoogleFonts.dmSans(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -68,7 +92,7 @@ class MemberAppDrawer extends StatelessWidget {
                     ListTile(
                       leading: Icon(item.icon, color: AppPallete.tcBlueBright, size: 22),
                       title: Text(
-                        item.label,
+                        item.label(context),
                         style: GoogleFonts.dmSans(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -77,14 +101,14 @@ class MemberAppDrawer extends StatelessWidget {
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
-                        onNavigatePlaceholder?.call(item.label);
+                        onNavigatePlaceholder?.call(item);
                       },
                     ),
                   const Divider(height: 1, color: AppPallete.border),
                   ListTile(
                     leading: const Icon(Icons.logout_rounded, color: AppPallete.tcRed, size: 22),
                     title: Text(
-                      'Logout',
+                      l10n.drawerLogout,
                       style: GoogleFonts.dmSans(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/navigation/auth_navigation.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
@@ -99,25 +100,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       await navigateToRoleHome(context, ref);
     } on GoogleSignInUnavailableException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      showAppErrorToast(context, e.toString());
     } on GoogleSignInException catch (e) {
       if (!mounted) return;
       if (e.code == GoogleSignInExceptionCode.canceled) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.description ?? 'Google sign-up failed')),
-      );
+      showAppErrorToast(context, e.description ?? 'Google sign-up failed');
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Google sign-up failed')),
-      );
+      showAppErrorToast(context, e.message ?? 'Google sign-up failed');
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google sign-up failed: $e')),
-      );
+      showAppErrorToast(context, 'Google sign-up failed: $e');
     } finally {
       if (mounted) setState(() => _googleLoading = false);
     }

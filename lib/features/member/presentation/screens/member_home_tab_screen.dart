@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../providers/member_home_provider.dart';
@@ -41,8 +43,8 @@ class MemberHomeTabScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Could not load home',
+                  Text(
+                  context.l10n.couldNotLoadHome,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
@@ -57,7 +59,7 @@ class MemberHomeTabScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 FilledButton(
                   onPressed: () => ref.invalidate(memberHomeUiProvider),
-                  child: const Text('Try again'),
+                  child: Text(context.l10n.tryAgain),
                 ),
               ],
             ),
@@ -96,9 +98,7 @@ class MemberHomeTabScreen extends ConsumerWidget {
                         MemberProgressCard(
                           state: state,
                           onContribute: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Contribution page coming soon')),
-                            );
+                            showAppInfoToast(context, context.l10n.contributionPageComingSoon);
                           },
                           onShare: () => showShareFundraiserSheet(context),
                         )
@@ -106,9 +106,7 @@ class MemberHomeTabScreen extends ConsumerWidget {
                         MemberStartContributingCard(
                           targetKes: state.targetKes,
                           onStartContributing: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Contribution page coming soon')),
-                            );
+                            showAppInfoToast(context, context.l10n.contributionPageComingSoon);
                           },
                           onShare: () => showShareFundraiserSheet(context),
                         )

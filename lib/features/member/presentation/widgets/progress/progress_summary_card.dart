@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
+import '../../../../../core/l10n/member_group_l10n.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../domain/models/contribution_segment.dart';
 import '../../utils/member_formatters.dart';
@@ -19,6 +21,7 @@ class ProgressSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -62,7 +65,7 @@ class ProgressSummaryCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          segment.label,
+                          segment.localizedLabel(l10n),
                           style: GoogleFonts.dmSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,

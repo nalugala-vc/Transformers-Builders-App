@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
+import '../../../../../core/l10n/member_group_l10n.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../domain/models/contribution_segment.dart';
 import '../../utils/member_formatters.dart';
@@ -26,6 +28,7 @@ class ProgressOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final hasMonthlyChange = totalKes > 0 || monthlyChangeKes != 0;
     final changePositive = monthlyChangeKes >= 0;
     final changeColor = changePositive ? AppPallete.successGreen : AppPallete.errorRed;
@@ -68,7 +71,7 @@ class ProgressOverviewCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Total raised',
+                      l10n.totalRaised,
                       style: GoogleFonts.dmSans(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -96,7 +99,7 @@ class ProgressOverviewCard extends StatelessWidget {
                     ] else ...[
                       const SizedBox(height: 8),
                       Text(
-                        'No contributions yet',
+                        l10n.noContributionsYet,
                         style: GoogleFonts.dmSans(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
@@ -143,7 +146,7 @@ class ProgressOverviewCard extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            segment.label,
+                            segment.localizedLabel(l10n),
                             style: GoogleFonts.dmSans(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,

@@ -1,0 +1,256 @@
+{
+  "@@locale": "en",
+  "appTitle": "Transformers Church",
+  "chapelName": "Transformers Chapel",
+
+  "languageEnglish": "English",
+  "languageFrench": "Français",
+  "languageSwahili": "Kiswahili",
+  "languageUpdated": "Language updated",
+
+  "save": "Save",
+  "cancel": "Cancel",
+  "done": "Done",
+  "tryAgain": "Try again",
+  "comingSoon": "{feature} coming soon",
+  "@comingSoon": {
+    "placeholders": {
+      "feature": {"type": "String"}
+    }
+  },
+
+  "tabHome": "Home",
+  "tabProgress": "Progress",
+  "tabProfile": "Profile",
+
+  "drawerDashboard": "Dashboard",
+  "drawerContribute": "Contribute",
+  "drawerMyProgress": "My Progress",
+  "drawerChurchProgress": "Church Progress",
+  "drawerEditTarget": "Edit Target",
+  "drawerContributionHistory": "Contribution History",
+  "drawerUpcomingEvents": "Upcoming Events",
+  "drawerShare": "Share",
+  "drawerNotifications": "Notifications",
+  "drawerSettings": "Settings",
+  "drawerLogout": "Logout",
+
+  "welcomeBack": "Welcome back,",
+  "contributionsMatter": "Your Contributions Matter",
+  "menu": "Menu",
+
+  "couldNotLoadHome": "Could not load home",
+  "couldNotLoadProfile": "Could not load profile",
+  "couldNotLoadProgress": "Could not load progress",
+  "contributionPageComingSoon": "Contribution page coming soon",
+
+  "myProgress": "My Progress",
+  "raisedOfTarget": "raised of {target} target",
+  "@raisedOfTarget": {
+    "placeholders": {
+      "target": {"type": "String"}
+    }
+  },
+  "goalAdjustedOn": "Goal adjusted on {date}",
+  "@goalAdjustedOn": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "contribute": "Contribute",
+  "share": "Share",
+  "setContributionGoal": "Set contribution goal",
+  "setContributionGoalTitle": "Set your contribution goal",
+  "setContributionGoalBody": "Choose a target amount so you can track progress and start contributing.",
+  "startContributing": "Start contributing",
+  "startContributingBody": "Your goal is {target}. Make your first gift to begin tracking progress toward the target.",
+  "@startContributingBody": {
+    "placeholders": {
+      "target": {"type": "String"}
+    }
+  },
+  "shareFundraiser": "Share fundraiser",
+  "recentActivity": "Recent Activity",
+
+  "progressDemographics": "Demographics",
+  "progressMinistries": "Ministries",
+  "churchProgressEmptyDemographicTitle": "No demographic contributions yet",
+  "churchProgressEmptyDemographicBody": "Women, Men, and Youth totals will appear here once members in those groups start contributing.",
+  "churchProgressEmptyMinistryTitle": "No ministry contributions yet",
+  "churchProgressEmptyMinistryBody": "Ministry team totals will show here once choirs, boards, and other teams begin giving.",
+  "totalRaised": "Total raised",
+  "totalRaisedLabel": "Total raised",
+  "noContributionsYet": "No contributions yet",
+  "groupsTracked": "Groups tracked",
+  "ministriesTracked": "Ministries tracked",
+  "demographicsTrackedValue": "Women · Men · Youth",
+  "ministriesTrackedValue": "6 ministry teams",
+
+  "sectionAccount": "ACCOUNT",
+  "sectionChurchGroups": "CHURCH GROUPS",
+  "sectionPreferences": "PREFERENCES",
+  "sectionSupport": "SUPPORT",
+  "sectionAbout": "ABOUT",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone",
+  "password": "Password",
+  "demographic": "Demographic",
+  "ministry": "Ministry",
+  "language": "Language",
+  "notifications": "Notifications",
+  "notificationsEnabled": "Enabled",
+  "notificationsDisabled": "Disabled",
+  "helpSupport": "Help & Support",
+  "helpSupportSubtitle": "FAQs, contact us",
+  "appVersion": "App version",
+  "logOut": "Log out",
+  "notSet": "Not set",
+  "none": "None",
+  "googleSignIn": "Google sign-in",
+  "setViaEmailLink": "Set via email link",
+  "passwordHidden": "••••••••",
+
+  "editName": "Edit name",
+  "fullName": "Full name",
+  "yourFullName": "Your full name",
+  "editEmail": "Edit email",
+  "newEmailAddress": "New email address",
+  "currentPassword": "Current password",
+  "emailUpdateHint": "We will send a confirmation link to your new address. Your sign-in email updates after you confirm.",
+  "emailConfirmationSent": "Confirmation email sent. Open the link to finish updating your email.",
+  "phoneUpdated": "Phone number updated",
+  "groupsUpdated": "Church groups updated",
+  "passwordUpdated": "Password updated successfully",
+  "passwordLinkSent": "Check your email for the password link",
+  "editPhone": "Edit phone number",
+  "churchGroups": "Church groups",
+  "churchGroupsHint": "Demographic group is required. Ministry is optional.",
+  "changePassword": "Change password",
+  "newPassword": "New password",
+  "confirmNewPassword": "Confirm new password",
+  "updatePassword": "Update password",
+  "passwordChangeHint": "Enter your current password, then choose a new one (at least 8 characters).",
+  "passwordGoogleTitle": "Password & Google sign-in",
+  "passwordGoogleBody": "You sign in with Google, so there is no app password to edit here. We can email you a link to create a password for {email} if you also want email sign-in.",
+  "@passwordGoogleBody": {
+    "placeholders": {
+      "email": {"type": "String"}
+    }
+  },
+  "setPasswordTitle": "Set a password",
+  "setPasswordBody": "This account does not have a password yet. We can email a link to {email} so you can set one.",
+  "@setPasswordBody": {
+    "placeholders": {
+      "email": {"type": "String"}
+    }
+  },
+  "emailSetupLink": "Email me a setup link",
+  "checkInboxPassword": "Check your inbox for a link to set your password. You can close this and keep using Google sign-in.",
+  "logoutConfirmTitle": "Log out?",
+  "logoutConfirmBody": "You will need to sign in again to access your account.",
+
+  "demographicGroup": "Demographic group",
+  "demographicHint": "e.g. Women, Men, Youth",
+  "ministryOptional": "Ministry (optional)",
+  "ministryNone": "None",
+
+  "groupWomen": "Women",
+  "groupMen": "Men",
+  "groupYouth": "Youth",
+  "groupChoir": "Choir",
+  "groupDeacons": "Deacon board",
+  "groupElders": "Elders",
+  "groupSanctuary": "Sanctuary keepers",
+  "groupUshers": "Ushers",
+  "groupMedia": "Media team",
+  "passwordHintEight": "At least 8 characters",
+
+  "authWelcomeBack": "Welcome back",
+  "authSignInSubtitle": "Sign in to continue your journey with Transformers Chapel.",
+  "authEmail": "Email",
+  "authPassword": "Password",
+  "authForgotPassword": "Forgot password?",
+  "authSignIn": "Sign in",
+  "authSignInGoogle": "Sign in with Google",
+  "authNoAccount": "Don't have an account?",
+  "authCreateAccount": "Create account",
+  "authOr": "or",
+
+  "authCreateAccountTitle": "Create account",
+  "authCreateAccountSubtitle": "Join Transformers Chapel and start your giving journey.",
+  "authFullName": "Full name",
+  "authConfirmPassword": "Confirm password",
+  "authSignUp": "Sign up",
+  "authSignUpGoogle": "Sign up with Google",
+  "authHaveAccount": "Already have an account?",
+  "authSignInLink": "Sign in",
+
+  "authForgotTitle": "Forgot password?",
+  "authForgotSubtitle": "Enter your email and we'll send you a link to reset your password.",
+  "authSendResetLink": "Send reset link",
+  "authBackToSignIn": "Back to sign in",
+
+  "authResetTitle": "Set new password",
+  "authResetSubtitleWithEmail": "Enter the reset code from the email sent to {email}, then choose a new password.",
+  "@authResetSubtitleWithEmail": {
+    "placeholders": {
+      "email": {"type": "String"}
+    }
+  },
+  "authResetSubtitle": "Enter the reset code from your email, then choose a new password.",
+  "authResetCode": "Reset code",
+  "authPasswordUpdatedSignIn": "Password updated. You can sign in with your new password.",
+
+  "authOtpTitle": "Verify your phone",
+  "authOtpSubtitle": "Enter the 6-digit code sent to {phone}",
+  "@authOtpSubtitle": {
+    "placeholders": {
+      "phone": {"type": "String"}
+    }
+  },
+  "authVerify": "Verify",
+  "authResend": "Resend code",
+  "authResendIn": "Resend in {seconds}s",
+  "@authResendIn": {
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+  "authOtpFromRegister": "Open this screen from Create account to verify your phone.",
+  "authOtpEnterSix": "Enter all 6 digits.",
+  "authOtpResent": "A new code has been sent.",
+
+  "authPickGroupsTitle": "Choose your groups",
+  "authPickGroupsSubtitle": "Select your demographic group (required). Add a ministry if you serve on a team — for example Choir or Ushers.",
+  "authContinue": "Continue",
+
+  "errorEnterEmail": "Enter your email",
+  "errorValidEmail": "Enter a valid email",
+  "errorEnterPassword": "Enter your password",
+  "errorPasswordMinLength": "Password must be at least 8 characters",
+  "errorConfirmPassword": "Confirm your password",
+  "errorPasswordsMismatch": "Passwords do not match",
+  "errorSomethingWrong": "Something went wrong. Try again.",
+  "errorWrongCredentials": "Wrong email or password",
+  "errorAccountDisabled": "This account has been disabled.",
+  "errorSignInFailed": "Sign-in failed",
+  "errorGoogleSignInFailed": "Google sign-in failed",
+  "errorGoogleSignUpFailed": "Google sign-up failed",
+  "errorEnterName": "Enter at least 2 characters",
+  "errorSelectDemographic": "Select your demographic group",
+  "errorValidMinistry": "Select a valid ministry",
+  "errorValidPhone": "Enter a valid phone number",
+  "errorAlreadyYourEmail": "This is already your email",
+  "errorCurrentPasswordIncorrect": "Current password is incorrect",
+  "errorChooseDifferentPassword": "Choose a different password",
+  "errorUseEightCharacters": "Use at least 8 characters",
+  "errorCouldNotUpdateName": "Could not update name. Try again.",
+  "errorCouldNotUpdateEmail": "Could not update email. Try again.",
+  "errorCouldNotUpdatePhone": "Could not update phone. Try again.",
+  "errorCouldNotUpdateGroups": "Could not update groups. Try again.",
+  "errorCouldNotUpdatePassword": "Could not update password. Try again.",
+  "errorEmailInUse": "That email is already in use",
+  "errorRecentLoginRequired": "Please sign out, sign in again, then try again",
+  "errorWeakPassword": "Password is too weak"
+}

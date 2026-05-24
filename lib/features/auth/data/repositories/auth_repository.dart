@@ -158,6 +158,25 @@ class AuthRepository {
     }
   }
 
+  /// Sends a verification link to [newEmail]; Auth email updates after the user confirms.
+  Future<void> verifyBeforeUpdateEmail(String newEmail) async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: 'no-current-user',
+        message: 'You are not signed in. Please sign in and try again.',
+      );
+    }
+    logFirebaseAuth('verifyBeforeUpdateEmail', 'uid=${user.uid}');
+    try {
+      await user.verifyBeforeUpdateEmail(newEmail.trim());
+      logFirebaseAuth('verifyBeforeUpdateEmail', 'success');
+    } on FirebaseAuthException catch (e, st) {
+      logFirebaseAuthException('verifyBeforeUpdateEmail', e);
+      Error.throwWithStackTrace(e, st);
+    }
+  }
+
   Future<void> updateDisplayName(User user, String displayName) async {
     logFirebaseAuth('updateDisplayName', 'uid=${user.uid}, displayName=$displayName');
     try {

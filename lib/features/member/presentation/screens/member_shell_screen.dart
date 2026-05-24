@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_route_paths.dart';
+import '../../../../core/l10n/l10n_extension.dart';
+import '../../../../core/l10n/locale_provider.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../providers/member_shell_providers.dart';
 import '../widgets/member_app_drawer.dart';
@@ -23,19 +26,18 @@ class _MemberShellScreenState extends ConsumerState<MemberShellScreen> {
 
   void _openDrawer() => _scaffoldKey.currentState?.openDrawer();
 
-  void _onDrawerPlaceholder(String label) {
-    if (label == 'Notifications') {
+  void _onDrawerPlaceholder(MemberDrawerItemId item) {
+    if (item == MemberDrawerItemId.notifications) {
       context.push(AppRoutePaths.memberNotifications);
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$label coming soon')),
-    );
+    showAppInfoToast(context, context.l10n.comingSoon(item.label(context)));
   }
 
   @override
   Widget build(BuildContext context) {
     final tab = ref.watch(memberTabProvider);
+    final localeCode = ref.watch(localeProvider).languageCode;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -47,9 +49,12 @@ class _MemberShellScreenState extends ConsumerState<MemberShellScreen> {
       body: IndexedStack(
         index: tab.index,
         children: [
-          MemberHomeTabScreen(onOpenDrawer: _openDrawer),
-          const MemberProgressTabScreen(),
-          const MemberProfileTabScreen(),
+          MemberHomeTabScreen(
+            key: ValueKey('home-$localeCode'),
+            onOpenDrawer: _openDrawer,
+          ),
+          MemberProgressTabScreen(key: ValueKey('progress-$localeCode')),
+          MemberProfileTabScreen(key: ValueKey('profile-$localeCode')),
         ],
       ),
       bottomNavigationBar: MemberBottomNavBar(

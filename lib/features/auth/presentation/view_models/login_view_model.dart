@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../providers/auth_providers.dart';
 
@@ -22,24 +23,24 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool validate(String email, String plainPassword) {
+  bool validate(AppLocalizations l10n, String email, String plainPassword) {
     clearErrors();
     var valid = true;
 
     final trimmed = email.trim();
     if (trimmed.isEmpty) {
-      emailError = 'Enter your email';
+      emailError = l10n.errorEnterEmail;
       valid = false;
     } else if (!_emailPattern.hasMatch(trimmed)) {
-      emailError = 'Enter a valid email';
+      emailError = l10n.errorValidEmail;
       valid = false;
     }
 
     if (plainPassword.isEmpty) {
-      passwordError = 'Enter your password';
+      passwordError = l10n.errorEnterPassword;
       valid = false;
     } else if (plainPassword.length < 8) {
-      passwordError = 'Password must be at least 8 characters';
+      passwordError = l10n.errorPasswordMinLength;
       valid = false;
     }
 
@@ -47,8 +48,12 @@ class LoginViewModel extends ChangeNotifier {
     return valid;
   }
 
-  Future<bool> submit(String email, String plainPassword) async {
-    if (!validate(email, plainPassword)) return false;
+  Future<bool> submit(
+    AppLocalizations l10n,
+    String email,
+    String plainPassword,
+  ) async {
+    if (!validate(l10n, email, plainPassword)) return false;
     isLoading = true;
     notifyListeners();
     try {
@@ -58,10 +63,10 @@ class LoginViewModel extends ChangeNotifier {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      _mapLoginFirebaseError(e);
+      _mapLoginFirebaseError(l10n, e);
       return false;
     } catch (_) {
-      passwordError = 'Something went wrong. Try again.';
+      passwordError = l10n.errorSomethingWrong;
       notifyListeners();
       return false;
     } finally {
@@ -70,7 +75,7 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  void _mapLoginFirebaseError(FirebaseAuthException e) {
+  void _mapLoginFirebaseError(AppLocalizations l10n, FirebaseAuthException e) {
     switch (e.code) {
       case 'channel-error':
         passwordError =
@@ -78,18 +83,18 @@ class LoginViewModel extends ChangeNotifier {
             '(avoid Hot Restart before signing in).';
         break;
       case 'invalid-email':
-        emailError = 'Enter a valid email';
+        emailError = l10n.errorValidEmail;
         break;
       case 'user-disabled':
-        passwordError = 'This account has been disabled.';
+        passwordError = l10n.errorAccountDisabled;
         break;
       case 'user-not-found':
       case 'wrong-password':
       case 'invalid-credential':
-        passwordError = 'Wrong email or password';
+        passwordError = l10n.errorWrongCredentials;
         break;
       default:
-        passwordError = e.message ?? 'Sign-in failed';
+        passwordError = e.message ?? l10n.errorSignInFailed;
     }
     notifyListeners();
   }

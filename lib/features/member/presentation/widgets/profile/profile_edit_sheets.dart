@@ -1,9 +1,16 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
+import '../../../../../core/l10n/locale_provider.dart';
+import '../../../../../core/utils/app_toast.dart';
+import '../../../../../core/utils/phone_e164.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
+import '../../../../auth/presentation/widgets/auth_phone_field.dart';
 import '../../../../auth/presentation/widgets/auth_text_field.dart';
+import '../../../../auth/presentation/widgets/member_group_fields.dart';
 import '../../../domain/models/member_profile_settings.dart';
 import '../../providers/member_profile_provider.dart';
 
@@ -97,6 +104,7 @@ class _EditTextSheetState extends State<_EditTextSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final bottom = MediaQuery.viewInsetsOf(context).bottom;
 
     return Padding(
@@ -165,7 +173,7 @@ class _EditTextSheetState extends State<_EditTextSheet> {
                       height: 22,
                       child: CircularProgressIndicator(strokeWidth: 2.5, color: AppPallete.tcWhite),
                     )
-                  : Text('Save', style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+                  : Text(l10n.save, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
             ),
           ),
         ],
@@ -248,6 +256,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
 
     final err = await updateMemberPassword(
       ref,
+      context.l10n,
       email: widget.email,
       currentPassword: _current.text,
       newPassword: _newPassword.text,
@@ -275,6 +284,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final bottom = MediaQuery.viewInsetsOf(context).bottom;
 
     return Padding(
@@ -295,7 +305,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Change password',
+            l10n.changePassword,
             style: GoogleFonts.dmSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
@@ -304,7 +314,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Enter your current password, then choose a new one (at least 8 characters).',
+            l10n.passwordChangeHint,
             style: GoogleFonts.dmSans(
               fontSize: 13,
               color: AppPallete.textSecondary,
@@ -321,7 +331,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
           const SizedBox(height: 16),
           AuthTextField(
             controller: _current,
-            label: 'Current password',
+            label: l10n.currentPassword,
             obscureText: true,
             errorText: _currentError,
             textInputAction: TextInputAction.next,
@@ -330,8 +340,8 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
           const SizedBox(height: 12),
           AuthTextField(
             controller: _newPassword,
-            label: 'New password',
-            hint: 'At least 8 characters',
+            label: l10n.newPassword,
+            hint: l10n.passwordHintEight,
             obscureText: true,
             errorText: _newError,
             textInputAction: TextInputAction.next,
@@ -340,7 +350,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
           const SizedBox(height: 12),
           AuthTextField(
             controller: _confirm,
-            label: 'Confirm new password',
+            label: l10n.confirmNewPassword,
             obscureText: true,
             errorText: _confirmError,
             textInputAction: TextInputAction.done,
@@ -370,7 +380,7 @@ class _ChangePasswordSheetState extends ConsumerState<_ChangePasswordSheet> {
                       ),
                     )
                   : Text(
-                      'Update password',
+                      l10n.updatePassword,
                       style: GoogleFonts.dmSans(fontWeight: FontWeight.w600),
                     ),
             ),
@@ -423,15 +433,13 @@ class _PasswordManagedExternallySheetState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final bottom = MediaQuery.paddingOf(context).bottom;
-    final title = widget.usesGoogleSignIn
-        ? 'Password & Google sign-in'
-        : 'Set a password';
+    final title =
+        widget.usesGoogleSignIn ? l10n.passwordGoogleTitle : l10n.setPasswordTitle;
     final body = widget.usesGoogleSignIn
-        ? 'You sign in with Google, so there is no app password to edit here. '
-            'We can email you a link to create a password for ${widget.email} if you also want email sign-in.'
-        : 'This account does not have a password yet. '
-            'We can email a link to ${widget.email} so you can set one.';
+        ? l10n.passwordGoogleBody(widget.email)
+        : l10n.setPasswordBody(widget.email);
 
     return Padding(
       padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + bottom),
@@ -460,9 +468,7 @@ class _PasswordManagedExternallySheetState
           ),
           const SizedBox(height: 8),
           Text(
-            _sent
-                ? 'Check your inbox for a link to set your password. You can close this and keep using Google sign-in.'
-                : body,
+            _sent ? l10n.checkInboxPassword : body,
             style: GoogleFonts.dmSans(
               fontSize: 13,
               color: AppPallete.textSecondary,
@@ -498,7 +504,7 @@ class _PasswordManagedExternallySheetState
                         ),
                       )
                     : Text(
-                        'Email me a setup link',
+                        l10n.emailSetupLink,
                         style: GoogleFonts.dmSans(fontWeight: FontWeight.w600),
                       ),
               ),
@@ -514,14 +520,14 @@ class _PasswordManagedExternallySheetState
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
                 ),
-                child: Text('Done', style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+                child: Text(l10n.done, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
               ),
             ),
           const SizedBox(height: 10),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Cancel',
+              l10n.cancel,
               style: GoogleFonts.dmSans(
                 fontWeight: FontWeight.w600,
                 color: AppPallete.textSecondary,
@@ -534,20 +540,399 @@ class _PasswordManagedExternallySheetState
   }
 }
 
-Future<void> showLanguagePickerSheet({
+Future<bool?> showEditEmailSheet({
   required BuildContext context,
-  required String currentCode,
-  required ValueChanged<String> onSelected,
+  required String currentEmail,
+  required bool requiresPasswordReauth,
 }) {
-  return showModalBottomSheet<void>(
+  return showModalBottomSheet<bool>(
     context: context,
+    isScrollControlled: true,
     backgroundColor: AppPallete.tcWhite,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + MediaQuery.paddingOf(context).bottom),
+    builder: (sheetContext) => _EditEmailSheet(
+      currentEmail: currentEmail,
+      requiresPasswordReauth: requiresPasswordReauth,
+    ),
+  );
+}
+
+class _EditEmailSheet extends ConsumerStatefulWidget {
+  const _EditEmailSheet({
+    required this.currentEmail,
+    required this.requiresPasswordReauth,
+  });
+
+  final String currentEmail;
+  final bool requiresPasswordReauth;
+
+  @override
+  ConsumerState<_EditEmailSheet> createState() => _EditEmailSheetState();
+}
+
+class _EditEmailSheetState extends ConsumerState<_EditEmailSheet> {
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  var _loading = false;
+  String? _formError;
+  String? _emailError;
+  String? _passwordError;
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    setState(() {
+      _loading = true;
+      _formError = null;
+      _emailError = null;
+      _passwordError = null;
+    });
+
+    final err = await updateMemberEmail(
+      ref,
+      context.l10n,
+      currentEmail: widget.currentEmail,
+      newEmail: _email.text,
+      requiresPasswordReauth: widget.requiresPasswordReauth,
+      currentPassword: widget.requiresPasswordReauth ? _password.text : null,
+    );
+
+    if (!mounted) return;
+    if (err != null) {
+      setState(() {
+        _loading = false;
+        if (err.contains('password')) {
+          _passwordError = err;
+        } else if (err.contains('email')) {
+          _emailError = err;
+        } else {
+          _formError = err;
+        }
+      });
+      return;
+    }
+    Navigator.of(context).pop(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final bottom = MediaQuery.viewInsetsOf(context).bottom;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppPallete.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l10n.editEmail,
+            style: GoogleFonts.dmSans(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppPallete.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.emailUpdateHint,
+            style: GoogleFonts.dmSans(
+              fontSize: 13,
+              color: AppPallete.textSecondary,
+              height: 1.4,
+            ),
+          ),
+          if (_formError != null) ...[
+            const SizedBox(height: 12),
+            Text(
+              _formError!,
+              style: GoogleFonts.dmSans(fontSize: 13, color: AppPallete.errorRed),
+            ),
+          ],
+          const SizedBox(height: 16),
+          AuthTextField(
+            controller: _email,
+            label: l10n.newEmailAddress,
+            keyboardType: TextInputType.emailAddress,
+            errorText: _emailError,
+            textInputAction: TextInputAction.next,
+            autocorrect: false,
+          ),
+          if (widget.requiresPasswordReauth) ...[
+            const SizedBox(height: 12),
+            AuthTextField(
+              controller: _password,
+              label: l10n.currentPassword,
+              obscureText: true,
+              errorText: _passwordError,
+              autocorrect: false,
+            ),
+          ],
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 48,
+            child: FilledButton(
+              onPressed: _loading ? null : _submit,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppPallete.tcBlueBright,
+                foregroundColor: AppPallete.tcWhite,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 0,
+              ),
+              child: _loading
+                  ? const SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: AppPallete.tcWhite,
+                      ),
+                    )
+                  : Text(l10n.save, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Future<bool?> showEditPhoneSheet({
+  required BuildContext context,
+  required String? phoneE164,
+}) {
+  return showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppPallete.tcWhite,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (sheetContext) => _EditPhoneSheet(phoneE164: phoneE164),
+  );
+}
+
+class _EditPhoneSheet extends ConsumerStatefulWidget {
+  const _EditPhoneSheet({required this.phoneE164});
+
+  final String? phoneE164;
+
+  @override
+  ConsumerState<_EditPhoneSheet> createState() => _EditPhoneSheetState();
+}
+
+class _EditPhoneSheetState extends ConsumerState<_EditPhoneSheet> {
+  late final TextEditingController _phone;
+  late CountryCode _countryCode;
+  var _loading = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    final parsed = parseE164Phone(widget.phoneE164);
+    _countryCode = parsed.countryCode;
+    _phone = TextEditingController(text: parsed.nationalDigits);
+  }
+
+  @override
+  void dispose() {
+    _phone.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    final e164 = buildE164Phone(
+      countryCode: _countryCode,
+      nationalDigits: _phone.text,
+    );
+    final err = await updateMemberPhone(ref, context.l10n, phoneE164: e164);
+    if (!mounted) return;
+    if (err != null) {
+      setState(() {
+        _loading = false;
+        _error = err;
+      });
+      return;
+    }
+    Navigator.of(context).pop(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final bottom = MediaQuery.viewInsetsOf(context).bottom;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppPallete.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l10n.editPhone,
+            style: GoogleFonts.dmSans(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppPallete.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          AuthPhoneField(
+            controller: _phone,
+            countryCode: _countryCode,
+            onCountryChanged: (c) => setState(() => _countryCode = c),
+            errorText: _error,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 48,
+            child: FilledButton(
+              onPressed: _loading ? null : _submit,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppPallete.tcBlueBright,
+                foregroundColor: AppPallete.tcWhite,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 0,
+              ),
+              child: _loading
+                  ? const SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: AppPallete.tcWhite,
+                      ),
+                    )
+                  : Text(l10n.save, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Future<bool?> showEditMemberGroupsSheet({
+  required BuildContext context,
+  required String? demographicGroupId,
+  required String? ministryGroupId,
+}) {
+  return showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppPallete.tcWhite,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (sheetContext) => _EditMemberGroupsSheet(
+      demographicGroupId: demographicGroupId,
+      ministryGroupId: ministryGroupId,
+    ),
+  );
+}
+
+class _EditMemberGroupsSheet extends ConsumerStatefulWidget {
+  const _EditMemberGroupsSheet({
+    required this.demographicGroupId,
+    required this.ministryGroupId,
+  });
+
+  final String? demographicGroupId;
+  final String? ministryGroupId;
+
+  @override
+  ConsumerState<_EditMemberGroupsSheet> createState() => _EditMemberGroupsSheetState();
+}
+
+class _EditMemberGroupsSheetState extends ConsumerState<_EditMemberGroupsSheet> {
+  late String? _demographicGroupId;
+  late String? _ministryGroupId;
+  var _loading = false;
+  String? _demographicError;
+  String? _ministryError;
+  String? _formError;
+
+  @override
+  void initState() {
+    super.initState();
+    _demographicGroupId = widget.demographicGroupId;
+    _ministryGroupId = widget.ministryGroupId;
+  }
+
+  Future<void> _submit() async {
+    setState(() {
+      _loading = true;
+      _demographicError = null;
+      _ministryError = null;
+      _formError = null;
+    });
+
+    final err = await updateMemberGroups(
+      ref,
+      context.l10n,
+      demographicGroupId: _demographicGroupId,
+      ministryGroupId: _ministryGroupId,
+    );
+
+    if (!mounted) return;
+    if (err != null) {
+      setState(() {
+        _loading = false;
+        if (err.contains('demographic') || err.contains('Select your')) {
+          _demographicError = err;
+        } else if (err.contains('ministry') || err.contains('Ministry')) {
+          _ministryError = err;
+        } else {
+          _formError = err;
+        }
+      });
+      return;
+    }
+    Navigator.of(context).pop(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final bottom = MediaQuery.viewInsetsOf(context).bottom;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + bottom),
+      child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -564,7 +949,7 @@ Future<void> showLanguagePickerSheet({
             ),
             const SizedBox(height: 20),
             Text(
-              'Language',
+              l10n.churchGroups,
               style: GoogleFonts.dmSans(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -572,7 +957,101 @@ Future<void> showLanguagePickerSheet({
               ),
             ),
             const SizedBox(height: 8),
-            ...MemberLanguageOptions.all.map((option) {
+            Text(
+              l10n.churchGroupsHint,
+              style: GoogleFonts.dmSans(
+                fontSize: 13,
+                color: AppPallete.textSecondary,
+                height: 1.4,
+              ),
+            ),
+            if (_formError != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                _formError!,
+                style: GoogleFonts.dmSans(fontSize: 13, color: AppPallete.errorRed),
+              ),
+            ],
+            const SizedBox(height: 16),
+            MemberGroupFields(
+              demographicGroupId: _demographicGroupId,
+              ministryGroupId: _ministryGroupId,
+              demographicError: _demographicError,
+              ministryError: _ministryError,
+              enabled: !_loading,
+              onDemographicChanged: (id) => setState(() => _demographicGroupId = id),
+              onMinistryChanged: (id) => setState(() => _ministryGroupId = id),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 48,
+              child: FilledButton(
+                onPressed: _loading ? null : _submit,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppPallete.tcBlueBright,
+                  foregroundColor: AppPallete.tcWhite,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 0,
+                ),
+                child: _loading
+                    ? const SizedBox(
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: AppPallete.tcWhite,
+                        ),
+                      )
+                    : Text(l10n.save, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Future<void> showLanguagePickerSheet({
+  required BuildContext context,
+  required WidgetRef ref,
+  required String currentCode,
+}) {
+  return showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: AppPallete.tcWhite,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (sheetContext) {
+      final l10n = sheetContext.l10n;
+      return Padding(
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 24 + MediaQuery.paddingOf(sheetContext).bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppPallete.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              l10n.language,
+              style: GoogleFonts.dmSans(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: AppPallete.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...MemberLanguageOptions.all(l10n).map((option) {
               final selected = option.code == currentCode;
               return ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -586,9 +1065,13 @@ Future<void> showLanguagePickerSheet({
                 trailing: selected
                     ? const Icon(Icons.check_circle_rounded, color: AppPallete.tcBlueBright)
                     : null,
-                onTap: () {
-                  onSelected(option.code);
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  await ref.read(localeProvider.notifier).setLanguageCode(option.code);
+                  ref.invalidate(memberProfileUiProvider);
+                  if (sheetContext.mounted) {
+                    showAppSuccessToast(sheetContext, sheetContext.l10n.languageUpdated);
+                    Navigator.of(sheetContext).pop();
+                  }
                 },
               );
             }),
@@ -602,34 +1085,37 @@ Future<void> showLanguagePickerSheet({
 Future<bool?> showLogoutConfirmDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: AppPallete.tcWhite,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      title: Text(
-        'Log out?',
-        style: GoogleFonts.dmSans(fontWeight: FontWeight.w700, color: AppPallete.textPrimary),
-      ),
-      content: Text(
-        'You will need to sign in again to access your account.',
-        style: GoogleFonts.dmSans(color: AppPallete.textSecondary, height: 1.4),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(
-            'Cancel',
-            style: GoogleFonts.dmSans(color: AppPallete.textSecondary, fontWeight: FontWeight.w600),
-          ),
+    builder: (dialogContext) {
+      final dialogL10n = dialogContext.l10n;
+      return AlertDialog(
+        backgroundColor: AppPallete.tcWhite,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          dialogL10n.logoutConfirmTitle,
+          style: GoogleFonts.dmSans(fontWeight: FontWeight.w700, color: AppPallete.textPrimary),
         ),
-        FilledButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          style: FilledButton.styleFrom(
-            backgroundColor: AppPallete.tcRed,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-          child: Text('Log out', style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+        content: Text(
+          dialogL10n.logoutConfirmBody,
+          style: GoogleFonts.dmSans(color: AppPallete.textSecondary, height: 1.4),
         ),
-      ],
-    ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(
+              dialogL10n.cancel,
+              style: GoogleFonts.dmSans(color: AppPallete.textSecondary, fontWeight: FontWeight.w600),
+            ),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppPallete.tcRed,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: Text(dialogL10n.logOut, style: GoogleFonts.dmSans(fontWeight: FontWeight.w600)),
+          ),
+        ],
+      );
+    },
   );
 }

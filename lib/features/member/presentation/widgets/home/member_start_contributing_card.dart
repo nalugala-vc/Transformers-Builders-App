@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../../../core/utils/theme/app_sizes.dart';
 import '../../utils/member_formatters.dart';
@@ -21,6 +22,7 @@ class MemberStartContributingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -35,7 +37,7 @@ class MemberStartContributingCard extends StatelessWidget {
           const Center(child: ContributionIllustration()),
           SizedBox(height: context.scaled.h8),
           Text(
-            'Start contributing',
+            l10n.startContributing,
             textAlign: TextAlign.center,
             style: GoogleFonts.dmSans(
               fontSize: 18,
@@ -45,7 +47,7 @@ class MemberStartContributingCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Your goal is ${formatKes(targetKes)}. Make your first gift to begin tracking progress toward the target.',
+            l10n.startContributingBody(formatKes(targetKes)),
             textAlign: TextAlign.center,
             style: GoogleFonts.dmSans(
               fontSize: 14,
@@ -61,7 +63,7 @@ class MemberStartContributingCard extends StatelessWidget {
               onPressed: onStartContributing,
               icon: const Icon(Icons.volunteer_activism_rounded, size: 20),
               label: Text(
-                'Start contributing',
+                l10n.startContributing,
                 style: GoogleFonts.dmSans(fontSize: 15, fontWeight: FontWeight.w600),
               ),
               style: FilledButton.styleFrom(
@@ -80,7 +82,7 @@ class MemberStartContributingCard extends StatelessWidget {
                 onPressed: onShare,
                 icon: const Icon(Icons.share_rounded, size: 18),
                 label: Text(
-                  'Share fundraiser',
+                  l10n.shareFundraiser,
                   style: GoogleFonts.dmSans(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 style: OutlinedButton.styleFrom(

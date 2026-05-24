@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../domain/models/member_tab.dart';
 
@@ -16,6 +17,7 @@ class MemberBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Container(
       decoration: const BoxDecoration(
         color: AppPallete.tcWhite,
@@ -56,7 +58,7 @@ class MemberBottomNavBar extends StatelessWidget {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          tab.label,
+                          tab.label(l10n),
                           style: GoogleFonts.dmSans(
                             fontSize: 11,
                             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,

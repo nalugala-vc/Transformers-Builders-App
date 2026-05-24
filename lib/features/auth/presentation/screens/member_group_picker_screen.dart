@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/navigation/auth_navigation.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
@@ -35,7 +36,7 @@ class _MemberGroupPickerScreenState extends ConsumerState<MemberGroupPickerScree
   Future<void> _onContinue() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      setState(() => _formError = 'You are signed out. Please sign in again.');
+      setState(() => _formError = context.l10n.errorSomethingWrong);
       return;
     }
 
@@ -46,10 +47,11 @@ class _MemberGroupPickerScreenState extends ConsumerState<MemberGroupPickerScree
         : MemberGroups.findMinistryById(ministryId);
 
     setState(() {
+      final l10n = context.l10n;
       _demographicError =
-          demographic == null ? 'Select your demographic group' : null;
+          demographic == null ? l10n.errorSelectDemographic : null;
       _ministryError = ministryId != null && ministryId.isNotEmpty && ministry == null
-          ? 'Select a valid ministry'
+          ? l10n.errorValidMinistry
           : null;
       _formError = null;
     });
@@ -68,7 +70,7 @@ class _MemberGroupPickerScreenState extends ConsumerState<MemberGroupPickerScree
       await navigateToRoleHome(context, ref);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _formError = 'Could not save your groups. Please try again.');
+      setState(() => _formError = context.l10n.errorCouldNotUpdateGroups);
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -100,11 +102,9 @@ class _MemberGroupPickerScreenState extends ConsumerState<MemberGroupPickerScree
                     ),
                   ),
                   SizedBox(height: context.scaled.h24),
-                  const AuthHeader(
-                    title: 'Choose your groups',
-                    subtitle:
-                        'Select your demographic group (required). '
-                        'Add a ministry if you serve on a team — for example Choir or Ushers.',
+                  AuthHeader(
+                    title: context.l10n.authPickGroupsTitle,
+                    subtitle: context.l10n.authPickGroupsSubtitle,
                   ),
                   SizedBox(height: context.scaled.h24),
                   MemberGroupFields(
@@ -140,7 +140,7 @@ class _MemberGroupPickerScreenState extends ConsumerState<MemberGroupPickerScree
                   ],
                   SizedBox(height: context.scaled.h24),
                   AuthPrimaryButton(
-                    label: 'Continue',
+                    label: context.l10n.authContinue,
                     isLoading: _saving,
                     onPressed: _onContinue,
                   ),
