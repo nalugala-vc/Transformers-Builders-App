@@ -153,28 +153,137 @@ class MemberContributionRepository {
 
     _log('setContributionTarget', 'uid=$uid targetKes=$targetKes');
     try {
-      final ref = _users().doc(uid);
-      final existing = await ref.get();
-      final data = existing.data() ?? {};
-      final hadTarget = data['contributionTargetKes'] != null;
+      final userRef = _users().doc(uid);
 
-      final updates = <String, dynamic>{
-        'contributionTargetKes': targetKes,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
+      await _firestore.runTransaction((txn) async {
+        final existing = await txn.get(userRef);
+        final data = existing.data() ?? {};
+        final oldTarget = _readAmount(data['contributionTargetKes']);
+        final delta = targetKes - oldTarget;
+        final demographic = data['demographicGroupId'] as String?;
+        final ministry = data['ministryGroupId'] as String?;
 
-      if (!hadTarget) {
-        updates['contributionTargetSetAt'] = FieldValue.serverTimestamp();
-      } else {
-        updates['contributionTargetUpdatedAt'] = FieldValue.serverTimestamp();
-      }
+        final updates = <String, dynamic>{
+          'contributionTargetKes': targetKes,
+          'updatedAt': FieldValue.serverTimestamp(),
+        };
+        if (oldTarget == 0) {
+          updates['contributionTargetSetAt'] = FieldValue.serverTimestamp();
+        } else {
+          updates['contributionTargetUpdatedAt'] = FieldValue.serverTimestamp();
+        }
+        txn.set(userRef, updates, SetOptions(merge: true));
 
-      await ref.set(updates, SetOptions(merge: true));
+        if (delta != 0) {
+          _applyTargetDelta(
+            txn,
+            amountDelta: delta,
+            demographicGroupId: demographic,
+            ministryGroupId: ministry,
+          );
+        }
+      });
+
       _log('setContributionTarget success', 'uid=$uid targetKes=$targetKes');
     } catch (e, st) {
       _logFirebaseError('setContributionTarget', e, st);
       rethrow;
     }
+  }
+
+  /// Moves the member's current `contributionTargetKes` from old groups to new
+  /// groups in `churchProgress/current`. Safe to call when nothing changed (no-op).
+  Future<void> rebalanceTargetsForGroupChange({
+    required String uid,
+    String? oldDemographic,
+    String? newDemographic,
+    String? oldMinistry,
+    String? newMinistry,
+  }) async {
+    final sameDemographic = oldDemographic == newDemographic;
+    final sameMinistry = oldMinistry == newMinistry;
+    if (sameDemographic && sameMinistry) return;
+
+    _log(
+      'rebalanceTargetsForGroupChange',
+      'uid=$uid demographic=$oldDemographic→$newDemographic '
+          'ministry=$oldMinistry→$newMinistry',
+    );
+
+    try {
+      await _firestore.runTransaction((txn) async {
+        final userSnap = await txn.get(_users().doc(uid));
+        final target = _readAmount(userSnap.data()?['contributionTargetKes']);
+        if (target <= 0) return;
+
+        final churchUpdates = <String, dynamic>{
+          'updatedAt': FieldValue.serverTimestamp(),
+        };
+
+        final demographicTargets = <String, dynamic>{};
+        if (!sameDemographic) {
+          if (oldDemographic != null && oldDemographic.isNotEmpty) {
+            demographicTargets[oldDemographic] = FieldValue.increment(-target);
+          }
+          if (newDemographic != null && newDemographic.isNotEmpty) {
+            demographicTargets[newDemographic] = FieldValue.increment(target);
+          }
+        }
+        if (demographicTargets.isNotEmpty) {
+          churchUpdates['demographicTargets'] = demographicTargets;
+        }
+
+        final ministryTargets = <String, dynamic>{};
+        if (!sameMinistry) {
+          if (oldMinistry != null && oldMinistry.isNotEmpty) {
+            ministryTargets[oldMinistry] = FieldValue.increment(-target);
+          }
+          if (newMinistry != null && newMinistry.isNotEmpty) {
+            ministryTargets[newMinistry] = FieldValue.increment(target);
+          }
+        }
+        if (ministryTargets.isNotEmpty) {
+          churchUpdates['ministryTargets'] = ministryTargets;
+        }
+
+        if (churchUpdates.length > 1) {
+          txn.set(_churchProgressRef(), churchUpdates, SetOptions(merge: true));
+        }
+      });
+      _log('rebalanceTargetsForGroupChange success', 'uid=$uid');
+    } catch (e, st) {
+      _logFirebaseError('rebalanceTargetsForGroupChange', e, st);
+      rethrow;
+    }
+  }
+
+  /// Adds [amountDelta] to `totalTargetKes`, `demographicTargets.{groupId}`,
+  /// `ministryTargets.{groupId}` using nested maps + merge.
+  void _applyTargetDelta(
+    Transaction txn, {
+    required int amountDelta,
+    String? demographicGroupId,
+    String? ministryGroupId,
+  }) {
+    if (amountDelta == 0) return;
+
+    final churchUpdates = <String, dynamic>{
+      'totalTargetKes': FieldValue.increment(amountDelta),
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
+
+    if (demographicGroupId != null && demographicGroupId.isNotEmpty) {
+      churchUpdates['demographicTargets'] = {
+        demographicGroupId: FieldValue.increment(amountDelta),
+      };
+    }
+    if (ministryGroupId != null && ministryGroupId.isNotEmpty) {
+      churchUpdates['ministryTargets'] = {
+        ministryGroupId: FieldValue.increment(amountDelta),
+      };
+    }
+
+    txn.set(_churchProgressRef(), churchUpdates, SetOptions(merge: true));
   }
 
   Future<String> createContribution({
@@ -367,31 +476,70 @@ class MemberContributionRepository {
       SetOptions(merge: true),
     );
 
+    // Use nested map literals (not dot-notation keys) so set+merge writes
+    // `demographics: { women: n }` instead of a flat field named "demographics.women".
     final churchUpdates = <String, dynamic>{
       'totalKes': FieldValue.increment(amountDelta),
       'updatedAt': FieldValue.serverTimestamp(),
     };
 
     if (demographicGroupId != null && demographicGroupId.isNotEmpty) {
-      churchUpdates['demographics.$demographicGroupId'] =
-          FieldValue.increment(amountDelta);
+      churchUpdates['demographics'] = {
+        demographicGroupId: FieldValue.increment(amountDelta),
+      };
     }
     if (ministryGroupId != null && ministryGroupId.isNotEmpty) {
-      churchUpdates['ministries.$ministryGroupId'] =
-          FieldValue.increment(amountDelta);
+      churchUpdates['ministries'] = {
+        ministryGroupId: FieldValue.increment(amountDelta),
+      };
     }
 
     txn.set(_churchProgressRef(), churchUpdates, SetOptions(merge: true));
+    _log(
+      'applyContributionDelta',
+      'uid=$uid delta=$amountDelta demographic=$demographicGroupId ministry=$ministryGroupId',
+    );
   }
 
   ChurchProgressData _churchProgressFromDoc(Map<String, dynamic>? data) {
     if (data == null) return ChurchProgressData.empty;
 
     final totalKes = _readAmount(data['totalKes']);
+    final totalTargetKes = _readAmount(data['totalTargetKes']);
+
+    final demographics = _readAmountMap(data['demographics']);
+    final ministries = _readAmountMap(data['ministries']);
+    final demographicTargets = _readAmountMap(data['demographicTargets']);
+    final ministryTargets = _readAmountMap(data['ministryTargets']);
+
+    // Backwards-compat: pick up any legacy flat keys like "demographics.women": n
+    // that an earlier version of the code wrote with set+merge dot-notation.
+    for (final entry in data.entries) {
+      final key = entry.key;
+      if (entry.value is! num) continue;
+      final value = (entry.value as num).toInt();
+      if (key.startsWith('demographics.')) {
+        final id = key.substring('demographics.'.length);
+        demographics[id] = (demographics[id] ?? 0) + value;
+      } else if (key.startsWith('ministries.')) {
+        final id = key.substring('ministries.'.length);
+        ministries[id] = (ministries[id] ?? 0) + value;
+      } else if (key.startsWith('demographicTargets.')) {
+        final id = key.substring('demographicTargets.'.length);
+        demographicTargets[id] = (demographicTargets[id] ?? 0) + value;
+      } else if (key.startsWith('ministryTargets.')) {
+        final id = key.substring('ministryTargets.'.length);
+        ministryTargets[id] = (ministryTargets[id] ?? 0) + value;
+      }
+    }
+
     return ChurchProgressData(
       totalKes: totalKes,
-      demographics: _readAmountMap(data['demographics']),
-      ministries: _readAmountMap(data['ministries']),
+      totalTargetKes: totalTargetKes,
+      demographics: demographics,
+      ministries: ministries,
+      demographicTargets: demographicTargets,
+      ministryTargets: ministryTargets,
     );
   }
 

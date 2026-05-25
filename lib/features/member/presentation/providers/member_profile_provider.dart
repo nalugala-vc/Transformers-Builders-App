@@ -9,6 +9,8 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../auth/presentation/providers/user_profile_providers.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/member_profile_ui_state.dart';
+import 'contribution_refresh.dart';
+import 'member_contribution_providers.dart';
 import 'member_profile_settings_provider.dart';
 
 final memberProfileUiProvider = FutureProvider<MemberProfileUiState>((ref) async {
@@ -220,12 +222,29 @@ Future<String?> updateMemberGroups(
   if (user == null) return l10n.errorSomethingWrong;
 
   try {
-    await ref.read(userProfileRepositoryProvider).setMemberGroups(
+    final profileRepo = ref.read(userProfileRepositoryProvider);
+    final previous = await profileRepo.getUser(user.uid);
+    final oldDemographic = previous?.demographicGroupId;
+    final oldMinistry = previous?.ministryGroupId;
+
+    await profileRepo.setMemberGroups(
+      uid: user.uid,
+      demographicGroupId: demographic.id,
+      ministryGroupId: ministry?.id,
+    );
+
+    // Move this member's personal target between groups so per-group church
+    // targets stay accurate. No-op if the member has no target yet.
+    await ref.read(memberContributionRepositoryProvider).rebalanceTargetsForGroupChange(
           uid: user.uid,
-          demographicGroupId: demographic.id,
-          ministryGroupId: ministry?.id,
+          oldDemographic: oldDemographic,
+          newDemographic: demographic.id,
+          oldMinistry: oldMinistry,
+          newMinistry: ministry?.id,
         );
+
     ref.invalidate(memberProfileUiProvider);
+    invalidateContributionData(ref);
     return null;
   } catch (_) {
     return l10n.errorCouldNotUpdateGroups;

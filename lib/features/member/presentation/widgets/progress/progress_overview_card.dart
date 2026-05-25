@@ -29,7 +29,10 @@ class ProgressOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final hasMonthlyChange = totalKes > 0 || monthlyChangeKes != 0;
+    // Only show the monthly badge once we actually compute monthly deltas
+    // (will be populated by a backend aggregator). For now we hide it instead
+    // of showing a misleading "+KES 0 (0.0%) this month".
+    final hasMonthlyChange = monthlyChangeKes != 0 || monthlyChangePercent != 0;
     final changePositive = monthlyChangeKes >= 0;
     final changeColor = changePositive ? AppPallete.successGreen : AppPallete.errorRed;
     final changePrefix = changePositive ? '+' : '';
@@ -96,7 +99,7 @@ class ProgressOverviewCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ] else ...[
+                    ] else if (totalKes == 0) ...[
                       const SizedBox(height: 8),
                       Text(
                         l10n.noContributionsYet,
