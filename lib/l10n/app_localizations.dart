@@ -1233,6 +1233,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password is too weak'**
   String get errorWeakPassword;
+
+  /// No description provided for @addContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Add contribution'**
+  String get addContribution;
+
+  /// No description provided for @editContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit contribution'**
+  String get editContribution;
+
+  /// No description provided for @contributionFormHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a gift manually until online payments are connected. Completed gifts count toward your goal and church progress.'**
+  String get contributionFormHint;
+
+  /// No description provided for @contributionAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (KES)'**
+  String get contributionAmount;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethod;
+
+  /// No description provided for @contributionReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get contributionReference;
+
+  /// No description provided for @contributionReferenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — leave blank to auto-generate'**
+  String get contributionReferenceHint;
+
+  /// No description provided for @contributionNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get contributionNotes;
+
+  /// No description provided for @contributionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get contributionStatus;
+
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get statusFailed;
+
+  /// No description provided for @contributionAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution recorded'**
+  String get contributionAdded;
+
+  /// No description provided for @contributionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution updated'**
+  String get contributionUpdated;
+
+  /// No description provided for @contributionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution deleted'**
+  String get contributionDeleted;
+
+  /// No description provided for @contributionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution history'**
+  String get contributionHistory;
+
+  /// No description provided for @deleteContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete contribution?'**
+  String get deleteContribution;
+
+  /// No description provided for @deleteContributionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove the gift from your history and update church totals.'**
+  String get deleteContributionConfirm;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @contributionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution details'**
+  String get contributionDetails;
+
+  /// No description provided for @contributionDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get contributionDate;
+
+  /// No description provided for @errorContributionAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid amount in KES'**
+  String get errorContributionAmount;
 }
 
 class _AppLocalizationsDelegate

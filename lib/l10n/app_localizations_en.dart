@@ -612,4 +612,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorWeakPassword => 'Password is too weak';
+
+  @override
+  String get addContribution => 'Add contribution';
+
+  @override
+  String get editContribution => 'Edit contribution';
+
+  @override
+  String get contributionFormHint =>
+      'Record a gift manually until online payments are connected. Completed gifts count toward your goal and church progress.';
+
+  @override
+  String get contributionAmount => 'Amount (KES)';
+
+  @override
+  String get paymentMethod => 'Payment method';
+
+  @override
+  String get contributionReference => 'Reference';
+
+  @override
+  String get contributionReferenceHint =>
+      'Optional — leave blank to auto-generate';
+
+  @override
+  String get contributionNotes => 'Notes (optional)';
+
+  @override
+  String get contributionStatus => 'Status';
+
+  @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusFailed => 'Failed';
+
+  @override
+  String get contributionAdded => 'Contribution recorded';
+
+  @override
+  String get contributionUpdated => 'Contribution updated';
+
+  @override
+  String get contributionDeleted => 'Contribution deleted';
+
+  @override
+  String get contributionHistory => 'Contribution history';
+
+  @override
+  String get deleteContribution => 'Delete contribution?';
+
+  @override
+  String get deleteContributionConfirm =>
+      'This will remove the gift from your history and update church totals.';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get contributionDetails => 'Contribution details';
+
+  @override
+  String get contributionDate => 'Date';
+
+  @override
+  String get errorContributionAmount => 'Enter a valid amount in KES';
 }

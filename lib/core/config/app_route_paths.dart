@@ -15,6 +15,7 @@ abstract final class AppRoutePaths {
 
   static const String memberHome = '/member';
   static const String memberNotifications = '/member/notifications';
+  static const String memberContributions = '/member/contributions';
   static const String adminHome = '/admin';
   static const String sizes = '/sizes';
 }

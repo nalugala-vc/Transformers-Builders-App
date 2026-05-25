@@ -16,6 +16,7 @@ import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../presentation/screens/admin_home_screen.dart';
 import '../../presentation/screens/home_screen.dart';
+import '../../features/member/presentation/screens/member_contribution_history_screen.dart';
 import '../../features/member/presentation/screens/member_notifications_screen.dart';
 import '../../features/member/presentation/screens/member_shell_screen.dart';
 import '../../presentation/screens/responsive_sizes_screen.dart';
@@ -126,6 +127,12 @@ final GoRouter appRouter = GoRouter(
           name: 'memberNotifications',
           parentNavigatorKey: rootNavigatorKey,
           builder: (context, state) => const MemberNotificationsScreen(),
+        ),
+        GoRoute(
+          path: 'contributions',
+          name: 'memberContributions',
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) => const MemberContributionHistoryScreen(),
         ),
       ],
     ),

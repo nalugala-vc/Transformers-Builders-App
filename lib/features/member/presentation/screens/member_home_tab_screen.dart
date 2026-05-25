@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/l10n/l10n_extension.dart';
-import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
 import '../../../../core/utils/theme/app_sizes.dart';
 import '../providers/member_home_provider.dart';
 import '../providers/member_notifications_provider.dart';
 import '../providers/member_shell_providers.dart';
 import '../widgets/home/activity_detail_sheet.dart';
+import '../widgets/home/add_contribution_sheet.dart';
 import '../widgets/home/member_greeting_bar.dart';
 import '../widgets/home/member_progress_card.dart';
 import '../widgets/home/member_start_contributing_card.dart';
@@ -97,17 +97,13 @@ class MemberHomeTabScreen extends ConsumerWidget {
                       if (state.hasContributionGoal && state.raisedKes > 0)
                         MemberProgressCard(
                           state: state,
-                          onContribute: () {
-                            showAppInfoToast(context, context.l10n.contributionPageComingSoon);
-                          },
+                          onContribute: () => openContributeFlow(context, ref),
                           onShare: () => showShareFundraiserSheet(context),
                         )
                       else if (state.hasContributionGoal)
                         MemberStartContributingCard(
                           targetKes: state.targetKes,
-                          onStartContributing: () {
-                            showAppInfoToast(context, context.l10n.contributionPageComingSoon);
-                          },
+                          onStartContributing: () => openContributeFlow(context, ref),
                           onShare: () => showShareFundraiserSheet(context),
                         )
                       else

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/utils/theme/app_pallete.dart';
+import '../../providers/contribution_refresh.dart';
 import '../../providers/member_contribution_providers.dart';
 import '../../providers/member_home_provider.dart';
 import '../../utils/member_formatters.dart';
@@ -72,6 +73,7 @@ class _SetContributionGoalSheetState extends ConsumerState<_SetContributionGoalS
             targetKes: amount,
           );
       ref.invalidate(memberHomeUiProvider);
+      invalidateContributionData(ref);
       if (!mounted) return;
       Navigator.of(context).pop(true);
     } catch (_) {

@@ -621,4 +621,73 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorWeakPassword => 'Mot de passe trop faible';
+
+  @override
+  String get addContribution => 'Ajouter une contribution';
+
+  @override
+  String get editContribution => 'Modifier la contribution';
+
+  @override
+  String get contributionFormHint =>
+      'Enregistrez un don manuellement en attendant les paiements en ligne. Les dons complétés comptent pour votre objectif et le progrès de l\'église.';
+
+  @override
+  String get contributionAmount => 'Montant (KES)';
+
+  @override
+  String get paymentMethod => 'Mode de paiement';
+
+  @override
+  String get contributionReference => 'Référence';
+
+  @override
+  String get contributionReferenceHint =>
+      'Facultatif — laisser vide pour générer automatiquement';
+
+  @override
+  String get contributionNotes => 'Notes (facultatif)';
+
+  @override
+  String get contributionStatus => 'Statut';
+
+  @override
+  String get statusCompleted => 'Complété';
+
+  @override
+  String get statusPending => 'En attente';
+
+  @override
+  String get statusFailed => 'Échoué';
+
+  @override
+  String get contributionAdded => 'Contribution enregistrée';
+
+  @override
+  String get contributionUpdated => 'Contribution mise à jour';
+
+  @override
+  String get contributionDeleted => 'Contribution supprimée';
+
+  @override
+  String get contributionHistory => 'Historique des contributions';
+
+  @override
+  String get deleteContribution => 'Supprimer la contribution ?';
+
+  @override
+  String get deleteContributionConfirm =>
+      'Cela retirera le don de votre historique et mettra à jour les totaux de l\'église.';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get contributionDetails => 'Détails de la contribution';
+
+  @override
+  String get contributionDate => 'Date';
+
+  @override
+  String get errorContributionAmount => 'Entrez un montant valide en KES';
 }

@@ -617,4 +617,73 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get errorWeakPassword => 'Nenosiri ni dhaifu sana';
+
+  @override
+  String get addContribution => 'Ongeza mchango';
+
+  @override
+  String get editContribution => 'Badilisha mchango';
+
+  @override
+  String get contributionFormHint =>
+      'Rekodi zawadi kwa mkono hadi malipo ya mtandaoni yaweze. Michango iliyokamilika huhesabiwa kwenye lengo lako na maendeleo ya kanisa.';
+
+  @override
+  String get contributionAmount => 'Kiasi (KES)';
+
+  @override
+  String get paymentMethod => 'Njia ya malipo';
+
+  @override
+  String get contributionReference => 'Rejea';
+
+  @override
+  String get contributionReferenceHint =>
+      'Hiari — acha tupu kutengeneza kiotomatiki';
+
+  @override
+  String get contributionNotes => 'Maelezo (hiari)';
+
+  @override
+  String get contributionStatus => 'Hali';
+
+  @override
+  String get statusCompleted => 'Imekamilika';
+
+  @override
+  String get statusPending => 'Inasubiri';
+
+  @override
+  String get statusFailed => 'Imeshindwa';
+
+  @override
+  String get contributionAdded => 'Mchango umerekodiwa';
+
+  @override
+  String get contributionUpdated => 'Mchango umesasishwa';
+
+  @override
+  String get contributionDeleted => 'Mchango umefutwa';
+
+  @override
+  String get contributionHistory => 'Historia ya michango';
+
+  @override
+  String get deleteContribution => 'Futa mchango?';
+
+  @override
+  String get deleteContributionConfirm =>
+      'Hii itaondoa zawadi kutoka kwenye historia yako na kusasisha jumla za kanisa.';
+
+  @override
+  String get delete => 'Futa';
+
+  @override
+  String get contributionDetails => 'Maelezo ya mchango';
+
+  @override
+  String get contributionDate => 'Tarehe';
+
+  @override
+  String get errorContributionAmount => 'Weka kiasi halali cha KES';
 }

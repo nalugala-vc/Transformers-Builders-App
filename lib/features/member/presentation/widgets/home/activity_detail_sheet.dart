@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../../domain/models/contribution_activity.dart';
 import '../../utils/member_formatters.dart';
 
 Future<void> showActivityDetailSheet(
   BuildContext context,
-  ContributionActivity activity,
-) {
+  ContributionActivity activity, {
+  VoidCallback? onEdit,
+  VoidCallback? onDelete,
+}) {
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -17,10 +20,11 @@ Future<void> showActivityDetailSheet(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) {
+      final l10n = context.l10n;
       final statusLabel = switch (activity.status) {
-        ContributionPaymentStatus.completed => 'Completed',
-        ContributionPaymentStatus.pending => 'Pending',
-        ContributionPaymentStatus.failed => 'Failed',
+        ContributionPaymentStatus.completed => l10n.statusCompleted,
+        ContributionPaymentStatus.pending => l10n.statusPending,
+        ContributionPaymentStatus.failed => l10n.statusFailed,
       };
       final statusColor = switch (activity.status) {
         ContributionPaymentStatus.completed => AppPallete.successGreen,
@@ -51,7 +55,7 @@ Future<void> showActivityDetailSheet(
             ),
             const SizedBox(height: 20),
             Text(
-              'Contribution details',
+              l10n.contributionDetails,
               style: GoogleFonts.dmSans(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -59,16 +63,54 @@ Future<void> showActivityDetailSheet(
               ),
             ),
             const SizedBox(height: 20),
-            _DetailRow(label: 'Amount', value: formatKes(activity.amountKes)),
-            _DetailRow(label: 'Date', value: formatDisplayDate(activity.date)),
-            _DetailRow(label: 'Payment method', value: activity.paymentMethod),
-            _DetailRow(label: 'Reference', value: activity.reference),
+            _DetailRow(label: l10n.contributionAmount, value: formatKes(activity.amountKes)),
+            _DetailRow(label: l10n.contributionDate, value: formatDisplayDate(activity.date)),
+            _DetailRow(label: l10n.paymentMethod, value: activity.paymentMethod),
+            _DetailRow(label: l10n.contributionReference, value: activity.reference),
+            if (activity.notes != null && activity.notes!.isNotEmpty)
+              _DetailRow(label: l10n.contributionNotes, value: activity.notes!),
             _DetailRow(
-              label: 'Status',
+              label: l10n.contributionStatus,
               value: statusLabel,
               valueColor: statusColor,
             ),
-            const SizedBox(height: 16),
+            if (onEdit != null || onDelete != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  if (onEdit != null)
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: onEdit,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppPallete.tcBlueBright,
+                          side: const BorderSide(color: AppPallete.tcBlueBright),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(l10n.editContribution),
+                      ),
+                    ),
+                  if (onEdit != null && onDelete != null) const SizedBox(width: 12),
+                  if (onDelete != null)
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: onDelete,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppPallete.tcRed,
+                          side: const BorderSide(color: AppPallete.tcRed),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(l10n.delete),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+            const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -80,7 +122,7 @@ Future<void> showActivityDetailSheet(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 child: Text(
-                  'Close',
+                  l10n.done,
                   style: GoogleFonts.dmSans(fontWeight: FontWeight.w600),
                 ),
               ),

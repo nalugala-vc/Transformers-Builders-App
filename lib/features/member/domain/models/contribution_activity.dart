@@ -12,6 +12,7 @@ class ContributionActivity {
     required this.paymentMethod,
     required this.reference,
     required this.status,
+    this.notes,
   });
 
   final String id;
@@ -20,4 +21,5 @@ class ContributionActivity {
   final String paymentMethod;
   final String reference;
   final ContributionPaymentStatus status;
+  final String? notes;
 }
