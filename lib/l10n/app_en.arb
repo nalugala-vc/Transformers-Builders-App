@@ -275,5 +275,74 @@
   "delete": "Delete",
   "contributionDetails": "Contribution details",
   "contributionDate": "Date",
-  "errorContributionAmount": "Enter a valid amount in KES"
+  "errorContributionAmount": "Enter a valid amount in KES",
+
+  "seeAll": "See all",
+  "totalsByDemographic": "Totals by demographic",
+  "totalsByMinistry": "Totals by ministry",
+
+  "adminBadge": "ADMIN",
+  "adminTabDashboard": "Dashboard",
+  "adminTabManagement": "Management",
+  "adminTabUpdates": "Updates",
+  "adminTabProfile": "Profile",
+  "adminDashboardSubtitle": "Campaign overview at a glance",
+  "adminDashboardLoadError": "Could not load the dashboard. Try again.",
+  "adminKpiTotalRaised": "Total Raised",
+  "adminKpiActiveMembers": "Active Church Members",
+  "adminKpiDeltaThisWeek": "this week",
+  "adminKpiNewMembersThisWeek": "{count, plural, =0{No new members this week} =1{+1 new member this week} other{+{count} new members this week}}",
+  "@adminKpiNewMembersThisWeek": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "adminAnalyticsRaised": "Raised analytics",
+  "adminAnalyticsMembers": "Members analytics",
+  "adminContributionProgress": "Contribution Progress",
+  "adminNeedsAttention": "Needs your attention",
+  "adminAttentionEmpty": "You're all caught up. New admin requests and drafts will show up here.",
+  "adminRecentActivityEmpty": "No activity yet. Member contributions and announcements will appear here.",
+  "adminManagementComingSoon": "Member management, role assignments, and church groups will live here.",
+  "adminUpdatesComingSoon": "Announcements, scheduled updates, and message history will live here.",
+
+  "markAllRead": "Mark all read",
+  "notificationsInboxTab": "Notifications",
+  "updatesTab": "Updates",
+  "filterAll": "All",
+  "filterUnread": "Unread",
+  "filterUnreadCount": "Unread ({count})",
+  "@filterUnreadCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "notificationsEmptyUnread": "No unread notifications",
+  "notificationsEmptyAll": "No notifications yet",
+  "notificationsEmptyUnreadBody": "You're all caught up. Switch to All to see older messages.",
+  "notificationsEmptyAllBody": "Updates about contributions, goals, and church news will appear here.",
+
+  "churchUpdateLabel": "Church update",
+  "churchUpdateFrom": "From {name}",
+  "@churchUpdateFrom": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "churchUpdatesSubtitle": "Announcements from church leadership.",
+  "churchUpdatesEmpty": "No updates yet. Check back for news from your church admins.",
+  "churchUpdatesLoadError": "Could not load updates. Try again.",
+  "churchUpdateTitle": "Title",
+  "churchUpdateTitleHint": "e.g. Building fund milestone",
+  "churchUpdateBody": "Message",
+  "churchUpdateBodyHint": "Share the update with all members…",
+  "churchUpdateTitleRequired": "Enter a title for this update",
+  "churchUpdateBodyRequired": "Enter the update message",
+  "churchUpdatePublished": "Update published to all members",
+  "churchUpdatePublishFailed": "Could not publish update. Try again.",
+  "adminPublishUpdate": "Publish update",
+  "adminPublishUpdateHint": "Members will see this in Notifications → Updates.",
+  "adminPublishUpdateAction": "Publish",
+  "adminUpdatesManageSubtitle": "Send announcements that appear in every member's Updates tab.",
+  "adminUpdatesEmpty": "No updates published yet. Tap Publish to send your first announcement."
 }

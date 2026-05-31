@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
 import '../../providers/member_notifications_provider.dart';
 
@@ -18,12 +19,17 @@ class NotificationFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Row(
       children: NotificationInboxFilter.values.map((option) {
         final selected = filter == option;
-        final label = option == NotificationInboxFilter.unread && unreadCount > 0
-            ? 'Unread ($unreadCount)'
-            : option.name[0].toUpperCase() + option.name.substring(1);
+        final label = switch (option) {
+          NotificationInboxFilter.all => l10n.filterAll,
+          NotificationInboxFilter.unread => unreadCount > 0
+              ? l10n.filterUnreadCount(unreadCount)
+              : l10n.filterUnread,
+        };
 
         return Padding(
           padding: const EdgeInsets.only(right: 8),
@@ -39,7 +45,9 @@ class NotificationFilterBar extends StatelessWidget {
             ),
             selectedColor: AppPallete.tcBlueBright,
             backgroundColor: AppPallete.tcWhite,
-            side: BorderSide(color: selected ? AppPallete.tcBlueBright : AppPallete.border),
+            side: BorderSide(
+              color: selected ? AppPallete.tcBlueBright : AppPallete.border,
+            ),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
         );

@@ -681,4 +681,179 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorContributionAmount => 'Enter a valid amount in KES';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get totalsByDemographic => 'Totals by demographic';
+
+  @override
+  String get totalsByMinistry => 'Totals by ministry';
+
+  @override
+  String get adminBadge => 'ADMIN';
+
+  @override
+  String get adminTabDashboard => 'Dashboard';
+
+  @override
+  String get adminTabManagement => 'Management';
+
+  @override
+  String get adminTabUpdates => 'Updates';
+
+  @override
+  String get adminTabProfile => 'Profile';
+
+  @override
+  String get adminDashboardSubtitle => 'Campaign overview at a glance';
+
+  @override
+  String get adminDashboardLoadError =>
+      'Could not load the dashboard. Try again.';
+
+  @override
+  String get adminKpiTotalRaised => 'Total Raised';
+
+  @override
+  String get adminKpiActiveMembers => 'Active Church Members';
+
+  @override
+  String get adminKpiDeltaThisWeek => 'this week';
+
+  @override
+  String adminKpiNewMembersThisWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count new members this week',
+      one: '+1 new member this week',
+      zero: 'No new members this week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adminAnalyticsRaised => 'Raised analytics';
+
+  @override
+  String get adminAnalyticsMembers => 'Members analytics';
+
+  @override
+  String get adminContributionProgress => 'Contribution Progress';
+
+  @override
+  String get adminNeedsAttention => 'Needs your attention';
+
+  @override
+  String get adminAttentionEmpty =>
+      'You\'re all caught up. New admin requests and drafts will show up here.';
+
+  @override
+  String get adminRecentActivityEmpty =>
+      'No activity yet. Member contributions and announcements will appear here.';
+
+  @override
+  String get adminManagementComingSoon =>
+      'Member management, role assignments, and church groups will live here.';
+
+  @override
+  String get adminUpdatesComingSoon =>
+      'Announcements, scheduled updates, and message history will live here.';
+
+  @override
+  String get markAllRead => 'Mark all read';
+
+  @override
+  String get notificationsInboxTab => 'Notifications';
+
+  @override
+  String get updatesTab => 'Updates';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterUnread => 'Unread';
+
+  @override
+  String filterUnreadCount(int count) {
+    return 'Unread ($count)';
+  }
+
+  @override
+  String get notificationsEmptyUnread => 'No unread notifications';
+
+  @override
+  String get notificationsEmptyAll => 'No notifications yet';
+
+  @override
+  String get notificationsEmptyUnreadBody =>
+      'You\'re all caught up. Switch to All to see older messages.';
+
+  @override
+  String get notificationsEmptyAllBody =>
+      'Updates about contributions, goals, and church news will appear here.';
+
+  @override
+  String get churchUpdateLabel => 'Church update';
+
+  @override
+  String churchUpdateFrom(String name) {
+    return 'From $name';
+  }
+
+  @override
+  String get churchUpdatesSubtitle => 'Announcements from church leadership.';
+
+  @override
+  String get churchUpdatesEmpty =>
+      'No updates yet. Check back for news from your church admins.';
+
+  @override
+  String get churchUpdatesLoadError => 'Could not load updates. Try again.';
+
+  @override
+  String get churchUpdateTitle => 'Title';
+
+  @override
+  String get churchUpdateTitleHint => 'e.g. Building fund milestone';
+
+  @override
+  String get churchUpdateBody => 'Message';
+
+  @override
+  String get churchUpdateBodyHint => 'Share the update with all members…';
+
+  @override
+  String get churchUpdateTitleRequired => 'Enter a title for this update';
+
+  @override
+  String get churchUpdateBodyRequired => 'Enter the update message';
+
+  @override
+  String get churchUpdatePublished => 'Update published to all members';
+
+  @override
+  String get churchUpdatePublishFailed =>
+      'Could not publish update. Try again.';
+
+  @override
+  String get adminPublishUpdate => 'Publish update';
+
+  @override
+  String get adminPublishUpdateHint =>
+      'Members will see this in Notifications → Updates.';
+
+  @override
+  String get adminPublishUpdateAction => 'Publish';
+
+  @override
+  String get adminUpdatesManageSubtitle =>
+      'Send announcements that appear in every member\'s Updates tab.';
+
+  @override
+  String get adminUpdatesEmpty =>
+      'No updates published yet. Tap Publish to send your first announcement.';
 }

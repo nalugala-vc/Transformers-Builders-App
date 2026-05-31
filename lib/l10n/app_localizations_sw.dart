@@ -686,4 +686,180 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get errorContributionAmount => 'Weka kiasi halali cha KES';
+
+  @override
+  String get seeAll => 'Onyesha zote';
+
+  @override
+  String get totalsByDemographic => 'Jumla kwa idadi ya watu';
+
+  @override
+  String get totalsByMinistry => 'Jumla kwa huduma';
+
+  @override
+  String get adminBadge => 'MSIMAMIZI';
+
+  @override
+  String get adminTabDashboard => 'Dashibodi';
+
+  @override
+  String get adminTabManagement => 'Usimamizi';
+
+  @override
+  String get adminTabUpdates => 'Matangazo';
+
+  @override
+  String get adminTabProfile => 'Wasifu';
+
+  @override
+  String get adminDashboardSubtitle => 'Muhtasari wa kampeni kwa mtazamo mmoja';
+
+  @override
+  String get adminDashboardLoadError =>
+      'Imeshindwa kupakia dashibodi. Jaribu tena.';
+
+  @override
+  String get adminKpiTotalRaised => 'Jumla Iliyokusanywa';
+
+  @override
+  String get adminKpiActiveMembers => 'Waumini Walio Hai';
+
+  @override
+  String get adminKpiDeltaThisWeek => 'wiki hii';
+
+  @override
+  String adminKpiNewMembersThisWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count waumini wapya wiki hii',
+      one: '+1 mwumini mpya wiki hii',
+      zero: 'Hakuna waumini wapya wiki hii',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adminAnalyticsRaised => 'Uchanganuzi wa michango';
+
+  @override
+  String get adminAnalyticsMembers => 'Uchanganuzi wa waumini';
+
+  @override
+  String get adminContributionProgress => 'Maendeleo ya Michango';
+
+  @override
+  String get adminNeedsAttention => 'Yanahitaji uangalifu';
+
+  @override
+  String get adminAttentionEmpty =>
+      'Hamna jambo jipya. Maombi ya msimamizi na rasimu zitaonekana hapa.';
+
+  @override
+  String get adminRecentActivityEmpty =>
+      'Hakuna shughuli bado. Michango na matangazo yataonekana hapa.';
+
+  @override
+  String get adminManagementComingSoon =>
+      'Usimamizi wa waumini, majukumu, na vikundi vya kanisa vitakuwa hapa.';
+
+  @override
+  String get adminUpdatesComingSoon =>
+      'Matangazo, masasisho yaliyopangwa, na historia ya ujumbe vitakuwa hapa.';
+
+  @override
+  String get markAllRead => 'Weka zote kama zimesomwa';
+
+  @override
+  String get notificationsInboxTab => 'Arifa';
+
+  @override
+  String get updatesTab => 'Matangazo';
+
+  @override
+  String get filterAll => 'Zote';
+
+  @override
+  String get filterUnread => 'Zisizosomwa';
+
+  @override
+  String filterUnreadCount(int count) {
+    return 'Zisizosomwa ($count)';
+  }
+
+  @override
+  String get notificationsEmptyUnread => 'Hakuna arifa zisizosomwa';
+
+  @override
+  String get notificationsEmptyAll => 'Hakuna arifa bado';
+
+  @override
+  String get notificationsEmptyUnreadBody =>
+      'Umesoma zote. Badilisha hadi Zote kuona ujumbe wa zamani.';
+
+  @override
+  String get notificationsEmptyAllBody =>
+      'Masasisho kuhusu michango, malengo, na habari za kanisa yataonekana hapa.';
+
+  @override
+  String get churchUpdateLabel => 'Tangazo la kanisa';
+
+  @override
+  String churchUpdateFrom(String name) {
+    return 'Kutoka $name';
+  }
+
+  @override
+  String get churchUpdatesSubtitle => 'Matangazo kutoka kwa uongozi wa kanisa.';
+
+  @override
+  String get churchUpdatesEmpty =>
+      'Hakuna matangazo bado. Rudi baadaye kwa habari kutoka kwa wasimamizi.';
+
+  @override
+  String get churchUpdatesLoadError =>
+      'Imeshindwa kupakia matangazo. Jaribu tena.';
+
+  @override
+  String get churchUpdateTitle => 'Kichwa';
+
+  @override
+  String get churchUpdateTitleHint => 'mf. Hatua ya mfuko wa ujenzi';
+
+  @override
+  String get churchUpdateBody => 'Ujumbe';
+
+  @override
+  String get churchUpdateBodyHint => 'Shiriki tangazo na waumini wote…';
+
+  @override
+  String get churchUpdateTitleRequired => 'Weka kichwa cha tangazo';
+
+  @override
+  String get churchUpdateBodyRequired => 'Weka ujumbe wa tangazo';
+
+  @override
+  String get churchUpdatePublished => 'Tangazo limetumwa kwa waumini wote';
+
+  @override
+  String get churchUpdatePublishFailed =>
+      'Imeshindwa kutuma tangazo. Jaribu tena.';
+
+  @override
+  String get adminPublishUpdate => 'Chapisha tangazo';
+
+  @override
+  String get adminPublishUpdateHint =>
+      'Waumini wataona hii katika Arifa → Matangazo.';
+
+  @override
+  String get adminPublishUpdateAction => 'Chapisha';
+
+  @override
+  String get adminUpdatesManageSubtitle =>
+      'Tuma matangazo yanayoonekana kwenye kichupo cha Matangazo kwa kila mwumini.';
+
+  @override
+  String get adminUpdatesEmpty =>
+      'Hakuna matangazo bado. Gusa Chapisha kutuma la kwanza.';
 }

@@ -14,7 +14,7 @@ import '../../features/auth/presentation/screens/otp_verification_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../presentation/screens/admin_home_screen.dart';
+import '../../features/admin/presentation/screens/admin_shell_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../features/member/presentation/screens/member_contribution_history_screen.dart';
 import '../../features/member/presentation/screens/member_notifications_screen.dart';
@@ -139,7 +139,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutePaths.adminHome,
       name: 'adminHome',
-      builder: (context, state) => const AdminHomeScreen(),
+      builder: (context, state) => const AdminShellScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.sizes,

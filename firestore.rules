@@ -2,19 +2,45 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-  // Signed-in member profile (registration, groups, contribution goal).
+    // Helper: true when the requesting user's profile has role == "admin".
+    // Uses a single get() per evaluation, cached for the request.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Signed-in member profile (registration, groups, contribution goal).
+    // Admins can also read any profile (member list, dashboard joins).
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null
+        && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      allow write: if request.auth != null && request.auth.uid == userId;
 
       // Per-member contribution history (home recent activity + raised total).
       match /contributions/{contributionId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read: if request.auth != null
+          && (request.auth.uid == userId || isAdmin());
+        allow write: if request.auth != null && request.auth.uid == userId;
       }
+    }
+
+    // Collection-group read for admin dashboards (recent activity feed across
+    // all members). Note: collection-group rules use a wildcard path.
+    match /{path=**}/contributions/{contributionId} {
+      allow read: if isAdmin();
     }
 
     // Church-wide totals updated when members record contributions.
     match /churchProgress/{docId} {
       allow read, write: if request.auth != null;
+    }
+
+    // Admin announcements visible to all signed-in members (Updates tab).
+    match /churchUpdates/{updateId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if isAdmin();
     }
   }
 }

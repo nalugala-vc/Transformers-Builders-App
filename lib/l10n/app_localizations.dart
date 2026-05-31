@@ -1365,6 +1365,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter a valid amount in KES'**
   String get errorContributionAmount;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @totalsByDemographic.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals by demographic'**
+  String get totalsByDemographic;
+
+  /// No description provided for @totalsByMinistry.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals by ministry'**
+  String get totalsByMinistry;
+
+  /// No description provided for @adminBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'ADMIN'**
+  String get adminBadge;
+
+  /// No description provided for @adminTabDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get adminTabDashboard;
+
+  /// No description provided for @adminTabManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Management'**
+  String get adminTabManagement;
+
+  /// No description provided for @adminTabUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates'**
+  String get adminTabUpdates;
+
+  /// No description provided for @adminTabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get adminTabProfile;
+
+  /// No description provided for @adminDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign overview at a glance'**
+  String get adminDashboardSubtitle;
+
+  /// No description provided for @adminDashboardLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the dashboard. Try again.'**
+  String get adminDashboardLoadError;
+
+  /// No description provided for @adminKpiTotalRaised.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Raised'**
+  String get adminKpiTotalRaised;
+
+  /// No description provided for @adminKpiActiveMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Church Members'**
+  String get adminKpiActiveMembers;
+
+  /// No description provided for @adminKpiDeltaThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'this week'**
+  String get adminKpiDeltaThisWeek;
+
+  /// No description provided for @adminKpiNewMembersThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No new members this week} =1{+1 new member this week} other{+{count} new members this week}}'**
+  String adminKpiNewMembersThisWeek(int count);
+
+  /// No description provided for @adminAnalyticsRaised.
+  ///
+  /// In en, this message translates to:
+  /// **'Raised analytics'**
+  String get adminAnalyticsRaised;
+
+  /// No description provided for @adminAnalyticsMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members analytics'**
+  String get adminAnalyticsMembers;
+
+  /// No description provided for @adminContributionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution Progress'**
+  String get adminContributionProgress;
+
+  /// No description provided for @adminNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your attention'**
+  String get adminNeedsAttention;
+
+  /// No description provided for @adminAttentionEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up. New admin requests and drafts will show up here.'**
+  String get adminAttentionEmpty;
+
+  /// No description provided for @adminRecentActivityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet. Member contributions and announcements will appear here.'**
+  String get adminRecentActivityEmpty;
+
+  /// No description provided for @adminManagementComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Member management, role assignments, and church groups will live here.'**
+  String get adminManagementComingSoon;
+
+  /// No description provided for @adminUpdatesComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements, scheduled updates, and message history will live here.'**
+  String get adminUpdatesComingSoon;
+
+  /// No description provided for @markAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get markAllRead;
+
+  /// No description provided for @notificationsInboxTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsInboxTab;
+
+  /// No description provided for @updatesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates'**
+  String get updatesTab;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get filterUnread;
+
+  /// No description provided for @filterUnreadCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread ({count})'**
+  String filterUnreadCount(int count);
+
+  /// No description provided for @notificationsEmptyUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'No unread notifications'**
+  String get notificationsEmptyUnread;
+
+  /// No description provided for @notificationsEmptyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmptyAll;
+
+  /// No description provided for @notificationsEmptyUnreadBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up. Switch to All to see older messages.'**
+  String get notificationsEmptyUnreadBody;
+
+  /// No description provided for @notificationsEmptyAllBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates about contributions, goals, and church news will appear here.'**
+  String get notificationsEmptyAllBody;
+
+  /// No description provided for @churchUpdateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Church update'**
+  String get churchUpdateLabel;
+
+  /// No description provided for @churchUpdateFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From {name}'**
+  String churchUpdateFrom(String name);
+
+  /// No description provided for @churchUpdatesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements from church leadership.'**
+  String get churchUpdatesSubtitle;
+
+  /// No description provided for @churchUpdatesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No updates yet. Check back for news from your church admins.'**
+  String get churchUpdatesEmpty;
+
+  /// No description provided for @churchUpdatesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load updates. Try again.'**
+  String get churchUpdatesLoadError;
+
+  /// No description provided for @churchUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get churchUpdateTitle;
+
+  /// No description provided for @churchUpdateTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Building fund milestone'**
+  String get churchUpdateTitleHint;
+
+  /// No description provided for @churchUpdateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get churchUpdateBody;
+
+  /// No description provided for @churchUpdateBodyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the update with all members…'**
+  String get churchUpdateBodyHint;
+
+  /// No description provided for @churchUpdateTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a title for this update'**
+  String get churchUpdateTitleRequired;
+
+  /// No description provided for @churchUpdateBodyRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the update message'**
+  String get churchUpdateBodyRequired;
+
+  /// No description provided for @churchUpdatePublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Update published to all members'**
+  String get churchUpdatePublished;
+
+  /// No description provided for @churchUpdatePublishFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not publish update. Try again.'**
+  String get churchUpdatePublishFailed;
+
+  /// No description provided for @adminPublishUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish update'**
+  String get adminPublishUpdate;
+
+  /// No description provided for @adminPublishUpdateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Members will see this in Notifications → Updates.'**
+  String get adminPublishUpdateHint;
+
+  /// No description provided for @adminPublishUpdateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get adminPublishUpdateAction;
+
+  /// No description provided for @adminUpdatesManageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send announcements that appear in every member\'s Updates tab.'**
+  String get adminUpdatesManageSubtitle;
+
+  /// No description provided for @adminUpdatesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No updates published yet. Tap Publish to send your first announcement.'**
+  String get adminUpdatesEmpty;
 }
 
 class _AppLocalizationsDelegate

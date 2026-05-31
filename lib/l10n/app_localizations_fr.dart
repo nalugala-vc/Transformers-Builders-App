@@ -690,4 +690,182 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorContributionAmount => 'Entrez un montant valide en KES';
+
+  @override
+  String get seeAll => 'Tout voir';
+
+  @override
+  String get totalsByDemographic => 'Totaux par démographie';
+
+  @override
+  String get totalsByMinistry => 'Totaux par ministère';
+
+  @override
+  String get adminBadge => 'ADMIN';
+
+  @override
+  String get adminTabDashboard => 'Tableau de bord';
+
+  @override
+  String get adminTabManagement => 'Gestion';
+
+  @override
+  String get adminTabUpdates => 'Annonces';
+
+  @override
+  String get adminTabProfile => 'Profil';
+
+  @override
+  String get adminDashboardSubtitle =>
+      'Aperçu de la campagne en un coup d\'œil';
+
+  @override
+  String get adminDashboardLoadError =>
+      'Impossible de charger le tableau de bord. Réessayez.';
+
+  @override
+  String get adminKpiTotalRaised => 'Total collecté';
+
+  @override
+  String get adminKpiActiveMembers => 'Membres actifs';
+
+  @override
+  String get adminKpiDeltaThisWeek => 'cette semaine';
+
+  @override
+  String adminKpiNewMembersThisWeek(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count nouveaux membres cette semaine',
+      one: '+1 nouveau membre cette semaine',
+      zero: 'Aucun nouveau membre cette semaine',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adminAnalyticsRaised => 'Analytique des dons';
+
+  @override
+  String get adminAnalyticsMembers => 'Analytique des membres';
+
+  @override
+  String get adminContributionProgress => 'Progrès des contributions';
+
+  @override
+  String get adminNeedsAttention => 'À traiter';
+
+  @override
+  String get adminAttentionEmpty =>
+      'Tout est à jour. Les nouvelles demandes admin et brouillons apparaîtront ici.';
+
+  @override
+  String get adminRecentActivityEmpty =>
+      'Aucune activité pour l\'instant. Les contributions et annonces s\'afficheront ici.';
+
+  @override
+  String get adminManagementComingSoon =>
+      'La gestion des membres, des rôles et des groupes vivra ici.';
+
+  @override
+  String get adminUpdatesComingSoon =>
+      'Annonces, mises à jour programmées et historique des messages vivront ici.';
+
+  @override
+  String get markAllRead => 'Tout marquer lu';
+
+  @override
+  String get notificationsInboxTab => 'Notifications';
+
+  @override
+  String get updatesTab => 'Annonces';
+
+  @override
+  String get filterAll => 'Tout';
+
+  @override
+  String get filterUnread => 'Non lues';
+
+  @override
+  String filterUnreadCount(int count) {
+    return 'Non lues ($count)';
+  }
+
+  @override
+  String get notificationsEmptyUnread => 'Aucune notification non lue';
+
+  @override
+  String get notificationsEmptyAll => 'Aucune notification';
+
+  @override
+  String get notificationsEmptyUnreadBody =>
+      'Vous êtes à jour. Passez à Tout pour voir les messages plus anciens.';
+
+  @override
+  String get notificationsEmptyAllBody =>
+      'Les mises à jour sur les contributions, objectifs et nouvelles de l\'église apparaîtront ici.';
+
+  @override
+  String get churchUpdateLabel => 'Annonce de l\'église';
+
+  @override
+  String churchUpdateFrom(String name) {
+    return 'De $name';
+  }
+
+  @override
+  String get churchUpdatesSubtitle => 'Annonces de la direction de l\'église.';
+
+  @override
+  String get churchUpdatesEmpty =>
+      'Aucune annonce pour l\'instant. Revenez pour les nouvelles de vos administrateurs.';
+
+  @override
+  String get churchUpdatesLoadError =>
+      'Impossible de charger les annonces. Réessayez.';
+
+  @override
+  String get churchUpdateTitle => 'Titre';
+
+  @override
+  String get churchUpdateTitleHint => 'ex. Jalon du fonds de construction';
+
+  @override
+  String get churchUpdateBody => 'Message';
+
+  @override
+  String get churchUpdateBodyHint =>
+      'Partagez l\'annonce avec tous les membres…';
+
+  @override
+  String get churchUpdateTitleRequired => 'Entrez un titre pour cette annonce';
+
+  @override
+  String get churchUpdateBodyRequired => 'Entrez le message de l\'annonce';
+
+  @override
+  String get churchUpdatePublished => 'Annonce publiée pour tous les membres';
+
+  @override
+  String get churchUpdatePublishFailed =>
+      'Impossible de publier l\'annonce. Réessayez.';
+
+  @override
+  String get adminPublishUpdate => 'Publier une annonce';
+
+  @override
+  String get adminPublishUpdateHint =>
+      'Les membres la verront dans Notifications → Annonces.';
+
+  @override
+  String get adminPublishUpdateAction => 'Publier';
+
+  @override
+  String get adminUpdatesManageSubtitle =>
+      'Envoyez des annonces visibles dans l\'onglet Annonces de chaque membre.';
+
+  @override
+  String get adminUpdatesEmpty =>
+      'Aucune annonce publiée. Appuyez sur Publier pour envoyer la première.';
 }
