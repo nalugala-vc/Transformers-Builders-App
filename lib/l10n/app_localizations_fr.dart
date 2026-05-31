@@ -852,6 +852,37 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible de publier l\'annonce. Réessayez.';
 
   @override
+  String get churchUpdateAttachments => 'Pièces jointes';
+
+  @override
+  String get churchUpdateAddAttachment => 'Ajouter une pièce jointe';
+
+  @override
+  String get churchUpdateAttachmentHint =>
+      'Images, PDF et documents jusqu\'à 10 Mo chacun (5 fichiers max).';
+
+  @override
+  String churchUpdateAttachmentCount(int current, int max) {
+    return '$current sur $max';
+  }
+
+  @override
+  String get churchUpdateAttachmentLimit =>
+      'Vous pouvez joindre jusqu\'à 5 fichiers par annonce.';
+
+  @override
+  String get churchUpdateAttachmentTooLarge =>
+      'Chaque fichier doit faire 10 Mo ou moins.';
+
+  @override
+  String get churchUpdateAttachmentPickFailed =>
+      'Impossible de sélectionner ce fichier. Réessayez.';
+
+  @override
+  String get churchUpdateOpenAttachmentFailed =>
+      'Impossible d\'ouvrir la pièce jointe.';
+
+  @override
   String get adminPublishUpdate => 'Publier une annonce';
 
   @override

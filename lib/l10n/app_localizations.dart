@@ -1636,6 +1636,54 @@ abstract class AppLocalizations {
   /// **'Could not publish update. Try again.'**
   String get churchUpdatePublishFailed;
 
+  /// No description provided for @churchUpdateAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get churchUpdateAttachments;
+
+  /// No description provided for @churchUpdateAddAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add attachment'**
+  String get churchUpdateAddAttachment;
+
+  /// No description provided for @churchUpdateAttachmentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Images, PDFs, and documents up to 10 MB each (max 5 files).'**
+  String get churchUpdateAttachmentHint;
+
+  /// No description provided for @churchUpdateAttachmentCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {max}'**
+  String churchUpdateAttachmentCount(int current, int max);
+
+  /// No description provided for @churchUpdateAttachmentLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You can attach up to 5 files per update.'**
+  String get churchUpdateAttachmentLimit;
+
+  /// No description provided for @churchUpdateAttachmentTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Each file must be 10 MB or smaller.'**
+  String get churchUpdateAttachmentTooLarge;
+
+  /// No description provided for @churchUpdateAttachmentPickFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not pick that file. Try again.'**
+  String get churchUpdateAttachmentPickFailed;
+
+  /// No description provided for @churchUpdateOpenAttachmentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open attachment.'**
+  String get churchUpdateOpenAttachmentFailed;
+
   /// No description provided for @adminPublishUpdate.
   ///
   /// In en, this message translates to:

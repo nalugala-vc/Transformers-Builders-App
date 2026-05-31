@@ -846,6 +846,37 @@ class AppLocalizationsSw extends AppLocalizations {
       'Imeshindwa kutuma tangazo. Jaribu tena.';
 
   @override
+  String get churchUpdateAttachments => 'Viambatisho';
+
+  @override
+  String get churchUpdateAddAttachment => 'Ongeza kiambatisho';
+
+  @override
+  String get churchUpdateAttachmentHint =>
+      'Picha, PDF, na hati hadi 10 MB kila moja (faili 5 kwa upeo).';
+
+  @override
+  String churchUpdateAttachmentCount(int current, int max) {
+    return '$current kati ya $max';
+  }
+
+  @override
+  String get churchUpdateAttachmentLimit =>
+      'Unaweza kuambatisha faili 5 kwa kila tangazo.';
+
+  @override
+  String get churchUpdateAttachmentTooLarge =>
+      'Kila faili lazima iwe 10 MB au chini.';
+
+  @override
+  String get churchUpdateAttachmentPickFailed =>
+      'Imeshindwa kuchagua faili hiyo. Jaribu tena.';
+
+  @override
+  String get churchUpdateOpenAttachmentFailed =>
+      'Imeshindwa kufungua kiambatisho.';
+
+  @override
   String get adminPublishUpdate => 'Chapisha tangazo';
 
   @override

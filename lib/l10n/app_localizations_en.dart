@@ -840,6 +840,36 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not publish update. Try again.';
 
   @override
+  String get churchUpdateAttachments => 'Attachments';
+
+  @override
+  String get churchUpdateAddAttachment => 'Add attachment';
+
+  @override
+  String get churchUpdateAttachmentHint =>
+      'Images, PDFs, and documents up to 10 MB each (max 5 files).';
+
+  @override
+  String churchUpdateAttachmentCount(int current, int max) {
+    return '$current of $max';
+  }
+
+  @override
+  String get churchUpdateAttachmentLimit =>
+      'You can attach up to 5 files per update.';
+
+  @override
+  String get churchUpdateAttachmentTooLarge =>
+      'Each file must be 10 MB or smaller.';
+
+  @override
+  String get churchUpdateAttachmentPickFailed =>
+      'Could not pick that file. Try again.';
+
+  @override
+  String get churchUpdateOpenAttachmentFailed => 'Could not open attachment.';
+
+  @override
   String get adminPublishUpdate => 'Publish update';
 
   @override

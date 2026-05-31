@@ -73,13 +73,34 @@ class ChurchUpdateTile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        formatNotificationTime(update.createdAt),
-                        style: GoogleFonts.dmSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppPallete.textMuted,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            formatNotificationTime(update.createdAt),
+                            style: GoogleFonts.dmSans(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: AppPallete.textMuted,
+                            ),
+                          ),
+                          if (update.hasAttachments) ...[
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.attach_file_rounded,
+                              size: 14,
+                              color: AppPallete.tcBlueBright.withValues(alpha: 0.8),
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              '${update.attachments.length}',
+                              style: GoogleFonts.dmSans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppPallete.tcBlueBright,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ],
                   ),

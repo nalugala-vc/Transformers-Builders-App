@@ -340,6 +340,20 @@
   "churchUpdateBodyRequired": "Enter the update message",
   "churchUpdatePublished": "Update published to all members",
   "churchUpdatePublishFailed": "Could not publish update. Try again.",
+  "churchUpdateAttachments": "Attachments",
+  "churchUpdateAddAttachment": "Add attachment",
+  "churchUpdateAttachmentHint": "Images, PDFs, and documents up to 10 MB each (max 5 files).",
+  "churchUpdateAttachmentCount": "{current} of {max}",
+  "@churchUpdateAttachmentCount": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "churchUpdateAttachmentLimit": "You can attach up to 5 files per update.",
+  "churchUpdateAttachmentTooLarge": "Each file must be 10 MB or smaller.",
+  "churchUpdateAttachmentPickFailed": "Could not pick that file. Try again.",
+  "churchUpdateOpenAttachmentFailed": "Could not open attachment.",
   "adminPublishUpdate": "Publish update",
   "adminPublishUpdateHint": "Members will see this in Notifications → Updates.",
   "adminPublishUpdateAction": "Publish",

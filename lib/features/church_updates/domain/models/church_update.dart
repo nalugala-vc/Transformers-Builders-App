@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'church_update_attachment.dart';
+
 /// A church-wide announcement published by an admin (`churchUpdates/{id}`).
 class ChurchUpdate {
   const ChurchUpdate({
@@ -9,6 +11,7 @@ class ChurchUpdate {
     required this.createdAt,
     required this.createdByUid,
     this.createdByName,
+    this.attachments = const [],
   });
 
   final String id;
@@ -17,12 +20,28 @@ class ChurchUpdate {
   final DateTime createdAt;
   final String createdByUid;
   final String? createdByName;
+  final List<ChurchUpdateAttachment> attachments;
+
+  bool get hasAttachments => attachments.isNotEmpty;
 
   factory ChurchUpdate.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
   ) {
     final data = doc.data() ?? {};
     final created = data['createdAt'];
+    final rawAttachments = data['attachments'];
+
+    final attachments = <ChurchUpdateAttachment>[];
+    if (rawAttachments is List) {
+      for (final item in rawAttachments) {
+        if (item is Map) {
+          attachments.add(
+            ChurchUpdateAttachment.fromMap(Map<String, dynamic>.from(item)),
+          );
+        }
+      }
+    }
+
     return ChurchUpdate(
       id: doc.id,
       title: data['title'] as String? ?? '',
@@ -30,18 +49,7 @@ class ChurchUpdate {
       createdAt: created is Timestamp ? created.toDate() : DateTime.now(),
       createdByUid: data['createdByUid'] as String? ?? '',
       createdByName: data['createdByName'] as String?,
+      attachments: attachments,
     );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'title': title.trim(),
-      'body': body.trim(),
-      'createdAt': FieldValue.serverTimestamp(),
-      'createdByUid': createdByUid,
-      if (createdByName != null && createdByName!.trim().isNotEmpty)
-        'createdByName': createdByName!.trim(),
-      'published': true,
-    };
   }
 }

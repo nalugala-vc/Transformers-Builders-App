@@ -54,7 +54,7 @@ class _AdminMemberManagementScreenState
   ) async {
     switch (kind) {
       case AdminMemberCardActionKind.profile:
-        context.push('${AppRoutePaths.adminHome}/members/${member.uid}');
+        context.push(AppRoutePaths.adminMemberDetailFor(member.uid));
       case AdminMemberCardActionKind.message:
         showAppInfoToast(context, context.l10n.adminMemberMessageComingSoon);
       case AdminMemberCardActionKind.remove:
@@ -135,37 +135,6 @@ class _AdminMemberManagementScreenState
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            pagePadding,
-                            4,
-                            pagePadding,
-                            16,
-                          ),
-                          child: Center(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppPallete.tcWhite,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppPallete.border),
-                              ),
-                              child: Text(
-                                l10n.adminMembersFoundCount(filtered.length),
-                                style: GoogleFonts.dmSans(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppPallete.textMuted,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       if (filtered.isEmpty)
                         SliverFillRemaining(
                           hasScrollBody: false,
@@ -177,7 +146,7 @@ class _AdminMemberManagementScreenState
                         SliverPadding(
                           padding: EdgeInsets.fromLTRB(
                             pagePadding,
-                            0,
+                            8,
                             pagePadding,
                             24,
                           ),

@@ -141,17 +141,14 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.adminHome,
       name: 'adminHome',
       builder: (context, state) => const AdminShellScreen(),
-      routes: [
-        GoRoute(
-          path: 'members/:uid',
-          name: 'adminMemberDetail',
-          parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) {
-            final uid = state.pathParameters['uid']!;
-            return AdminMemberDetailScreen(memberUid: uid);
-          },
-        ),
-      ],
+    ),
+    GoRoute(
+      path: '/admin/members/:uid',
+      name: 'adminMemberDetail',
+      builder: (context, state) {
+        final uid = state.pathParameters['uid']!;
+        return AdminMemberDetailScreen(memberUid: uid);
+      },
     ),
     GoRoute(
       path: AppRoutePaths.sizes,

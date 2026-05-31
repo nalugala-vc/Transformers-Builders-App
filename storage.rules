@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null
+        && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Announcement attachments — readable by any signed-in user, writable by admins only.
+    match /churchUpdates/{updateId}/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin()
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+  }
+}
