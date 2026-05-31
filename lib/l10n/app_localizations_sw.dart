@@ -862,4 +862,154 @@ class AppLocalizationsSw extends AppLocalizations {
   @override
   String get adminUpdatesEmpty =>
       'Hakuna matangazo bado. Gusa Chapisha kutuma la kwanza.';
+
+  @override
+  String get adminSidebarChurch => 'KANISA';
+
+  @override
+  String get adminSidebarPersonal => 'MICHANGO YANGU';
+
+  @override
+  String get adminSidebarAccount => 'AKAUNTI';
+
+  @override
+  String get adminSidebarCollapse => 'Funga';
+
+  @override
+  String get adminMyContributions => 'Michango yangu';
+
+  @override
+  String get adminChurchMembers => 'Waumini wa Kanisa';
+
+  @override
+  String get adminSearchMembersHint => 'Tafuta waumini…';
+
+  @override
+  String adminMembersFoundCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Waumini $count wamepatikana',
+      one: 'Mwumini 1 amepatikana',
+      zero: 'Hakuna waumini waliopatikana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adminMembersSearchEmpty =>
+      'Hakuna waumini wanaolingana na utafutaji wako.';
+
+  @override
+  String get adminMembersLoadError =>
+      'Imeshindwa kupakia waumini. Jaribu tena.';
+
+  @override
+  String adminMemberTargetLabel(String amount) {
+    return 'Lengo: $amount';
+  }
+
+  @override
+  String get adminMemberActionProfile => 'Wasifu';
+
+  @override
+  String get adminMemberActionMessage => 'Ujumbe';
+
+  @override
+  String get adminMemberActionRemove => 'Ondoa';
+
+  @override
+  String get adminMemberProfile => 'Wasifu wa mwumini';
+
+  @override
+  String get adminMemberTabOverview => 'Muhtasari';
+
+  @override
+  String get adminMemberTabContributions => 'Michango';
+
+  @override
+  String get adminMemberTabActivity => 'Shughuli';
+
+  @override
+  String adminMemberJoined(String date) {
+    return 'Alijiunga $date';
+  }
+
+  @override
+  String get contributionTarget => 'Lengo la mchango';
+
+  @override
+  String get totalContributed => 'Jumla iliyochangwa';
+
+  @override
+  String get adminPaymentMethodsUsed => 'Njia za malipo zilizotumika';
+
+  @override
+  String get adminPaymentMethodsNone => 'Hakuna bado';
+
+  @override
+  String get adminProviderReference => 'Rejea ya mtoa huduma';
+
+  @override
+  String get adminFxRate => 'Kiwango cha ubadilishaji';
+
+  @override
+  String get adminMemberActivityEmpty => 'Hakuna shughuli iliyorekodiwa bado.';
+
+  @override
+  String get adminActivityJoined => 'Alijiunga na kanisa';
+
+  @override
+  String get adminActivityTargetSet => 'Lengo la mchango limewekwa';
+
+  @override
+  String adminActivityGoalChanged(String from, String to) {
+    return 'Lengo limebadilishwa kutoka $from hadi $to';
+  }
+
+  @override
+  String adminActivityContribution(String amount) {
+    return 'Mchango wa $amount';
+  }
+
+  @override
+  String adminGoalLoweredCount(int count) {
+    return 'Lengo limeshushwa mara $count';
+  }
+
+  @override
+  String get adminGoalHistoryTitle => 'Historia ya lengo';
+
+  @override
+  String get adminGoalHistoryEmpty =>
+      'Hakuna mabadiliko ya lengo yaliyorekodiwa.';
+
+  @override
+  String adminGoalHistoryEntry(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String adminRemoveMemberTitle(String name) {
+    return 'Ondoa $name kutoka orodha ya waumini?';
+  }
+
+  @override
+  String get adminRemoveMemberBody =>
+      'Hii itaweka mwumini kuwa asiye hai. Michango yake ya zamani itabaki. Hataona programu wala kupokea arifa.';
+
+  @override
+  String get adminRemoveMemberConfirm => 'Ondoa mwumini';
+
+  @override
+  String get adminRemoveMemberFailed =>
+      'Imeshindwa kuondoa mwumini. Jaribu tena.';
+
+  @override
+  String adminMemberRemoved(String name) {
+    return '$name ameondolewa.';
+  }
+
+  @override
+  String get adminMemberMessageComingSoon => 'Ujumbe utakuja hivi karibuni.';
 }

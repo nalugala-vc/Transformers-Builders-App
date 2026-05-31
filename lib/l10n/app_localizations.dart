@@ -1665,6 +1665,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No updates published yet. Tap Publish to send your first announcement.'**
   String get adminUpdatesEmpty;
+
+  /// No description provided for @adminSidebarChurch.
+  ///
+  /// In en, this message translates to:
+  /// **'CHURCH'**
+  String get adminSidebarChurch;
+
+  /// No description provided for @adminSidebarPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'MY GIVING'**
+  String get adminSidebarPersonal;
+
+  /// No description provided for @adminSidebarAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT'**
+  String get adminSidebarAccount;
+
+  /// No description provided for @adminSidebarCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get adminSidebarCollapse;
+
+  /// No description provided for @adminMyContributions.
+  ///
+  /// In en, this message translates to:
+  /// **'My contributions'**
+  String get adminMyContributions;
+
+  /// No description provided for @adminChurchMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Church Members'**
+  String get adminChurchMembers;
+
+  /// No description provided for @adminSearchMembersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search members…'**
+  String get adminSearchMembersHint;
+
+  /// No description provided for @adminMembersFoundCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members found} =1{1 member found} other{{count} members found}}'**
+  String adminMembersFoundCount(int count);
+
+  /// No description provided for @adminMembersSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No members match your search.'**
+  String get adminMembersSearchEmpty;
+
+  /// No description provided for @adminMembersLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load members. Try again.'**
+  String get adminMembersLoadError;
+
+  /// No description provided for @adminMemberTargetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Target: {amount}'**
+  String adminMemberTargetLabel(String amount);
+
+  /// No description provided for @adminMemberActionProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get adminMemberActionProfile;
+
+  /// No description provided for @adminMemberActionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get adminMemberActionMessage;
+
+  /// No description provided for @adminMemberActionRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get adminMemberActionRemove;
+
+  /// No description provided for @adminMemberProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Member profile'**
+  String get adminMemberProfile;
+
+  /// No description provided for @adminMemberTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get adminMemberTabOverview;
+
+  /// No description provided for @adminMemberTabContributions.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions'**
+  String get adminMemberTabContributions;
+
+  /// No description provided for @adminMemberTabActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get adminMemberTabActivity;
+
+  /// No description provided for @adminMemberJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {date}'**
+  String adminMemberJoined(String date);
+
+  /// No description provided for @contributionTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution target'**
+  String get contributionTarget;
+
+  /// No description provided for @totalContributed.
+  ///
+  /// In en, this message translates to:
+  /// **'Total contributed'**
+  String get totalContributed;
+
+  /// No description provided for @adminPaymentMethodsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment methods used'**
+  String get adminPaymentMethodsUsed;
+
+  /// No description provided for @adminPaymentMethodsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get adminPaymentMethodsNone;
+
+  /// No description provided for @adminProviderReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider reference'**
+  String get adminProviderReference;
+
+  /// No description provided for @adminFxRate.
+  ///
+  /// In en, this message translates to:
+  /// **'FX rate'**
+  String get adminFxRate;
+
+  /// No description provided for @adminMemberActivityEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity recorded yet.'**
+  String get adminMemberActivityEmpty;
+
+  /// No description provided for @adminActivityJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined the church'**
+  String get adminActivityJoined;
+
+  /// No description provided for @adminActivityTargetSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution target set'**
+  String get adminActivityTargetSet;
+
+  /// No description provided for @adminActivityGoalChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal changed from {from} to {to}'**
+  String adminActivityGoalChanged(String from, String to);
+
+  /// No description provided for @adminActivityContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution of {amount}'**
+  String adminActivityContribution(String amount);
+
+  /// No description provided for @adminGoalLoweredCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal lowered {count} times'**
+  String adminGoalLoweredCount(int count);
+
+  /// No description provided for @adminGoalHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal history'**
+  String get adminGoalHistoryTitle;
+
+  /// No description provided for @adminGoalHistoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No goal changes recorded.'**
+  String get adminGoalHistoryEmpty;
+
+  /// No description provided for @adminGoalHistoryEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to}'**
+  String adminGoalHistoryEntry(String from, String to);
+
+  /// No description provided for @adminRemoveMemberTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the church roster?'**
+  String adminRemoveMemberTitle(String name);
+
+  /// No description provided for @adminRemoveMemberBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This sets the member as inactive. Their past contributions are kept. They won\'t see the app or receive notifications.'**
+  String get adminRemoveMemberBody;
+
+  /// No description provided for @adminRemoveMemberConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get adminRemoveMemberConfirm;
+
+  /// No description provided for @adminRemoveMemberFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not remove member. Try again.'**
+  String get adminRemoveMemberFailed;
+
+  /// No description provided for @adminMemberRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed.'**
+  String adminMemberRemoved(String name);
+
+  /// No description provided for @adminMemberMessageComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging is coming soon.'**
+  String get adminMemberMessageComingSoon;
 }
 
 class _AppLocalizationsDelegate

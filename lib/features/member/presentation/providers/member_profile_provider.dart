@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/config/app_version.dart';
 import '../../../../core/utils/phone_e164.dart';
+import '../../../../core/utils/user_initials.dart';
 import '../../domain/models/member_group.dart';
 import '../../../auth/data/repositories/auth_repository.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
@@ -40,23 +41,13 @@ final memberProfileUiProvider = FutureProvider<MemberProfileUiState>((ref) async
     phoneE164: profile?.phoneE164,
     demographicGroupId: profile?.demographicGroupId,
     ministryGroupId: profile?.ministryGroupId,
-    initials: _initialsFor(fullName),
+    initials: initialsForName(fullName),
     pushNotificationsEnabled: ref.watch(memberPushNotificationsProvider),
     appVersionLabel: AppVersion.label,
     canChangePassword: canChangePassword,
     usesGoogleSignIn: usesGoogleSignIn,
   );
 });
-
-String _initialsFor(String fullName) {
-  final parts = fullName.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty);
-  final list = parts.toList();
-  if (list.isEmpty) return 'M';
-  if (list.length == 1) {
-    return list.first.substring(0, 1).toUpperCase();
-  }
-  return '${list.first[0]}${list.last[0]}'.toUpperCase();
-}
 
 /// Updates display name in Firebase Auth + Firestore, then refreshes profile UI.
 Future<String?> updateMemberFullName(

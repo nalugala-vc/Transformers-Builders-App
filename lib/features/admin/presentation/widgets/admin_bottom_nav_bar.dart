@@ -12,7 +12,8 @@ class AdminBottomNavBar extends StatelessWidget {
     required this.onTabSelected,
   });
 
-  final AdminTab currentTab;
+  /// Null when a sidebar-only view (e.g. My Contributions) is active.
+  final AdminTab? currentTab;
   final ValueChanged<AdminTab> onTabSelected;
 
   @override
@@ -29,7 +30,7 @@ class AdminBottomNavBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           child: Row(
             children: AdminTab.values.map((tab) {
-              final selected = tab == currentTab;
+              final selected = currentTab != null && tab == currentTab;
               return Expanded(
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,

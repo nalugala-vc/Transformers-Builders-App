@@ -344,5 +344,94 @@
   "adminPublishUpdateHint": "Members will see this in Notifications → Updates.",
   "adminPublishUpdateAction": "Publish",
   "adminUpdatesManageSubtitle": "Send announcements that appear in every member's Updates tab.",
-  "adminUpdatesEmpty": "No updates published yet. Tap Publish to send your first announcement."
+  "adminUpdatesEmpty": "No updates published yet. Tap Publish to send your first announcement.",
+
+  "adminSidebarChurch": "CHURCH",
+  "adminSidebarPersonal": "MY GIVING",
+  "adminSidebarAccount": "ACCOUNT",
+  "adminSidebarCollapse": "Collapse",
+  "adminMyContributions": "My contributions",
+
+  "adminChurchMembers": "Church Members",
+  "adminSearchMembersHint": "Search members…",
+  "adminMembersFoundCount": "{count, plural, =0{No members found} =1{1 member found} other{{count} members found}}",
+  "@adminMembersFoundCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "adminMembersSearchEmpty": "No members match your search.",
+  "adminMembersLoadError": "Could not load members. Try again.",
+  "adminMemberTargetLabel": "Target: {amount}",
+  "@adminMemberTargetLabel": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "adminMemberActionProfile": "Profile",
+  "adminMemberActionMessage": "Message",
+  "adminMemberActionRemove": "Remove",
+  "adminMemberProfile": "Member profile",
+  "adminMemberTabOverview": "Overview",
+  "adminMemberTabContributions": "Contributions",
+  "adminMemberTabActivity": "Activity",
+  "adminMemberJoined": "Joined {date}",
+  "@adminMemberJoined": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "contributionTarget": "Contribution target",
+  "totalContributed": "Total contributed",
+  "adminPaymentMethodsUsed": "Payment methods used",
+  "adminPaymentMethodsNone": "None yet",
+  "adminProviderReference": "Provider reference",
+  "adminFxRate": "FX rate",
+  "adminMemberActivityEmpty": "No activity recorded yet.",
+  "adminActivityJoined": "Joined the church",
+  "adminActivityTargetSet": "Contribution target set",
+  "adminActivityGoalChanged": "Goal changed from {from} to {to}",
+  "@adminActivityGoalChanged": {
+    "placeholders": {
+      "from": {"type": "String"},
+      "to": {"type": "String"}
+    }
+  },
+  "adminActivityContribution": "Contribution of {amount}",
+  "@adminActivityContribution": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "adminGoalLoweredCount": "Goal lowered {count} times",
+  "@adminGoalLoweredCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "adminGoalHistoryTitle": "Goal history",
+  "adminGoalHistoryEmpty": "No goal changes recorded.",
+  "adminGoalHistoryEntry": "{from} → {to}",
+  "@adminGoalHistoryEntry": {
+    "placeholders": {
+      "from": {"type": "String"},
+      "to": {"type": "String"}
+    }
+  },
+  "adminRemoveMemberTitle": "Remove {name} from the church roster?",
+  "@adminRemoveMemberTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "adminRemoveMemberBody": "This sets the member as inactive. Their past contributions are kept. They won't see the app or receive notifications.",
+  "adminRemoveMemberConfirm": "Remove member",
+  "adminRemoveMemberFailed": "Could not remove member. Try again.",
+  "adminMemberRemoved": "{name} removed.",
+  "@adminMemberRemoved": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "adminMemberMessageComingSoon": "Messaging is coming soon."
 }

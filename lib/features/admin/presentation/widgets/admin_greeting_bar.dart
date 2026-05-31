@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:heroicons/heroicons.dart';
 
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
@@ -10,11 +11,13 @@ class AdminGreetingBar extends StatelessWidget {
     super.key,
     required this.firstName,
     required this.title,
+    this.onMenuTap,
     this.onNotificationsTap,
   });
 
   final String firstName;
   final String title;
+  final VoidCallback? onMenuTap;
   final VoidCallback? onNotificationsTap;
 
   @override
@@ -29,10 +32,20 @@ class AdminGreetingBar extends StatelessWidget {
         child: SafeArea(
           bottom: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 12, 16),
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if (onMenuTap != null)
+                  IconButton(
+                    onPressed: onMenuTap,
+                    icon: const HeroIcon(
+                      HeroIcons.bars3BottomLeft,
+                      color: AppPallete.textPrimary,
+                      size: 24,
+                    ),
+                    tooltip: l10n.menu,
+                  ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

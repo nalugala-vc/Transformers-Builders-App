@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/config/app_route_paths.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/theme/app_pallete.dart';
@@ -18,7 +21,12 @@ import '../widgets/admin_needs_attention_card.dart';
 import '../widgets/admin_recent_activity_card.dart';
 
 class AdminDashboardTabScreen extends ConsumerWidget {
-  const AdminDashboardTabScreen({super.key});
+  const AdminDashboardTabScreen({
+    super.key,
+    this.onOpenDrawer,
+  });
+
+  final VoidCallback? onOpenDrawer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,16 +40,23 @@ class AdminDashboardTabScreen extends ConsumerWidget {
           message: error.toString(),
           onRetry: () => ref.invalidate(adminDashboardProvider),
         ),
-        data: (data) => _DashboardBody(data: data),
+        data: (data) => _DashboardBody(
+          data: data,
+          onOpenDrawer: onOpenDrawer,
+        ),
       ),
     );
   }
 }
 
 class _DashboardBody extends ConsumerWidget {
-  const _DashboardBody({required this.data});
+  const _DashboardBody({
+    required this.data,
+    this.onOpenDrawer,
+  });
 
   final AdminDashboardData data;
+  final VoidCallback? onOpenDrawer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,10 +68,9 @@ class _DashboardBody extends ConsumerWidget {
         AdminGreetingBar(
           firstName: firstName,
           title: l10n.adminDashboardSubtitle,
-          onNotificationsTap: () => showAppInfoToast(
-            context,
-            l10n.comingSoon(l10n.notifications),
-          ),
+          onMenuTap: onOpenDrawer,
+          onNotificationsTap: () =>
+              context.push(AppRoutePaths.memberNotifications),
         ),
         Expanded(
           child: RefreshIndicator(

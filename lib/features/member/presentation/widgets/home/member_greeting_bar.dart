@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:heroicons/heroicons.dart';
 
 import '../../../../../core/l10n/l10n_extension.dart';
 import '../../../../../core/utils/theme/app_pallete.dart';
@@ -37,8 +38,8 @@ class MemberGreetingBar extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: onMenuTap,
-                  icon: const Icon(
-                    Icons.menu_rounded,
+                  icon: const HeroIcon(
+                    HeroIcons.bars3BottomLeft,
                     color: AppPallete.textPrimary,
                     size: 24,
                   ),

@@ -9,9 +9,15 @@ import '../../../church_updates/presentation/providers/church_updates_providers.
 import '../../../church_updates/presentation/widgets/church_update_detail_sheet.dart';
 import '../../../church_updates/presentation/widgets/church_update_tile.dart';
 import '../../../church_updates/presentation/widgets/publish_church_update_sheet.dart';
+import '../widgets/admin_shell_menu_bar.dart';
 
 class AdminUpdatesTabScreen extends ConsumerWidget {
-  const AdminUpdatesTabScreen({super.key});
+  const AdminUpdatesTabScreen({
+    super.key,
+    required this.onOpenDrawer,
+  });
+
+  final VoidCallback onOpenDrawer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,126 +26,99 @@ class AdminUpdatesTabScreen extends ConsumerWidget {
 
     return ColoredBox(
       color: AppPallete.scaffoldBg,
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                context.responsivePagePadding,
-                20,
-                context.responsivePagePadding,
-                8,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.adminTabUpdates,
-                    style: GoogleFonts.dmSans(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: AppPallete.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.adminUpdatesManageSubtitle,
-                    style: GoogleFonts.dmSans(
-                      fontSize: 13,
-                      color: AppPallete.textMuted,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: updatesAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stackTrace) => Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(context.responsivePagePadding),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          l10n.churchUpdatesLoadError,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        FilledButton(
-                          onPressed: () =>
-                              ref.invalidate(adminChurchUpdatesProvider),
-                          child: Text(l10n.tryAgain),
-                        ),
-                      ],
-                    ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AdminShellMenuBar(
+            onOpenDrawer: onOpenDrawer,
+            title: l10n.adminTabUpdates,
+            subtitle: l10n.adminUpdatesManageSubtitle,
+          ),
+          Expanded(
+            child: updatesAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) => Center(
+                child: Padding(
+                  padding: EdgeInsets.all(context.responsivePagePadding),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        l10n.churchUpdatesLoadError,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      FilledButton(
+                        onPressed: () =>
+                            ref.invalidate(adminChurchUpdatesProvider),
+                        child: Text(l10n.tryAgain),
+                      ),
+                    ],
                   ),
                 ),
-                data: (updates) {
-                  if (updates.isEmpty) {
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(context.responsivePagePadding),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                color: AppPallete.tcBlueLight.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: const Icon(
-                                Icons.campaign_rounded,
-                                color: AppPallete.tcBlueLight,
-                                size: 28,
-                              ),
+              ),
+              data: (updates) {
+                if (updates.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(context.responsivePagePadding),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: AppPallete.tcBlueLight.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            const SizedBox(height: 16),
-                            Text(
-                              l10n.adminUpdatesEmpty,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.dmSans(
-                                fontSize: 14,
-                                color: AppPallete.textMuted,
-                                height: 1.4,
-                              ),
+                            child: const Icon(
+                              Icons.campaign_rounded,
+                              color: AppPallete.tcBlueLight,
+                              size: 28,
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-
-                  return RefreshIndicator(
-                    color: AppPallete.tcBlueBright,
-                    onRefresh: () => refreshChurchUpdates(ref),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(
-                        context.responsivePagePadding,
-                        8,
-                        context.responsivePagePadding,
-                        88,
-                      ),
-                      children: [
-                        for (final update in updates)
-                          ChurchUpdateTile(
-                            update: update,
-                            onTap: () =>
-                                showChurchUpdateDetailSheet(context, update),
                           ),
-                      ],
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.adminUpdatesEmpty,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 14,
+                              color: AppPallete.textMuted,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
-                },
-              ),
+                }
+
+                return RefreshIndicator(
+                  color: AppPallete.tcBlueBright,
+                  onRefresh: () => refreshChurchUpdates(ref),
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(
+                      context.responsivePagePadding,
+                      8,
+                      context.responsivePagePadding,
+                      88,
+                    ),
+                    children: [
+                      for (final update in updates)
+                        ChurchUpdateTile(
+                          update: update,
+                          onTap: () =>
+                              showChurchUpdateDetailSheet(context, update),
+                        ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

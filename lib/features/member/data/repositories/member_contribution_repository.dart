@@ -171,6 +171,15 @@ class MemberContributionRepository {
           updates['contributionTargetSetAt'] = FieldValue.serverTimestamp();
         } else {
           updates['contributionTargetUpdatedAt'] = FieldValue.serverTimestamp();
+          if (targetKes < oldTarget) {
+            updates['contributionGoalHistory'] = FieldValue.arrayUnion([
+              {
+                'fromKes': oldTarget,
+                'toKes': targetKes,
+                'changedAt': Timestamp.now(),
+              },
+            ]);
+          }
         }
         txn.set(userRef, updates, SetOptions(merge: true));
 
@@ -575,6 +584,8 @@ class MemberContributionRepository {
       reference: data['reference'] as String? ?? '—',
       status: _statusFromString(data['status'] as String?),
       notes: data['notes'] as String?,
+      providerReference: data['providerReference'] as String?,
+      fxRate: data['fxRate'] is num ? (data['fxRate'] as num).toDouble() : null,
     );
   }
 

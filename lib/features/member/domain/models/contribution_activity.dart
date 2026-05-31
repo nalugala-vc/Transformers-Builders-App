@@ -13,6 +13,8 @@ class ContributionActivity {
     required this.reference,
     required this.status,
     this.notes,
+    this.providerReference,
+    this.fxRate,
   });
 
   final String id;
@@ -22,4 +24,6 @@ class ContributionActivity {
   final String reference;
   final ContributionPaymentStatus status;
   final String? notes;
+  final String? providerReference;
+  final double? fxRate;
 }

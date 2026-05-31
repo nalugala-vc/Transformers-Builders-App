@@ -103,13 +103,16 @@ class AdminDashboardRepository {
           .timeout(const Duration(seconds: 15));
 
       var newThisWeek = 0;
+      var activeMembers = 0;
       for (final doc in snap.docs) {
+        if (doc.data()['isActive'] == false) continue;
+        activeMembers += 1;
         final created = doc.data()['createdAt'];
         if (created is Timestamp && !created.toDate().isBefore(weekAgoTs.toDate())) {
           newThisWeek += 1;
         }
       }
-      return _MemberStats(activeMembers: snap.size, newThisWeek: newThisWeek);
+      return _MemberStats(activeMembers: activeMembers, newThisWeek: newThisWeek);
     } catch (e, st) {
       _logError('memberStats', e, st);
       return const _MemberStats(activeMembers: 0, newThisWeek: 0);

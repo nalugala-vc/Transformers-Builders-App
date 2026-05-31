@@ -15,6 +15,7 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/admin/presentation/screens/admin_shell_screen.dart';
+import '../../features/admin/presentation/screens/admin_member_detail_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../features/member/presentation/screens/member_contribution_history_screen.dart';
 import '../../features/member/presentation/screens/member_notifications_screen.dart';
@@ -140,6 +141,17 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutePaths.adminHome,
       name: 'adminHome',
       builder: (context, state) => const AdminShellScreen(),
+      routes: [
+        GoRoute(
+          path: 'members/:uid',
+          name: 'adminMemberDetail',
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (context, state) {
+            final uid = state.pathParameters['uid']!;
+            return AdminMemberDetailScreen(memberUid: uid);
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: AppRoutePaths.sizes,

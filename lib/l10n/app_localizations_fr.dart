@@ -868,4 +868,154 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get adminUpdatesEmpty =>
       'Aucune annonce publiée. Appuyez sur Publier pour envoyer la première.';
+
+  @override
+  String get adminSidebarChurch => 'ÉGLISE';
+
+  @override
+  String get adminSidebarPersonal => 'MES DONS';
+
+  @override
+  String get adminSidebarAccount => 'COMPTE';
+
+  @override
+  String get adminSidebarCollapse => 'Réduire';
+
+  @override
+  String get adminMyContributions => 'Mes contributions';
+
+  @override
+  String get adminChurchMembers => 'Membres de l\'église';
+
+  @override
+  String get adminSearchMembersHint => 'Rechercher des membres…';
+
+  @override
+  String adminMembersFoundCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membres trouvés',
+      one: '1 membre trouvé',
+      zero: 'Aucun membre trouvé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adminMembersSearchEmpty =>
+      'Aucun membre ne correspond à votre recherche.';
+
+  @override
+  String get adminMembersLoadError =>
+      'Impossible de charger les membres. Réessayez.';
+
+  @override
+  String adminMemberTargetLabel(String amount) {
+    return 'Objectif : $amount';
+  }
+
+  @override
+  String get adminMemberActionProfile => 'Profil';
+
+  @override
+  String get adminMemberActionMessage => 'Message';
+
+  @override
+  String get adminMemberActionRemove => 'Retirer';
+
+  @override
+  String get adminMemberProfile => 'Profil du membre';
+
+  @override
+  String get adminMemberTabOverview => 'Aperçu';
+
+  @override
+  String get adminMemberTabContributions => 'Contributions';
+
+  @override
+  String get adminMemberTabActivity => 'Activité';
+
+  @override
+  String adminMemberJoined(String date) {
+    return 'Inscrit le $date';
+  }
+
+  @override
+  String get contributionTarget => 'Objectif de contribution';
+
+  @override
+  String get totalContributed => 'Total contribué';
+
+  @override
+  String get adminPaymentMethodsUsed => 'Modes de paiement utilisés';
+
+  @override
+  String get adminPaymentMethodsNone => 'Aucun pour l\'instant';
+
+  @override
+  String get adminProviderReference => 'Référence fournisseur';
+
+  @override
+  String get adminFxRate => 'Taux de change';
+
+  @override
+  String get adminMemberActivityEmpty => 'Aucune activité enregistrée.';
+
+  @override
+  String get adminActivityJoined => 'A rejoint l\'église';
+
+  @override
+  String get adminActivityTargetSet => 'Objectif de contribution défini';
+
+  @override
+  String adminActivityGoalChanged(String from, String to) {
+    return 'Objectif modifié de $from à $to';
+  }
+
+  @override
+  String adminActivityContribution(String amount) {
+    return 'Contribution de $amount';
+  }
+
+  @override
+  String adminGoalLoweredCount(int count) {
+    return 'Objectif abaissé $count fois';
+  }
+
+  @override
+  String get adminGoalHistoryTitle => 'Historique des objectifs';
+
+  @override
+  String get adminGoalHistoryEmpty =>
+      'Aucun changement d\'objectif enregistré.';
+
+  @override
+  String adminGoalHistoryEntry(String from, String to) {
+    return '$from → $to';
+  }
+
+  @override
+  String adminRemoveMemberTitle(String name) {
+    return 'Retirer $name de la liste des membres ?';
+  }
+
+  @override
+  String get adminRemoveMemberBody =>
+      'Le membre sera marqué inactif. Ses contributions passées sont conservées. Il ne verra plus l\'application ni ne recevra de notifications.';
+
+  @override
+  String get adminRemoveMemberConfirm => 'Retirer le membre';
+
+  @override
+  String get adminRemoveMemberFailed =>
+      'Impossible de retirer le membre. Réessayez.';
+
+  @override
+  String adminMemberRemoved(String name) {
+    return '$name retiré.';
+  }
+
+  @override
+  String get adminMemberMessageComingSoon => 'La messagerie arrive bientôt.';
 }
