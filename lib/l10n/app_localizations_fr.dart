@@ -888,6 +888,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminChurchMembers => 'Membres de l\'église';
 
   @override
+  String get adminMembersManageSubtitle =>
+      'Recherchez, consultez les profils et gérez la liste des membres.';
+
+  @override
   String get adminSearchMembersHint => 'Rechercher des membres…';
 
   @override

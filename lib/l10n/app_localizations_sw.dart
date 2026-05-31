@@ -882,6 +882,10 @@ class AppLocalizationsSw extends AppLocalizations {
   String get adminChurchMembers => 'Waumini wa Kanisa';
 
   @override
+  String get adminMembersManageSubtitle =>
+      'Tafuta, angalia wasifu, na simamia orodha ya waumini.';
+
+  @override
   String get adminSearchMembersHint => 'Tafuta waumini…';
 
   @override

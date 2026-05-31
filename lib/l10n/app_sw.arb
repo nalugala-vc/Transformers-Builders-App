@@ -273,6 +273,7 @@
   "adminMyContributions": "Michango yangu",
 
   "adminChurchMembers": "Waumini wa Kanisa",
+  "adminMembersManageSubtitle": "Tafuta, angalia wasifu, na simamia orodha ya waumini.",
   "adminSearchMembersHint": "Tafuta waumini…",
   "adminMembersFoundCount": "{count, plural, =0{Hakuna waumini waliopatikana} =1{Mwumini 1 amepatikana} other{Waumini {count} wamepatikana}}",
   "adminMembersSearchEmpty": "Hakuna waumini wanaolingana na utafutaji wako.",

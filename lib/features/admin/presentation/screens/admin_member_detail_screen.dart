@@ -11,10 +11,10 @@ import '../../../../core/utils/user_initials.dart';
 import '../../domain/models/admin_member_activity_event.dart';
 import '../../domain/models/admin_member_detail.dart';
 import '../providers/admin_member_providers.dart';
-import '../widgets/admin_blue_title_bar.dart';
 import '../widgets/admin_contribution_detail_sheet.dart';
 import '../widgets/admin_goal_history_sheet.dart';
 import '../widgets/admin_remove_member_dialog.dart';
+import '../../../member/presentation/widgets/profile/profile_section_card.dart';
 import '../../../member/domain/models/contribution_activity.dart';
 import '../../../member/presentation/utils/member_formatters.dart';
 
@@ -28,48 +28,61 @@ class AdminMemberDetailScreen extends ConsumerWidget {
     final detailAsync = ref.watch(adminMemberDetailProvider(memberUid));
     final l10n = context.l10n;
 
-    return Scaffold(
-      backgroundColor: AppPallete.scaffoldBg,
-      body: detailAsync.when(
-        loading: () => Column(
-          children: [
-            AdminBlueTitleBar(
-              title: l10n.adminMemberProfile,
-              onBack: () => context.pop(),
-            ),
-            const Expanded(child: Center(child: CircularProgressIndicator())),
-          ],
+    return detailAsync.when(
+      loading: () => Scaffold(
+        backgroundColor: AppPallete.scaffoldBg,
+        appBar: _detailAppBar(context, l10n.adminMemberProfile),
+        body: const Center(
+          child: CircularProgressIndicator(color: AppPallete.tcBlueBright),
         ),
-        error: (_, __) => Column(
-          children: [
-            AdminBlueTitleBar(
-              title: l10n.adminMemberProfile,
-              onBack: () => context.pop(),
-            ),
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(context.responsivePagePadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(l10n.adminMembersLoadError, textAlign: TextAlign.center),
-                      const SizedBox(height: 16),
-                      FilledButton(
-                        onPressed: () => refreshAdminMemberDetail(ref, memberUid),
-                        child: Text(l10n.tryAgain),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        data: (detail) => _AdminMemberDetailBody(detail: detail),
       ),
+      error: (error, stackTrace) => Scaffold(
+        backgroundColor: AppPallete.scaffoldBg,
+        appBar: _detailAppBar(context, l10n.adminMemberProfile),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.all(context.responsivePagePadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(l10n.adminMembersLoadError, textAlign: TextAlign.center),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () => refreshAdminMemberDetail(ref, memberUid),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppPallete.tcBlueBright,
+                  ),
+                  child: Text(l10n.tryAgain),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      data: (detail) => _AdminMemberDetailBody(detail: detail),
     );
   }
+}
+
+PreferredSizeWidget _detailAppBar(BuildContext context, String title) {
+  return AppBar(
+    backgroundColor: AppPallete.tcWhite,
+    surfaceTintColor: AppPallete.tcWhite,
+    elevation: 0,
+    leading: IconButton(
+      icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+      color: AppPallete.textPrimary,
+      onPressed: () => context.pop(),
+    ),
+    title: Text(
+      title,
+      style: GoogleFonts.dmSans(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: AppPallete.textPrimary,
+      ),
+    ),
+  );
 }
 
 class _AdminMemberDetailBody extends ConsumerWidget {
@@ -84,73 +97,80 @@ class _AdminMemberDetailBody extends ConsumerWidget {
 
     return DefaultTabController(
       length: 3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AdminBlueTitleBar(
-            title: l10n.adminMemberProfile,
-            onBack: () => context.pop(),
+      child: Scaffold(
+        backgroundColor: AppPallete.scaffoldBg,
+        appBar: AppBar(
+          backgroundColor: AppPallete.tcWhite,
+          surfaceTintColor: AppPallete.tcWhite,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+            color: AppPallete.textPrimary,
+            onPressed: () => context.pop(),
           ),
-          Expanded(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(context.responsivePagePadding),
-                    child: _MemberHeader(detail: detail),
-                  ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _TabBarDelegate(
-                    TabBar(
-                      labelColor: AppPallete.tcBlueLight,
-                      unselectedLabelColor: AppPallete.textMuted,
-                      indicatorColor: AppPallete.tcBlueLight,
-                      labelStyle: GoogleFonts.dmSans(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
-                      tabs: [
-                        Tab(text: l10n.adminMemberTabOverview),
-                        Tab(text: l10n.adminMemberTabContributions),
-                        Tab(text: l10n.adminMemberTabActivity),
-                      ],
-                    ),
+          title: Text(
+            user.fullName,
+            style: GoogleFonts.dmSans(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppPallete.textPrimary,
+            ),
+          ),
+          actions: [
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_horiz_rounded, color: AppPallete.textMuted),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              onSelected: (value) {
+                if (value == 'remove') {
+                  _confirmRemove(context, ref, user.fullName);
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'remove',
+                  child: Text(
+                    l10n.adminMemberActionRemove,
+                    style: const TextStyle(color: AppPallete.tcRed),
                   ),
                 ),
               ],
-              body: TabBarView(
-                children: [
-                  _OverviewTab(detail: detail),
-                  _ContributionsTab(contributions: detail.contributions),
-                  _ActivityTab(events: detail.activityEvents),
-                ],
-              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              context.responsivePagePadding,
-              0,
-              context.responsivePagePadding,
-              16 + MediaQuery.paddingOf(context).bottom,
-            ),
-            child: OutlinedButton.icon(
-              onPressed: () => _confirmRemove(context, ref, user.fullName),
-              icon: const Icon(Icons.person_remove_outlined, color: AppPallete.tcRed),
-              label: Text(l10n.adminMemberActionRemove),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppPallete.tcRed,
-                side: const BorderSide(color: AppPallete.tcRed),
-                minimumSize: const Size.fromHeight(48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(49),
+            child: Column(
+              children: [
+                TabBar(
+                  labelColor: AppPallete.tcBlueBright,
+                  unselectedLabelColor: AppPallete.textMuted,
+                  indicatorColor: AppPallete.tcBlueBright,
+                  indicatorWeight: 2.5,
+                  labelStyle: GoogleFonts.dmSans(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                  unselectedLabelStyle: GoogleFonts.dmSans(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                  tabs: [
+                    Tab(text: l10n.adminMemberTabOverview),
+                    Tab(text: l10n.adminMemberTabContributions),
+                    Tab(text: l10n.adminMemberTabActivity),
+                  ],
                 ),
-              ),
+                const Divider(height: 1, color: AppPallete.border),
+              ],
             ),
           ),
-        ],
+        ),
+        body: TabBarView(
+          children: [
+            _OverviewTab(detail: detail),
+            _ContributionsTab(contributions: detail.contributions),
+            _ActivityTab(events: detail.activityEvents),
+          ],
+        ),
       ),
     );
   }
@@ -204,9 +224,18 @@ class _MemberHeader extends StatelessWidget {
             height: 72,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [AppPallete.tcBlueBright, AppPallete.tcBlueBrightDark],
               ),
               borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: AppPallete.tcBlueBright.withValues(alpha: 0.25),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             alignment: Alignment.center,
             child: Text(
@@ -221,6 +250,7 @@ class _MemberHeader extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             user.fullName,
+            textAlign: TextAlign.center,
             style: GoogleFonts.dmSans(
               fontSize: 20,
               fontWeight: FontWeight.w700,
@@ -229,22 +259,80 @@ class _MemberHeader extends StatelessWidget {
           ),
           if (user.email.isNotEmpty) ...[
             const SizedBox(height: 4),
-            Text(user.email, style: GoogleFonts.dmSans(color: AppPallete.textMuted)),
+            Text(
+              user.email,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.dmSans(color: AppPallete.textMuted, fontSize: 14),
+            ),
           ],
           if (user.phoneE164 != null && user.phoneE164!.isNotEmpty) ...[
             const SizedBox(height: 2),
             Text(
               user.phoneE164!,
-              style: GoogleFonts.dmSans(color: AppPallete.textSecondary, fontSize: 13),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.dmSans(
+                color: AppPallete.textSecondary,
+                fontSize: 13,
+              ),
             ),
           ],
           if (user.createdAt case final DateTime joined) ...[
-            const SizedBox(height: 8),
-            Text(
-              l10n.adminMemberJoined(formatDisplayDate(joined)),
-              style: GoogleFonts.dmSans(fontSize: 13, color: AppPallete.textMuted),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppPallete.cardBg,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                l10n.adminMemberJoined(formatDisplayDate(joined)),
+                style: GoogleFonts.dmSans(fontSize: 12, color: AppPallete.textMuted),
+              ),
             ),
           ],
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppPallete.cardBg,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            width: double.infinity,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      l10n.adminContributionProgress,
+                      style: GoogleFonts.dmSans(
+                        fontSize: 13,
+                        color: AppPallete.textSecondary,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '${detail.progressPercent}%',
+                      style: GoogleFonts.dmSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppPallete.tcBlueBright,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: detail.progressFraction,
+                    minHeight: 8,
+                    backgroundColor: AppPallete.progressTrack,
+                    color: AppPallete.tcBlueBright,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -260,17 +348,20 @@ class _OverviewTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final user = detail.user;
+    final padding = context.responsivePagePadding;
 
     return ListView(
-      padding: EdgeInsets.all(context.responsivePagePadding),
+      padding: EdgeInsets.fromLTRB(padding, 16, padding, 24),
       children: [
-        _InfoCard(
-          title: l10n.adminMemberTabOverview,
-          rows: [
-            _InfoRow(label: l10n.email, value: user.email),
+        _MemberHeader(detail: detail),
+        const SizedBox(height: 16),
+        ProfileSectionCard(
+          title: l10n.adminMemberTabOverview.toUpperCase(),
+          children: [
+            _OverviewTile(label: l10n.email, value: user.email),
             if (user.phoneE164 != null && user.phoneE164!.isNotEmpty)
-              _InfoRow(label: l10n.phone, value: user.phoneE164!),
-            _InfoRow(
+              _OverviewTile(label: l10n.phone, value: user.phoneE164!),
+            _OverviewTile(
               label: l10n.contributionTarget,
               value: formatKes(detail.targetKes),
               trailing: detail.goalLowerCount > 1
@@ -283,15 +374,16 @@ class _OverviewTab extends StatelessWidget {
                     )
                   : null,
             ),
-            _InfoRow(
+            _OverviewTile(
               label: l10n.totalContributed,
               value: formatKes(detail.raisedKes),
             ),
-            _InfoRow(
+            _OverviewTile(
               label: l10n.adminPaymentMethodsUsed,
               value: detail.paymentMethodsUsed.isEmpty
                   ? l10n.adminPaymentMethodsNone
                   : detail.paymentMethodsUsed.join(', '),
+              showDivider: false,
             ),
           ],
         ),
@@ -311,9 +403,35 @@ class _ContributionsTab extends StatelessWidget {
 
     if (contributions.isEmpty) {
       return Center(
-        child: Text(
-          l10n.noContributionsYet,
-          style: GoogleFonts.dmSans(color: AppPallete.textSecondary),
+        child: Padding(
+          padding: EdgeInsets.all(context.responsivePagePadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppPallete.tcBlueBright.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.receipt_long_outlined,
+                  color: AppPallete.tcBlueBright,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.noContributionsYet,
+                style: GoogleFonts.dmSans(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppPallete.textPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -349,9 +467,36 @@ class _ActivityTab extends StatelessWidget {
 
     if (events.isEmpty) {
       return Center(
-        child: Text(
-          l10n.adminMemberActivityEmpty,
-          style: GoogleFonts.dmSans(color: AppPallete.textSecondary),
+        child: Padding(
+          padding: EdgeInsets.all(context.responsivePagePadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppPallete.tcBlueBright.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Icon(
+                  Icons.timeline_outlined,
+                  color: AppPallete.tcBlueBright,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.adminMemberActivityEmpty,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.dmSans(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppPallete.textPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -364,7 +509,7 @@ class _ActivityTab extends StatelessWidget {
         24,
       ),
       itemCount: events.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 0),
+      separatorBuilder: (context, index) => const SizedBox(height: 0),
       itemBuilder: (context, index) {
         return _ActivityTimelineTile(
           event: events[index],
@@ -390,7 +535,7 @@ class _ActivityTimelineTile extends StatelessWidget {
     final (icon, color, title) = switch (event.kind) {
       AdminMemberActivityKind.joined => (
           Icons.person_add_outlined,
-          AppPallete.tcBlueLight,
+          AppPallete.tcBlueBright,
           l10n.adminActivityJoined,
         ),
       AdminMemberActivityKind.targetSet => (
@@ -537,80 +682,57 @@ class _ContributionTile extends StatelessWidget {
   }
 }
 
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({required this.title, required this.rows});
-
-  final String title;
-  final List<_InfoRow> rows;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppPallete.tcWhite,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppPallete.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: GoogleFonts.dmSans(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: AppPallete.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 12),
-          ...rows,
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({
+class _OverviewTile extends StatelessWidget {
+  const _OverviewTile({
     required this.label,
     required this.value,
     this.trailing,
+    this.showDivider = true,
   });
 
   final String label;
   final String value;
   final Widget? trailing;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.dmSans(fontSize: 13, color: AppPallete.textMuted),
-          ),
-          const SizedBox(height: 2),
-          Row(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(
-                  value,
-                  style: GoogleFonts.dmSans(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppPallete.textPrimary,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: GoogleFonts.dmSans(
+                        fontSize: 13,
+                        color: AppPallete.textMuted,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      value,
+                      style: GoogleFonts.dmSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppPallete.textPrimary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (trailing != null) trailing!,
             ],
           ),
-        ],
-      ),
+        ),
+        if (showDivider) const Divider(height: 1, indent: 20, color: AppPallete.border),
+      ],
     );
   }
 }
@@ -643,27 +765,4 @@ class _GoalWarningChip extends StatelessWidget {
       ),
     );
   }
-}
-
-class _TabBarDelegate extends SliverPersistentHeaderDelegate {
-  _TabBarDelegate(this.tabBar);
-
-  final TabBar tabBar;
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Material(
-      color: AppPallete.scaffoldBg,
-      child: tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant _TabBarDelegate oldDelegate) => false;
 }

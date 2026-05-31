@@ -12,6 +12,6 @@ class AdminManagementTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AdminMemberManagementScreen();
+    return AdminMemberManagementScreen(onOpenDrawer: onOpenDrawer);
   }
 }

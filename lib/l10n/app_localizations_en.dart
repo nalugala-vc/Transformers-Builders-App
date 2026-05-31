@@ -876,6 +876,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminChurchMembers => 'Church Members';
 
   @override
+  String get adminMembersManageSubtitle =>
+      'Search, view profiles, and manage your church roster.';
+
+  @override
   String get adminSearchMembersHint => 'Search members…';
 
   @override

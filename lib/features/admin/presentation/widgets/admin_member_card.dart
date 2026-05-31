@@ -24,173 +24,206 @@ class AdminMemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppPallete.tcWhite,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppPallete.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 8, 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _MemberAvatar(initials: member.initials),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        member.fullName,
-                        style: GoogleFonts.dmSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: AppPallete.textPrimary,
-                        ),
+    return Material(
+      color: AppPallete.tcWhite,
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => onAction(AdminMemberCardActionKind.profile),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppPallete.border),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 8, 0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _MemberAvatar(initials: member.initials),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            member.fullName,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: AppPallete.textPrimary,
+                            ),
+                          ),
+                          if (member.email.isNotEmpty) ...[
+                            const SizedBox(height: 6),
+                            _ContactRow(
+                              icon: Icons.mail_outline_rounded,
+                              text: member.email,
+                            ),
+                          ],
+                          if (member.phoneE164 != null &&
+                              member.phoneE164!.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            _ContactRow(
+                              icon: Icons.phone_outlined,
+                              text: member.phoneE164!,
+                            ),
+                          ],
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      if (member.email.isNotEmpty)
-                        _ContactRow(
-                          icon: Icons.mail_outline_rounded,
-                          text: member.email,
+                    ),
+                    PopupMenuButton<AdminMemberCardActionKind>(
+                      icon: Icon(
+                        Icons.more_horiz_rounded,
+                        color: AppPallete.textMuted.withValues(alpha: 0.8),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      onSelected: onAction,
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: AdminMemberCardActionKind.profile,
+                          child: Text(l10n.adminMemberActionProfile),
                         ),
-                      if (member.phoneE164 != null &&
-                          member.phoneE164!.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        _ContactRow(
-                          icon: Icons.phone_outlined,
-                          text: member.phoneE164!,
+                        PopupMenuItem(
+                          value: AdminMemberCardActionKind.message,
+                          child: Text(l10n.adminMemberActionMessage),
+                        ),
+                        PopupMenuItem(
+                          value: AdminMemberCardActionKind.remove,
+                          child: Text(
+                            l10n.adminMemberActionRemove,
+                            style: const TextStyle(color: AppPallete.tcRed),
+                          ),
                         ),
                       ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: AppPallete.cardBg,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            l10n.adminContributionProgress,
+                            style: GoogleFonts.dmSans(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: AppPallete.textSecondary,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppPallete.tcBlueBright.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '${member.progressPercent}%',
+                              style: GoogleFonts.dmSans(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppPallete.tcBlueBright,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: LinearProgressIndicator(
+                          value: member.progressFraction,
+                          minHeight: 8,
+                          backgroundColor: AppPallete.progressTrack,
+                          color: AppPallete.tcBlueBright,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text(
+                            formatKes(member.raisedKes),
+                            style: GoogleFonts.dmSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: AppPallete.textPrimary,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            l10n.adminMemberTargetLabel(
+                              formatKes(member.targetKes),
+                            ),
+                            style: GoogleFonts.dmSans(
+                              fontSize: 13,
+                              color: AppPallete.textMuted,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-                PopupMenuButton<AdminMemberCardActionKind>(
-                  icon: const Icon(
-                    Icons.more_vert_rounded,
-                    color: AppPallete.textMuted,
-                  ),
-                  onSelected: onAction,
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: AdminMemberCardActionKind.profile,
-                      child: Text(l10n.adminMemberActionProfile),
+              ),
+              const SizedBox(height: 4),
+              const Divider(height: 1, color: AppPallete.border),
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _ActionButton(
+                        icon: Icons.person_outline_rounded,
+                        label: l10n.adminMemberActionProfile,
+                        color: AppPallete.tcBlueBright,
+                        onTap: () =>
+                            onAction(AdminMemberCardActionKind.profile),
+                      ),
                     ),
-                    PopupMenuItem(
-                      value: AdminMemberCardActionKind.message,
-                      child: Text(l10n.adminMemberActionMessage),
+                    const VerticalDivider(width: 1, color: AppPallete.border),
+                    Expanded(
+                      child: _ActionButton(
+                        icon: Icons.chat_bubble_outline_rounded,
+                        label: l10n.adminMemberActionMessage,
+                        color: AppPallete.tcBlueBright,
+                        onTap: () =>
+                            onAction(AdminMemberCardActionKind.message),
+                      ),
                     ),
-                    PopupMenuItem(
-                      value: AdminMemberCardActionKind.remove,
-                      child: Text(
-                        l10n.adminMemberActionRemove,
-                        style: const TextStyle(color: AppPallete.tcRed),
+                    const VerticalDivider(width: 1, color: AppPallete.border),
+                    Expanded(
+                      child: _ActionButton(
+                        icon: Icons.delete_outline_rounded,
+                        label: l10n.adminMemberActionRemove,
+                        color: AppPallete.tcRed,
+                        onTap: () =>
+                            onAction(AdminMemberCardActionKind.remove),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Text(
-                  l10n.adminContributionProgress,
-                  style: GoogleFonts.dmSans(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppPallete.textSecondary,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  '${member.progressPercent}%',
-                  style: GoogleFonts.dmSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppPallete.tcBlueLight,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: member.progressFraction,
-                minHeight: 6,
-                backgroundColor: AppPallete.progressTrack,
-                color: AppPallete.tcBlueLight,
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Text(
-                  formatKes(member.raisedKes),
-                  style: GoogleFonts.dmSans(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppPallete.textPrimary,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  l10n.adminMemberTargetLabel(formatKes(member.targetKes)),
-                  style: GoogleFonts.dmSans(
-                    fontSize: 13,
-                    color: AppPallete.textMuted,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          const Divider(height: 1, color: AppPallete.border),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _ActionButton(
-                    icon: Icons.person_outline_rounded,
-                    label: l10n.adminMemberActionProfile,
-                    color: AppPallete.tcBlueLight,
-                    onTap: () => onAction(AdminMemberCardActionKind.profile),
-                  ),
-                ),
-                Expanded(
-                  child: _ActionButton(
-                    icon: Icons.chat_bubble_outline_rounded,
-                    label: l10n.adminMemberActionMessage,
-                    color: AppPallete.tcBlueLight,
-                    onTap: () => onAction(AdminMemberCardActionKind.message),
-                  ),
-                ),
-                Expanded(
-                  child: _ActionButton(
-                    icon: Icons.delete_outline_rounded,
-                    label: l10n.adminMemberActionRemove,
-                    color: AppPallete.tcRed,
-                    onTap: () => onAction(AdminMemberCardActionKind.remove),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -204,21 +237,28 @@ class _MemberAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 44,
-      height: 44,
+      width: 48,
+      height: 48,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [AppPallete.tcBlueBright, AppPallete.tcBlueBrightDark],
         ),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppPallete.tcBlueBright.withValues(alpha: 0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       alignment: Alignment.center,
       child: Text(
         initials,
         style: GoogleFonts.dmSans(
-          fontSize: 16,
+          fontSize: 17,
           fontWeight: FontWeight.w700,
           color: AppPallete.tcWhite,
         ),
@@ -237,13 +277,13 @@ class _ContactRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppPallete.textMuted),
+        Icon(icon, size: 15, color: AppPallete.textMuted),
         const SizedBox(width: 6),
         Expanded(
           child: Text(
             text,
             style: GoogleFonts.dmSans(
-              fontSize: 14,
+              fontSize: 13,
               color: AppPallete.textMuted,
             ),
             overflow: TextOverflow.ellipsis,
@@ -271,18 +311,18 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 20, color: color),
             const SizedBox(height: 4),
             Text(
               label,
               style: GoogleFonts.dmSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
                 color: color,
               ),
             ),

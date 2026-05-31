@@ -353,6 +353,7 @@
   "adminMyContributions": "My contributions",
 
   "adminChurchMembers": "Church Members",
+  "adminMembersManageSubtitle": "Search, view profiles, and manage your church roster.",
   "adminSearchMembersHint": "Search members…",
   "adminMembersFoundCount": "{count, plural, =0{No members found} =1{1 member found} other{{count} members found}}",
   "@adminMembersFoundCount": {

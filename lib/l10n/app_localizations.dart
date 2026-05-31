@@ -1702,6 +1702,12 @@ abstract class AppLocalizations {
   /// **'Church Members'**
   String get adminChurchMembers;
 
+  /// No description provided for @adminMembersManageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search, view profiles, and manage your church roster.'**
+  String get adminMembersManageSubtitle;
+
   /// No description provided for @adminSearchMembersHint.
   ///
   /// In en, this message translates to:
