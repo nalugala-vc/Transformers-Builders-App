@@ -20,30 +20,43 @@ import '../widgets/profile/profile_header_card.dart';
 import '../widgets/profile/profile_section_card.dart';
 
 class MemberProfileTabScreen extends ConsumerWidget {
-  const MemberProfileTabScreen({super.key});
+  const MemberProfileTabScreen({
+    super.key,
+    this.includeTopSafeArea = true,
+  });
+
+  /// When false, a parent shell bar (e.g. admin menu bar) already applied [SafeArea].
+  final bool includeTopSafeArea;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(localeProvider);
     final profileAsync = ref.watch(memberProfileUiProvider);
 
+    final content = profileAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (_, _) => Center(child: Text(context.l10n.couldNotLoadProfile)),
+      data: (profile) => _ProfileBody(
+        profile: profile,
+        contentTopPadding: includeTopSafeArea ? 20.0 : 8.0,
+      ),
+    );
+
     return ColoredBox(
       color: AppPallete.scaffoldBg,
-      child: SafeArea(
-        child: profileAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, _) => Center(child: Text(context.l10n.couldNotLoadProfile)),
-          data: (profile) => _ProfileBody(profile: profile),
-        ),
-      ),
+      child: includeTopSafeArea ? SafeArea(child: content) : content,
     );
   }
 }
 
 class _ProfileBody extends ConsumerWidget {
-  const _ProfileBody({required this.profile});
+  const _ProfileBody({
+    required this.profile,
+    this.contentTopPadding = 20,
+  });
 
   final MemberProfileUiState profile;
+  final double contentTopPadding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,7 +73,7 @@ class _ProfileBody extends ConsumerWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               context.responsivePagePadding,
-              20,
+              contentTopPadding,
               context.responsivePagePadding,
               0,
             ),

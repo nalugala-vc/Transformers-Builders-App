@@ -98,7 +98,9 @@ class AdminProfileTabScreen extends StatelessWidget {
           onOpenDrawer: onOpenDrawer,
           title: context.l10n.adminTabProfile,
         ),
-        const Expanded(child: MemberProfileTabScreen()),
+        const Expanded(
+          child: MemberProfileTabScreen(includeTopSafeArea: false),
+        ),
       ],
     );
   }

@@ -119,28 +119,19 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
+      path: AppRoutePaths.memberNotifications,
+      name: 'memberNotifications',
+      builder: (context, state) => const MemberNotificationsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutePaths.memberContributions,
+      name: 'memberContributions',
+      builder: (context, state) => const MemberContributionHistoryScreen(),
+    ),
+    GoRoute(
       path: AppRoutePaths.memberHome,
       name: 'memberHome',
       builder: (context, state) => const MemberShellScreen(),
-      routes: [
-        GoRoute(
-          path: 'notifications',
-          name: 'memberNotifications',
-          parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const MemberNotificationsScreen(),
-        ),
-        GoRoute(
-          path: 'contributions',
-          name: 'memberContributions',
-          parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const MemberContributionHistoryScreen(),
-        ),
-      ],
-    ),
-    GoRoute(
-      path: AppRoutePaths.adminHome,
-      name: 'adminHome',
-      builder: (context, state) => const AdminShellScreen(),
     ),
     GoRoute(
       path: '/admin/members/:uid',
@@ -149,6 +140,11 @@ final GoRouter appRouter = GoRouter(
         final uid = state.pathParameters['uid']!;
         return AdminMemberDetailScreen(memberUid: uid);
       },
+    ),
+    GoRoute(
+      path: AppRoutePaths.adminHome,
+      name: 'adminHome',
+      builder: (context, state) => const AdminShellScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.sizes,

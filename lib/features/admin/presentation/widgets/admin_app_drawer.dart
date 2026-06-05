@@ -75,19 +75,19 @@ class AdminAppDrawer extends ConsumerWidget {
                     icon: Icons.dashboard_rounded,
                     label: l10n.adminTabDashboard,
                     selected: view == AdminShellView.dashboard,
-                    onTap: () => _goTo(context, ref, AdminShellView.dashboard),
+                    onTap: () => adminDrawerGoTo(context, ref, AdminShellView.dashboard),
                   ),
                   _DrawerTile(
                     icon: Icons.groups_rounded,
                     label: l10n.adminTabManagement,
                     selected: view == AdminShellView.management,
-                    onTap: () => _goTo(context, ref, AdminShellView.management),
+                    onTap: () => adminDrawerGoTo(context, ref, AdminShellView.management),
                   ),
                   _DrawerTile(
                     icon: Icons.campaign_rounded,
                     label: l10n.adminTabUpdates,
                     selected: view == AdminShellView.updates,
-                    onTap: () => _goTo(context, ref, AdminShellView.updates),
+                    onTap: () => adminDrawerGoTo(context, ref, AdminShellView.updates),
                   ),
                   const SizedBox(height: 8),
                   _SectionLabel(label: l10n.adminSidebarPersonal),
@@ -96,7 +96,7 @@ class AdminAppDrawer extends ConsumerWidget {
                     label: l10n.adminMyContributions,
                     selected: view == AdminShellView.myContributions,
                     onTap: () =>
-                        _goTo(context, ref, AdminShellView.myContributions),
+                        adminDrawerGoTo(context, ref, AdminShellView.myContributions),
                   ),
                   _DrawerTile(
                     icon: Icons.add_circle_rounded,
@@ -128,7 +128,7 @@ class AdminAppDrawer extends ConsumerWidget {
                     icon: Icons.person_rounded,
                     label: l10n.adminTabProfile,
                     selected: view == AdminShellView.profile,
-                    onTap: () => _goTo(context, ref, AdminShellView.profile),
+                    onTap: () => adminDrawerGoTo(context, ref, AdminShellView.profile),
                   ),
                   _DrawerTile(
                     icon: Icons.notifications_rounded,
@@ -160,11 +160,15 @@ class AdminAppDrawer extends ConsumerWidget {
       ),
     );
   }
+}
 
-  void _goTo(BuildContext context, WidgetRef ref, AdminShellView view) {
-    Navigator.of(context).pop();
-    ref.read(adminShellViewProvider.notifier).state = view;
+void adminDrawerGoTo(BuildContext context, WidgetRef ref, AdminShellView view) {
+  Navigator.of(context).pop();
+  final location = GoRouter.of(context).state.matchedLocation;
+  if (location != AppRoutePaths.adminHome) {
+    context.go(AppRoutePaths.adminHome);
   }
+  ref.read(adminShellViewProvider.notifier).state = view;
 }
 
 class _SectionLabel extends StatelessWidget {
